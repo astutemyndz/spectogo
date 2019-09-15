@@ -1,0 +1,519 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Cookie&display=swap');
+
+.browserupgrade {
+	margin: 0.2em 0;
+	background: #ccc;
+	color: #000;
+	padding: 0.2em 0;
+}
+
+/* Typography */
+h1,h2,h3,h4,h5,h6 {
+   color:#3d4445;
+}
+.text-blue {
+   color:#2168ea;
+}
+.text-red {
+   color:#794954;	
+}
+.text-red-1 {
+   color:#ea2139;
+}
+.text-color-1 {
+   color:#3d4445;	
+}
+.text-color-2 {
+   color:#8d9ca7;	
+}
+.text-color-3 {
+   color:#8494a0;	
+}
+.text-color-4 {
+   color:#636a6e;	
+}
+.text-color-5 {
+   color:#80878e;
+}
+.text-color-6 {
+   color:#555a5e;	
+}
+.text-color-7 {
+   color:#858c95;	
+}
+.text-color-8 {
+   color:#404243;	
+}
+.text-color-9 {
+   color:#a1a7a8;	
+}
+.text-color-10 {
+   color:#b7babe;	
+}
+
+
+/* Header */
+#home #header {
+	position:absolute;
+	z-index:1;
+	width:100%;
+}
+
+/* Banner */ 
+/*#elegant_home_banner.rev_slider li {
+	background:#ecf4f5 url(../img/home_banner_bg.gif) repeat-y;
+	background-size: 50%;
+}*/
+.tp-leftarrow {
+	border-right:1px solid #d2d2d2;
+}
+.tparrows:before {
+	color:#000;
+	font-weight:bold;
+}
+.tparrows {
+	background-color:transparent;
+	width:50px;
+}
+.tparrows:hover {
+	background:none;
+}
+.tp-bullets, .tp-tabs, .tp-thumbs {
+	left:100.5% !important;
+}
+.tp-bullet {
+	height: 30px;
+	background: none;
+	position: relative;
+	left:0 !important;
+	color:#a5a5a5;
+	font-size:0.5rem;
+	transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+}
+.tp-bullet.selected, .tp-bullet:hover {
+	background: none;
+	color:#4a4a4a;
+	font-weight:600;
+	font-size:1rem !important;
+	transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+}
+
+/* Navigation */
+nav.navbar a {
+	font-size: 0.8125rem;
+}
+footer .nav .nav-link {
+	color: #8e9399;
+	font-size:0.9rem;
+}
+footer .copyright .nav .nav-link{
+	color:#a1aab6;
+}
+
+/* Link */
+footer a {
+	color:#a1aab6;
+}
+a:active,a:hover,a:focus {
+	text-decoration:none !important;
+}
+
+/* Form */
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+input:focus, textarea:focus, button:focus {
+	outline:none !important;
+	background-color:transparent !important;
+}
+button:focus, button:active {
+    background-color:#1e99b2 !important;
+	outline:none !important;
+	border:0px !important;
+	color: #fff !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #f7f9fa inset !important;
+}
+textarea {
+	resize: none !important;
+}
+::placeholder {
+	font-size:0.8125rem;
+}
+::-webkit-input-placeholder {
+	font-size:0.8125rem;
+}
+:-ms-input-placeholder {
+	font-size:0.8125rem;
+}
+select {
+    background: url('../img/select-arrow.png') no-repeat right #ddd;
+    -webkit-appearance: none;
+    background-position-x: 96%;
+	background-size:auto 7px;
+}
+.prescription_form select,.prescription_form input[type="text"] {
+	height: 45px !important;
+	font-size:13px !important;
+}
+
+/* Radio Button */
+
+.radio_container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio_container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio_container input:checked ~ .checkmark {
+  background-color: #d2dfe6;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio_container .checkmark:after {
+ 	top: 4px;
+	left: 4px;
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	background: #1f97b0;
+}
+
+/* Upload Button */
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.upload_btn {
+  color: #fff;
+  background-color: #40474a;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+
+/* Tabs */
+
+/* Horizontal */
+.nav-tabs {
+    border-bottom: 0px !important;
+}
+.nav-tabs .nav-link{
+    border:0px !important;	
+	color:#414b56;
+}
+.nav-tabs .nav-link:hover {
+	color:#1e99b2;
+}
+.tab-badge-background {
+  	background-color:#d5dcdf;
+}
+.tab-badge {
+	height:20px;
+    width:20px;	
+	text-align:center;
+	line-height:15px;
+}
+.nav-tabs .nav-item.active a {
+    color:#1e99b2;
+}
+.nav-item.active .tab-badge-background,.nav-item:hover .tab-badge-background {
+    background-color:#1e99b2;
+	color:#fff;
+}
+
+/* Vertical */
+
+#vertical_tab li.active a {
+	color:#fff;
+	background-color:#1e99b2;
+}
+.nav-tabs .nav-link {
+	border-bottom-left-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+}
+#vertical_tab li.active .arrow_box {
+	position: relative;
+	background: #1e99b2;
+}
+#vertical_tab li.active .arrow_box:after {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(30, 153, 178, 0);
+	border-left-color: #1e99b2;
+	border-width: 8px;
+	margin-top: -8px;
+}
+.prescription_box.bg-primary .prescription_box_img {
+    background-color:#28adc8 !important;	
+}
+.prescription_box.bg-primary p,.prescription_box.bg-primary h6 {
+    color:#ffffff !important;	
+}
+.prescription_box.bg-primary .bg-primary.badge {
+	background-color:#ffffff !important;
+}
+.prescription_box.bg-primary .bg-primary.badge i {
+	color:#1e99b2 !important;
+}
+
+
+/* Footer */
+footer {
+	background-color: #f8f8f8;
+}
+.footer_contact_info h6 {
+	color: #7b8385;
+}
+footer .nav h6 {
+	color: #434f52;
+}
+
+/* Contact */
+.contact_section i {
+    background-color: #c2dce1;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+	color:#5c6c6f;
+}
+
+/* Our Strory */
+.content_section i {
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+}
+
+/* Testimonials */
+.testimonial_section {
+    background-image: url('../img/quote.png');
+	background-repeat:no-repeat;
+}
+
+/* Product */
+.search-form {
+	border-top-right-radius: 45px;
+	border-bottom-right-radius: 45px;
+	border-top-left-radius: 45px;
+	border-bottom-left-radius: 45px;
+	color:#6a7073;
+	box-shadow: 0px 10px 20px 0px rgba(175, 225, 250, 0.3);	
+}
+.radius_left {
+    border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+.radius_right {
+    border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+.search-form::placeholder {
+	font-size:0.8125rem;
+	color:#6a7073;
+}
+.search-form::-webkit-input-placeholder {
+	font-size:0.8125rem;
+	color:#6a7073;
+}
+.search-form:-ms-input-placeholder {
+	font-size:0.8125rem;
+	color:#6a7073;
+}
+.search-form button:hover {
+   background:transparent;	
+}
+.search-form select,.search-form input{
+	 color: #6a7073;
+}
+.search-form button:focus,.search-form button:active {
+     box-shadow:none !important;	
+}
+.top_position {
+     top:30%;
+	 visibility:hidden;
+}
+.product_box:hover .top_position {
+	visibility:visible;
+}
+.product_box:hover .product{
+	opacity:0.5;
+}
+
+/* Product Details */
+.color_option button::acive,.color_option button::focus {
+   	background-color:transparent !important;
+	color:#ffffff !important;
+}
+.product-inner i {
+    height: auto !important;
+    width:auto !important;
+    line-height:unset !important;
+}
+	
+
+/* Carousel */
+.owl-nav a {
+    border: 1px solid #1e99b2 !important;
+    padding: 10px 35px;
+    background: #1e99b2;
+    color: #fff;
+    text-transform: uppercase;
+}
+.owl-nav button.disabled a{
+	border: 1px solid #1e99b2 !important;
+    padding: 10px 35px;
+    background: transparent;
+    color: #3d4445 !important;
+    text-transform: uppercase;
+}
+.owl-theme .owl-nav [class*="owl-"]:hover {
+    background: transparent !important;
+}
+.owl-theme .owl-nav [class*="owl-"]:hover a {
+	text-decoration:none !important;
+}
+.owl-stage {
+    margin:0 auto;
+}
+#thumbs .owl-stage .owl-item .item {
+    margin-right: 7% !important;
+}
+
+@media (max-width: 576px) { 
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	
+	/* Button */
+	.btn {
+ 		width:100%;
+	}
+	
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	
+}
+
+@media (max-width: 767px) {
+	
+	/* Spacing */
+	.margin_border {
+	    margin-left:0px !important;	
+	}
+	
+	/* Product */
+	.radius_left {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+	.radius_right {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+	.blur_class img {
+        width: auto !important;
+    }
+	
+	/* Product Detail */
+	.choose_lense_button {
+	    margin-top:0px !important;	
+	}
+	
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	.choose_lense_button {
+	    margin-top:0px !important;	
+	}
+		
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) { }
+
+@media (min-width: 1200px) { }

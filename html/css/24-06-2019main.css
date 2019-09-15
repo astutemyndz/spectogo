@@ -1,0 +1,203 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Cookie&display=swap');
+
+.browserupgrade {
+	margin: 0.2em 0;
+	background: #ccc;
+	color: #000;
+	padding: 0.2em 0;
+}
+
+/* Typography */
+h1,h2,h3,h4,h5,h6 {
+   color:#3d4445;
+}
+.text-color-1 {
+   color:#3d4445;	
+}
+.text-color-2 {
+   color:#8d9ca7;	
+}
+.text-color-3 {
+   color:#8494a0;	
+}
+
+
+/* Header */
+#home #header {
+	position:absolute;
+	z-index:1;
+	width:100%;
+}
+
+/* Banner */ 
+/*#elegant_home_banner.rev_slider li {
+	background:#ecf4f5 url(../img/home_banner_bg.gif) repeat-y;
+	background-size: 50%;
+}*/
+.tp-leftarrow {
+	border-right:1px solid #d2d2d2;
+}
+.tparrows:before {
+	color:#000;
+	font-weight:bold;
+}
+.tparrows {
+	background-color:transparent;
+	width:50px;
+}
+.tparrows:hover {
+	background:none;
+}
+.tp-bullets, .tp-tabs, .tp-thumbs {
+	left:100.5% !important;
+}
+.tp-bullet {
+	height: 30px;
+	background: none;
+	position: relative;
+	left:0 !important;
+	color:#a5a5a5;
+	font-size:0.5rem;
+	transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+}
+.tp-bullet.selected, .tp-bullet:hover {
+	background: none;
+	color:#4a4a4a;
+	font-weight:600;
+	font-size:1rem !important;
+	transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+}
+
+
+/* Navigation */
+nav.navbar a {
+	font-size: 0.8125rem;
+}
+footer .nav .nav-link {
+	color: #8e9399;
+	font-size:0.9rem;
+}
+footer .copyright .nav .nav-link{
+	color:#a1aab6;
+}
+
+/* Link */
+footer a {
+	color:#a1aab6;
+}
+
+
+/* Form */
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+input:focus, textarea:focus, button:focus {
+	outline:none !important;
+}
+textarea {
+	resize: none !important;
+}
+::placeholder {
+	font-size:0.8125rem;
+}
+::-webkit-input-placeholder {
+	font-size:0.8125rem;
+}
+:-ms-input-placeholder {
+	font-size:0.8125rem;
+}
+
+/* Footer */
+footer {
+	background-color: #f8f8f8;
+}
+.footer_contact_info h6 {
+	color: #7b8385;
+}
+footer .nav h6 {
+	color: #434f52;
+}
+
+/* Contact */
+.contact_section i {
+    background-color: #c2dce1;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+	color:#5c6c6f;
+}
+
+/* Our Strory */
+.content_section i {
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+}
+
+/* Carousel */
+.owl-nav a {
+    border: 1px solid #1e99b2 !important;
+    padding: 10px 35px;
+    background: #1e99b2;
+    color: #fff;
+    text-transform: uppercase;
+}
+.owl-nav button.disabled a{
+	border: 1px solid #1e99b2 !important;
+    padding: 10px 35px;
+    background: transparent;
+    color: #3d4445 !important;
+    text-transform: uppercase;
+}
+.owl-theme .owl-nav [class*="owl-"]:hover {
+    background: transparent !important;
+}
+.owl-theme .owl-nav [class*="owl-"]:hover a {
+	text-decoration:none !important;
+}
+
+@media (max-width: 576px) { 
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	
+	/* Button */
+	.btn {
+ 		width:100%;
+	}
+	
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+	
+	/* Banner */
+	.tparrows, .tp-bullet {
+		display:none;
+	}
+	
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) { }
+
+@media (min-width: 1200px) { }

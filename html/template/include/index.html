@@ -1,0 +1,127 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="site.webmanifest">
+<link rel="apple-touch-icon" href="icon.png">
+<!-- Place favicon.ico in the root directory -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/vendor/revolution/settings.css" />
+<link rel="stylesheet" href="css/main.css">
+<meta name="theme-color" content="#fafafa">
+</head>
+
+<body id="home">
+<!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]--> 
+
+<!-- Add your site or application content here -->
+<div id="header"></div>
+<div class="rev_slider_wrapper fullwidthbanner-container">
+	<!-- the ID here will be used in the inline JavaScript below to initialize the slider -->
+    <div id="elegant_home_banner" class="rev_slider fullwidthbanner" data-version="5.4.6.3" style="display:none">
+         <ul>
+            <li data-transition="crossfade" data-param1="01">
+                <img src="img/slide1_main_img.jpg" alt="Men" class="rev-slidebg" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" />
+            </li>
+            <li data-transition="crossfade" data-param1="02">
+                <img src="img/slide2_main_img.jpg" alt="Women" class="rev-slidebg" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" />
+            </li>
+            <li data-transition="crossfade" data-param1="03">
+                 <a href="product-list.html"><img src="img/slide3_main_img.jpg" alt="Unisex" class="rev-slidebg" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="main"> </div>
+<div id="footer"></div>
+<script src="js/vendor/modernizr-3.7.1.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> 
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script> 
+<script src="js/vendor/bootstrap.js"></script> 
+
+<!-- REVOLUTION JS FILES -->
+<script src="js/vendor/revolution/jquery.themepunch.tools.min.js"></script>
+<script src="js/vendor/revolution/jquery.themepunch.revolution.min.js"></script>
+
+<!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+<script src="js/vendor/revolution/extensions/revolution.extension.actions.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.carousel.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.kenburn.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.layeranimation.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.migration.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.navigation.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.parallax.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.slideanims.min.js"></script>
+<script src="js/vendor/revolution/extensions/revolution.extension.video.min.js"></script> 
+
+<script src="js/plugins.js"></script> 
+<script src="js/main.js"></script>
+<script type="text/javascript">
+ 
+    /* https://learn.jquery.com/using-jquery-core/document-ready/ */
+    jQuery(document).ready(function() {
+ 
+        /* initialize the slider based on the Slider's ID attribute */
+        jQuery('#elegant_home_banner').show().revolution({
+ 
+            /* options are 'auto', 'fullwidth' or 'fullscreen' */
+            sliderLayout: 'auto',
+			autoHeight: 'on',
+			fullScreenAlignForce: 'off',
+			stopAfterLoops:0,
+			stopAtSlide:1,
+ 
+            /* basic navigation arrows and bullets */
+            navigation: {
+ 
+                arrows: {
+                    enable: true,
+                    style: 'uranus',
+                    hide_onleave: false,
+										
+					left: {
+						container: 'slider',
+						h_align: 'right',
+						v_align: 'top',
+						h_offset: 68,
+						v_offset: 160
+					},
+			 
+					right: {
+						container: 'slider',
+						h_align: 'right',
+						v_align: 'top',
+						h_offset: 20,
+						v_offset: 160
+					}
+					
+                },
+ 
+                bullets: {
+                    enable: true,
+                   	style: 'uranus',
+					direction: 'verticle',
+                    hide_onleave: false,
+                    h_align: 'right',
+                    v_align: 'top',
+                    h_offset: 40,
+                    v_offset: 230,
+                    space: 0,
+					tmp: '<div class="tp-counter text-center">{{param1}}</div>'
+                },
+				
+				
+            }
+        });
+    });
+ 
+</script>
+</body>
+</html>
