@@ -3,10 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Specs2Go</title>
+    <title>Specs2Go v2.1.0</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
     <link rel="apple-touch-icon" href="<?=base_url('assets/images/icon.png')?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?=base_url('assets/css/normalize.css')?>">
@@ -45,6 +44,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-0 text-uppercase text-spacing">
                                 <?php
+                                /*
                                 if(!empty($banners)){
                                 for($i = 0; $i < count($banners); $i++){ ?>
                                 <li class="nav-item nav-<?=strtoupper($banners[$i]['cat_name'])?>">
@@ -52,7 +52,7 @@
                                         <?=$banners[$i]['cat_name']?>
                                     </a>
                                 </li>
-                                <?php } } ?>
+                                <?php } } */?>
                                 <li class="nav-item"> <a class="nav-link" href="reglaze.html">Reglaze</a></li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>

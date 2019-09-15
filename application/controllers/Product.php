@@ -9,7 +9,20 @@ class Product extends Common_Controller {
         parent::__construct();
        
     }
-
+    public function banners() {
+        
+        $response = new Response(
+            array(
+                'data' => $this->getBanners(),
+                'statusCode' => Response::HTTP_OK,
+                'message' => Response::$statusTexts[200],
+                'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+            ),
+            Response::HTTP_OK,
+            ['Content-Type', 'application/json']
+        );
+        $response->send();
+    }
     public function products() {
         $this->setRequest($_POST);
         if(isset($this->request['category']) || !empty($this->request['category'])) {
@@ -24,15 +37,15 @@ class Product extends Common_Controller {
         } else {
             $this->listOfProduct = $this->getProductListDetails();
         }
-        // echo "<pre>";
-        // print_r($this->listOfProduct);
         
         if($this->listOfProduct) {
             $response = new Response(
                 array(
                     'data' => $this->listOfProduct,
                     'statusCode' => Response::HTTP_OK,
-                    'message' => Response::$statusTexts[200]
+                    'message' => Response::$statusTexts[200],
+                    'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+                    'productImageUrl' => base_url().'assets/images/productImage/',
                 ),
                 Response::HTTP_OK,
                 ['Content-Type', 'application/json']
@@ -47,12 +60,36 @@ class Product extends Common_Controller {
             $data['partner'] = $this->getBrandDetails();
             $data['frames'] = $this->getFrameDetails();            
             $data['product'] = $this->getProductListDetails(array('category' => $category, 'details'=> $details));
-            $this->load->view('frontend/layout/header', $data);
-            $this->load->view('frontend/pages/product');
-            $this->load->view('frontend/layout/footer');
+            
         }else{
             redirect(base_url());
         }
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/product', $data);
+        $this->load->view('frontend/layout/footer');
+    }
+    public function getProductCategoryWise($slug) {
+        $this->setCategoryName($slug);
+        $data['banners'] = $this->getBannerDetails();
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/product', $data);
+        $this->load->view('frontend/layout/footer');
+    }
+    public function filterProduct() {
+        $this->listOfProduct = $this->getProductListDetails(array('categoryName' => $this->getCategoryName()));
+        
+        $response = new Response(
+            array(
+                'data' => $this->listOfProduct,
+                'statusCode' => Response::HTTP_OK,
+                'message' => Response::$statusTexts[200],
+                'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+                'productImageUrl' => base_url().'assets/images/productImage/',
+            ),
+            Response::HTTP_OK,
+            ['Content-Type', 'application/json']
+        );
+       $response->send();
     }
     public function productDetails($slug = ''){
         $data['banners'] = $this->getBannerDetails();

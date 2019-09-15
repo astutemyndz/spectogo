@@ -17,10 +17,14 @@ class Common_Controller extends CI_Controller {
     protected $user         = array();
     protected $userId       = '';
     protected $primaryTable = '';
+    protected $secondaryTable = '';
+    protected $categoryId;
+    protected $categoryName;
 
 
 	function __construct() {
-     	parent::__construct();
+         parent::__construct();
+         //$this->checkLogin();
 	}
     public function checkLogin(){
         if(!$this->session->userdata('UserId')){
@@ -139,6 +143,31 @@ class Common_Controller extends CI_Controller {
         $this->user = $user;
         return $this;
     }
+    public function setCategoryId($categoryId) {
+        $this->categoryId = $categoryId;
+        return $this;
+    }
+    public function getCategoryId() {
+        return $this->categoryId;
+    }
+    public function setCategoryName($categoryName) {
+        $this->categoryName = $categoryName;
+        return $this;
+    }
+    public function getCategoryName() {
+        return $this->categoryName;
+    }
+    public function getBanners($options = null) {
+        $this->primaryTable = "banners t1";
+        $this->secondaryTable = "categories t2";
+        $this->condition = array("t1.status" => 1);
+        $this->sql = "";
+        $this->join[] = ["table" => 'categories t2', "on" => "t1.cat_id = t2.id", "type" => "left"];
+        
+        $this->sql   .= ",t1.id as bannerId, t1.image bannerImage";
+        $this->sql   .= ",t2.id as categoryId, t2.name as categoryName";
+        return $this->cm->select($this->primaryTable, $this->condition, $this->sql, "t1.id", "DESC", $this->join, $limit = "", $offset = 0, $group_by = "", $row = true);
+    }
     public function getProductListDetails($options = null) {
        // $flag = false;
         $this->setOptions($options);
@@ -151,6 +180,16 @@ class Common_Controller extends CI_Controller {
             if(isset($this->options['category']) || !empty($this->options['category'])) {
                 if(is_array($this->options) && in_array($this->options['category'], $this->options)) {
                     $this->setCategory($this->options['category']);
+                } 
+            }
+            if(isset($this->options['categoryId']) || !empty($this->options['categoryId'])) {
+                if(is_array($this->options) && in_array($this->options['categoryId'], $this->options)) {
+                    $this->setCategoryId($this->options['categoryId']);
+                } 
+            }
+            if(isset($this->options['categoryName']) || !empty($this->options['categoryName'])) {
+                if(is_array($this->options) && in_array($this->options['categoryName'], $this->options)) {
+                    $this->setCategoryName($this->options['categoryName']);
                 } 
             }
             if(isset($this->options['details']) || !empty($this->options['details'])) {
@@ -190,15 +229,24 @@ class Common_Controller extends CI_Controller {
                         break;
                 }
             }
+
+            if($this->categoryId) {
+                $this->joinCategory = true;
+                $this->condition[]  = array("c.id" => $this->categoryId);
+            }
+
+            if($this->categoryName) {
+               // echo $this->categoryName;
+                $this->joinCategory = true;
+                $this->condition[]  = array("c.name LIKE" => "$this->categoryName%");
+            }
            
              //Filter data by slug
-
+          
             if($this->slug) {
                 $this->condition[] = array("p.slug" => $this->options['slug']);
             }
-            // echo "<pre>";
-            // print_r($this->options);
-            // exit;
+            
             if($this->user) {
                 if(is_array($this->user) && in_array($this->user['id'], $this->user)) {
                     $this->setUserId($this->user['id']);
@@ -214,7 +262,7 @@ class Common_Controller extends CI_Controller {
             // Categories
             if($this->joinCategory) {
                 $this->join[] = ['table' => 'categories c', 'on' => 'c.id = p.cat_id', 'type' => 'left'];
-                $this->sql   .= ',c.name cat_name';
+                $this->sql   .= ',c.name as cat_name, c.id as categoryId';
             }
             // Frames
             if($this->joinFrames) {
@@ -248,11 +296,9 @@ class Common_Controller extends CI_Controller {
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
-        // echo "<pre>";
-        // print_r($this->join);
-        // exit;
+       
         
-        $this->sql .= ',p.id, p.name, p.slug, p.primary_image, p.description, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
+        $this->sql .= ',p.id, p.name,p.name as productName,p.id as productId, p.slug, p.primary_image, p.description, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
         $this->sql .= ',b.name brand_name';
         $this->sql .= ',s.name spec_name';
         $this->sql .= ',bn.image banner_image';
@@ -267,6 +313,8 @@ class Common_Controller extends CI_Controller {
         $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit='', $offset=0, $group_by = '', $row = true);
         return $productList;
     }
+
+    
     
     
     public function isAjaxRequest() {
@@ -287,18 +335,19 @@ class Common_Controller extends CI_Controller {
     }
 
     public function setRequest(array $request) {
-        if($this->isPost()) {
+        //if($this->isPost()) {
             foreach($request as $key => $value){
-                $this->request[$key] = $this->input->post($key);
+                $this->request[$key] = $_REQUEST[$key];
            }
-        } else {
-            $this->request = array();
-        }
-        return $this->request;
+        // } else {
+        //     $this->request = array();
+        // }
+        return $this;
     }
     public function getRequest() {
         return $this->request;
     }
+    
 
 
     
