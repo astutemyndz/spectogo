@@ -1,8 +1,45 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+use Illuminate\Http\Response;
 class Product extends Common_Controller {
+
+    private $listOfProduct = array();
     public function __construct() {
         parent::__construct();
+       
+    }
+
+    public function products() {
+        $this->setRequest($_POST);
+        if(isset($this->request['category']) || !empty($this->request['category'])) {
+            $this->setCategory($this->request['category']);
+        } 
+        if(isset($this->request['details']) || !empty($this->request['details'])) {
+            $this->setDetails($this->request['details']);
+        } 
+      
+        if($this->category && $this->details) {
+            $this->listOfProduct = $this->getProductListDetails(array('category' => $this->category, 'details'=> $this->details));
+        } else {
+            $this->listOfProduct = $this->getProductListDetails();
+        }
+        // echo "<pre>";
+        // print_r($this->listOfProduct);
+        
+        if($this->listOfProduct) {
+            $response = new Response(
+                array(
+                    'data' => $this->listOfProduct,
+                    'statusCode' => Response::HTTP_OK,
+                    'message' => Response::$statusTexts[200]
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+            $response->send();
+        }
+        
     }
     public function index($category = '', $details = '') {
         if($category != '' && $details != ''){
@@ -22,8 +59,8 @@ class Product extends Common_Controller {
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
         $data['product'] = $this->getProductListDetails(array('slug' => $slug));
-        /*echo '<pre>';
-        print_r($data['product']); die;*/
+        // echo '<pre>';
+        // print_r($data['product']); die;
         $this->session->set_userdata('choosenProduct', $data['product'][0]['id']);
         $this->session->set_userdata('choosenColor', explode(',', $data['product'][0]['color'])[0]);
         $this->load->view('frontend/layout/header', $data);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Interfaces\Jsonable;
 use Illuminate\Database\Eloquent\Interfaces\Arrayable;
 use Illuminate\Support\Contracts\ModelInterface;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-abstract class Model implements ModelInterface, Jsonable, JsonSerializable
+abstract class Model implements ModelInterface
 {
     use Concerns\HasAttributes,
         Concerns\HasEvents,
@@ -99,10 +99,10 @@ abstract class Model implements ModelInterface, Jsonable, JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize()
-    {
-        return $this->toArray();
-    }
+    // public function jsonSerialize()
+    // {
+    //     return $this->toArray();
+    // }
 
 
     /**
@@ -408,7 +408,9 @@ abstract class Model implements ModelInterface, Jsonable, JsonSerializable
     public function save(array $data)
     {
         // TODO: Implement save() method.
-        return $this->setLastInsertId($this->db->insert($data)->insert_id());
+        $this->db->insert($this->table, $data);
+        $this->setLastInsertId($this->db->insert_id());
+        return true;
     }
 
     public function lastInsertId()

@@ -207,6 +207,7 @@
 
 </script>
 <script src="<?=base_url('assets/js/custom.js')?>"></script>
+<script src="<?=base_url('dist/index.js')?>"></script>
 </body>
 
 </html>

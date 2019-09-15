@@ -73,5 +73,6 @@ $route['translate_uri_dashes'] = FALSE;
  * Wishlist 
  */
 
- $route['wishlist/add'] = 'WishlistController/addProductToWishlist';
+ $route['wishlist/add'] = 'WishlistController/save';
  $route['wishlist'] = 'WishlistController/index';
+$route['products'] = 'Product/products';

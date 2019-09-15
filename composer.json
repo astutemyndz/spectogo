@@ -23,10 +23,6 @@
 		"phpunit/phpunit": "4.* || 5.*"
 	},
 	"autoload": {
-		"files": [
-            "src/Illuminate/Foundation/helpers.php",
-            "src/Illuminate/Support/helpers.php"
-        ],
         "psr-4": {
             "Illuminate\\": "src/Illuminate/",
 			"Models\\": "application/models/",

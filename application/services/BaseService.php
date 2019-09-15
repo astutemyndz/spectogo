@@ -1,9 +1,8 @@
 <?php 
 namespace Services;
 
-use Contracts\Core\CoreInterface;
 
-abstract class BaseService implements CoreInterface{
+abstract class BaseService {
    
     protected $model;
 

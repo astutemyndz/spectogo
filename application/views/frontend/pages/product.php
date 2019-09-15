@@ -1,3 +1,7 @@
+<?php 
+print_r($this->session->userdata());
+//exit;
+?>
 <div id="main" class="content_section product-wrap">
     <div class="product_banner_section">
         <?php if(!empty($product)){ ?>
@@ -34,8 +38,13 @@
                 <div class="col-lg-9 col-md-11 col-sm-12">
                     <div class="row">
                         <?php
+                        $id_prodcuts = null;
                         if(!empty($product)){
-                            foreach($product as $prod){                        
+                            foreach($product as $prod){            
+                                //print_r($prod);  
+                                $id_prodcuts = ($prod['id']) ? $prod['id'] : null;
+                                $id_users = ($this->session->userdata('UserId')) ? $this->session->userdata('UserId') : '';
+                                          
                         ?>
                         <div class="col-md-4 col-sm-6 text-center mb-5 product_box position-relative">
                             <a href="<?=base_url('product-details/'.$prod['slug'])?>">
@@ -54,9 +63,9 @@
                             <div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                                 <!--<div class="col-lg-6 col-md-6 col-sm-6 pr-0 pl-0 text-right">
     <button tyoe="button" class="text-uppercase btn btn-primary"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button>
-</div>-->
+</div>-->                       
                                 <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
-                                    <button tyoe="button" class="text-uppercase btn btn-primary"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
+                                    <button data-id_products="<?php echo $id_prodcuts;?>" data-id_users="<?php echo $id_users;?>" tyoe="button" class="text-uppercase btn btn-primary wislist"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
                                 </div>
                             </div>
                         </div>

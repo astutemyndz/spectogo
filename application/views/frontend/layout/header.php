@@ -20,6 +20,14 @@
         var page = '';
 
     </script>
+    <style>
+
+
+.dx-toast-content {
+    min-width: 300px;
+    max-width: 400px;
+}
+    </style>
 </head>
 
 <body id="home">
