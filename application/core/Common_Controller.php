@@ -15,7 +15,7 @@ class Common_Controller extends CI_Controller {
     protected $joinCategory = true;
     protected $joinFrames   = true;
     protected $user         = array();
-    protected $userId       = '';
+    protected $userId;
     protected $primaryTable = '';
     protected $secondaryTable = '';
     protected $categoryId;
@@ -143,6 +143,13 @@ class Common_Controller extends CI_Controller {
         $this->user = $user;
         return $this;
     }
+    public function setUserId($userId) {
+        $this->userId = $userId;
+        return $this;
+    }
+    public function getUserId() {
+        return $this->userId;
+    }
     public function setCategoryId($categoryId) {
         $this->categoryId = $categoryId;
         return $this;
@@ -211,7 +218,8 @@ class Common_Controller extends CI_Controller {
                 if(is_array($this->options) && in_array($this->options['user'], $this->options)) {
                     $this->setUser($this->options['user']);
                 }
-            }
+            } 
+            
             //Filter data by category
 
             if($this->category) {
@@ -248,10 +256,10 @@ class Common_Controller extends CI_Controller {
             }
             
             if($this->user) {
-                if(is_array($this->user) && in_array($this->user['id'], $this->user)) {
+                if(is_array($this->user)) {
                     $this->setUserId($this->user['id']);
-                }
-            }
+                } 
+            } 
 
             if($this->userId && $this->wishlist) {
                 $this->condition[]  = array('wl.id_users' => $this->userId);
@@ -271,6 +279,7 @@ class Common_Controller extends CI_Controller {
             }
             //Wishlists
             if($this->joinWishlist) {
+              
                 $this->join[]       = ['table' => 'wishlists wl', 'on' => 'wl.id_products = p.id', 'type' => 'left'];
                 $this->sql         .= ',wl.id wishlistId';
             }

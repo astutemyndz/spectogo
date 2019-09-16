@@ -66,23 +66,66 @@ class ApiController extends Common_Controller {
         if(isset($this->request['details']) || !empty($this->request['details'])) {
             $this->setDetails($this->request['details']);
         } 
+
         if(isset($this->request['categoryName']) || !empty($this->request['categoryName'])) {
             $this->setCategoryName($this->request['categoryName']);
         } 
+
         if(isset($this->request['wishlist']) || !empty($this->request['wishlist'])) {
             $this->setWishlist($this->request['wishlist']);
+        } else {
+            $this->setWishlist(false);
+        }
+
+        if(isset($this->request['user']) || !empty($this->request['user'])) {
+           $this->setUser($this->request['user']);
         } 
-        
-        if($this->category && $this->details) {
-            $this->listOfProduct = $this->getProductListDetails(array('category' => $this->category, 'details'=> $this->details));
-        } elseif($this->category) {
-            $this->listOfProduct = $this->getProductListDetails(array('categoryId' => $this->category));
-        } elseif($this->categoryName) {
-            $this->listOfProduct = $this->getProductListDetails(array('categoryName' => $this->getCategoryName(), 'wishlist' => $this->wishlist));
+
+        if($this->category) {
+            $this->options[] = array(
+                'category' => $this->category
+            );
+        }
+        if($this->details) {
+            $this->options[] = array(
+                'details' => $this->details
+            );
+        }
+        if($this->categoryName) {
+            $this->options[] = array(
+                'categoryName' => $this->categoryName
+            );
+        }
+        if($this->categoryId) {
+            $this->options[] = array(
+                'categoryId' => $this->categoryId
+            );
+        }
+        if($this->wishlist) {
+            $this->options[] = array(
+                'wishlist' => $this->wishlist
+            );
+        }
+
+        if($this->user) {
+            $this->options[] = $this->user;
+        }
+        if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
+            for($i = 0; $i < count($this->options); $i++) {
+                foreach($this->options[$i] as $k => $v) {
+                    $options[$k] = $v;
+                }
+            }
+        }
+        $this->options = $options;
+
+
+        if(isset($this->options) || !empty($this->options)) {
+            $this->listOfProduct = $this->getProductListDetails($this->options);
         } else {
             $this->listOfProduct = $this->getProductListDetails();
         }
-        
+
         if($this->listOfProduct) {
             $this->response = new Response(
                 array(

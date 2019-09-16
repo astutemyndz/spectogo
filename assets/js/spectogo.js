@@ -45,13 +45,19 @@ $(document).ready(function() {
     const options = {
         categoryName: url[6]
     };
-    loadProducts(options);
+    loadProducts(options, function() {
+        
+        console.log('d0');
+        callbackWishlist(function() {
+            callbackLoadProducts({categoryName: options.categoryName, wishlist: 1, user: {id: 2, name: 'Rakesh'}});
+        });
+    });
     
     
 });
 
 //Load products
-const loadProducts = function(options) {
+const loadProducts = function(options, callback) {
     let productArr = [];
     let $productListFragment = $('#productListFragment');
     let data = {categoryName: options.categoryName};
@@ -69,41 +75,45 @@ const loadProducts = function(options) {
         $.each(products, function(index, product) {
             productArr.push(ProductComponent({index: index, product: product, productImageUrl: res.productImageUrl}));
         });
-        $productListFragment.append(productArr.join(''));
-        // Product add to wishlist start of code
-        var $wishListButton = $(".wislist");
-        $wishListButton.on('click', function() {
-            const id_products = $(this).data("id_products");
-            const id_users = $(this).data("id_users");
+        $productListFragment.html(productArr.join(''));
 
-            const data = {id_products: id_products, id_users: id_users};
-            fetch(API_URL + '/wishlist/add', {
-                headers: { "Content-Type": 'application/x-www-form-urlencoded' },
-                method: 'post',
-                body: $.param(data)
-            }).then(function(response) {
-                return response.json();
-            }).then(function(myJson) {
-                let res = myJson;
-                if(res.statusCode === 401) {
-                    setTimeout(() => {
-                        location.href = getBaseURL() + '/sign-in';
-                    }, 300);
-                }
-                if(res.statusCode === 201) {
-                    alert(res.message);
-                    loadProductsCallback({categoryName: options.categoryName, wishlist: 1});
-                }
-            });
-        });
-        // end of code
+        callback();
+       
     });
 }
-const loadProductsCallback = function(options) {
+
+const callbackWishlist = function(callback) {
+     // Product add to wishlist start of code
+     var $wishListButton = $(".wislist");
+     $wishListButton.on('click', function() {
+         const id_products = $(this).data("id_products");
+         const id_users = $(this).data("id_users");
+
+         const data = {id_products: id_products, id_users: id_users};
+         fetch(API_URL + '/wishlist/add', {
+             headers: { "Content-Type": 'application/x-www-form-urlencoded' },
+             method: 'post',
+             body: $.param(data)
+         }).then(function(response) {
+             return response.json();
+         }).then(function(myJson) {
+             let res = myJson;
+             if(res.statusCode === 401) {
+                 setTimeout(() => {
+                     location.href = getBaseURL() + '/sign-in';
+                 }, 300);
+             }
+             if(res.statusCode === 201) {
+                 alert(res.message);
+                 callback();
+             }
+         });
+     });
+     // end of code
+}
+const callbackLoadProducts = function(options) {
     var productArr = [];
     var $productListFragment = $('#productListFragment');
-    //$productListFragment.before('<div></div>');
-    //$productListFragment.prev().remove('div');​​​​​​​​​
         fetch(API_URL + '/products', {
             headers: { "Content-Type": 'application/x-www-form-urlencoded' },
             method: 'post',
@@ -118,7 +128,7 @@ const loadProductsCallback = function(options) {
             $.each(products, function(index, product) {
                 productArr.push(ProductComponent({index: index, product: product, productImageUrl: res.productImageUrl}));
             })
-        $productListFragment.append(productArr.join(''));
+        $productListFragment.html(productArr.join(''));
     });
 }
 // Private method
