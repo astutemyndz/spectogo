@@ -52754,16 +52754,6 @@ INSERT INTO `user_states` (`id`, `name`, `country_id`, `status`) VALUES
 (4120, 'Midlands', 246, 1),
 (4121, 'Lienchiang County', 214, 1);
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_product_listing`
--- (See below for the actual view)
---
-CREATE TABLE `view_product_listing` (
-);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `wishlists`
@@ -52784,14 +52774,6 @@ INSERT INTO `wishlists` (`id`, `id_products`, `id_users`) VALUES
 (3, 2, 3),
 (4, 3, 3);
 
--- --------------------------------------------------------
-
---
--- Structure for view `view_product_listing`
---
-DROP TABLE IF EXISTS `view_product_listing`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_product_listing`  AS  select `p`.`id` AS `id`,`p`.`name` AS `name`,`p`.`slug` AS `slug`,`p`.`cat_id` AS `cat_id`,`p`.`sub_cat_id` AS `sub_cat_id`,`p`.`brand_id` AS `brand_id`,`p`.`description` AS `description`,`p`.`primary_image` AS `primary_image`,`p`.`quantity` AS `quantity`,`p`.`purchase_quantity` AS `purchase_quantity`,`p`.`price` AS `price`,`p`.`sell_price` AS `sell_price`,`p`.`set_discount` AS `set_discount`,`p`.`discount_percentage` AS `discount_percentage`,`p`.`seller_id` AS `seller_id`,`p`.`status` AS `status`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at`,if(`p`.`discount_percentage` > 0,format(`p`.`sell_price` - `p`.`sell_price` * `p`.`discount_percentage` / 100,2),`p`.`sell_price`) AS `display_discount_price`,`pb`.`name` AS `product_brand`,`pb`.`slug` AS `brand_slug`,`c`.`slug` AS `cat_slug`,`sc`.`slug` AS `sub_cat_slug`,(select group_concat(distinct `si`.`name` separator ',') from (`product_variations` `pv` join `product_sizes` `si` on(`pv`.`size_id` = `si`.`id`)) where `pv`.`product_id` = `p`.`id`) AS `product_sizes`,(select group_concat(distinct `pc`.`name` separator ',') AS `product_colors` from (`product_variations` `pv` join `product_colors` `pc` on(`pv`.`color_id` = `pc`.`id`)) where `pv`.`product_id` = `p`.`id` and `pv`.`color_id` <> 0) AS `product_colors`,(select group_concat(distinct `pc`.`color_code` separator '**') from (`product_variations` `pv` join `product_colors` `pc` on(`pv`.`color_id` = `pc`.`id`)) where `pv`.`product_id` = `p`.`id`) AS `color_codes` from (((`products` `p` join `categories` `c` on(`p`.`cat_id` = `c`.`id`)) left join `sub_categories` `sc` on(`p`.`sub_cat_id` = `sc`.`id`)) join `product_brands` `pb` on(`p`.`brand_id` = `pb`.`id`)) ;
 
 --
 -- Indexes for dumped tables

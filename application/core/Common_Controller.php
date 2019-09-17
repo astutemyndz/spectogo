@@ -20,8 +20,6 @@ class Common_Controller extends CI_Controller {
     protected $secondaryTable = '';
     protected $categoryId;
     protected $categoryName;
-
-
 	function __construct() {
          parent::__construct();
          //$this->checkLogin();
@@ -70,6 +68,38 @@ class Common_Controller extends CI_Controller {
         }
         return $pro_image;
     }
+    public function commonFileArrayUpload($path = '', $fileArray = array(), $db = '', $oldArray = array()){
+        $upPath = FCPATH . $path;
+        if (!file_exists($upPath)) {
+            mkdir($upPath, 0777, true);
+        }
+        $config = array(
+            'upload_path' => $upPath,
+            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
+            'overwrite' => TRUE,
+            'max_size' => "8192000",
+            /*'max_height' => "1536",
+            'max_width' => "2048",*/
+            'encrypt_name' => TRUE
+        );
+        for($p = 0; $p<count($fileArray['name']); $p++){
+            $newArray = $oldArray;
+            if($fileArray['name'][$p] !='' ){
+                $_FILES['file']['name']     = $fileArray['name'][$p];
+                $_FILES['file']['type']     = $fileArray['type'][$p];
+                $_FILES['file']['tmp_name'] = $fileArray['tmp_name'][$p];
+                $_FILES['file']['error']    = $fileArray['error'][$p];
+                $_FILES['file']['size']     = $fileArray['size'][$p];
+                $config['file_name']        = time().$fileArray['name'][$p];
+                $this->upload->initialize($config);
+                if($this->upload->do_upload('file')){
+                    $imageDetailArray = $this->upload->data();
+                    $newArray['image'] = $imageDetailArray['file_name'];
+                    $this->cm->insert($db, $newArray);
+                }
+            }
+        }
+    }
     public function getBannerDetails(){
         $join[] = ['table' => 'categories c', 'on' => 'c.id = b.cat_id', 'type' => 'left'];
         return $this->cm->select('banners b', array("b.status" => 1, "c.status" => 1), 'b.id, b.image, b.cat_id, b.status, c.name cat_name', 'b.id', 'asc', $join);
@@ -79,6 +109,18 @@ class Common_Controller extends CI_Controller {
     }
     public function getFrameDetails(){
         return $this->cm->get_specific('frames', array("status" => 1));
+    }
+    public function getLensDetails($condition = array()){
+        $join[] = ['table' => 'lens_category lc', 'on' => 'lc.id = lsc.lens_cat_id', 'type' => 'left'];
+        return $this->cm->select('lens_sub_category lsc', $condition, 'lsc.id, lsc.lens_cat_id, lc.name lens_cat_name, lsc.name lens_sub_cat_name, lsc.description, lsc.image, lsc.status', 'lsc.id', 'asc', $join);
+    }
+    public function getLensAndTints($condition = array()){
+        $join[] = ['table' => 'lenses_and_tints lat', 'on' => 'lat.id = latd.lenses_and_tints_id', 'type' => 'left'];
+        return $this->cm->select('lenses_and_tints_details latd', $condition, 'latd.id, latd.lenses_and_tints_id, lat.name lensandtint_cat_name, latd.name lensandtint_sub_cat_name, latd.description, latd.image, latd.status, latd.includes, latd.price', 'latd.id', 'asc', $join);
+    }
+    public function getreglaze($condition = array()){
+        $join[] = ['table' => 'frames f', 'on' => 'f.id = r.frame_id', 'type' => 'left'];
+        return $this->cm->select('reglaze r', $condition, 'r.id, r.frame_id, f.name frame_name, r.image, r.price, r.status', 'r.id', 'asc', $join);
     }
     public function getProductFeatures(){
         $opt['categories']  = $this->cm->get_all('categories');

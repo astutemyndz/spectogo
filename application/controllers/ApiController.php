@@ -110,6 +110,7 @@ class ApiController extends Common_Controller {
         if($this->user) {
             $this->options[] = $this->user;
         }
+        $options = array();
         if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
             for($i = 0; $i < count($this->options); $i++) {
                 foreach($this->options[$i] as $k => $v) {

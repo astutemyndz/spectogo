@@ -34,7 +34,7 @@ $bannerCategoryLink.on('click', function() {
     let categoryId = $(this).attr('data-categoryId');
     let categoryName = $(this).attr('data-categoryName');
     setTimeout(() => {
-        location.href = API_URL + '/product/category/'+categoryName+'/'+categoryId;
+        location.href = API_URL + '/product/category/'+categoryName;
         
     }, 300);
     

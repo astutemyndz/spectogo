@@ -111,17 +111,13 @@ class Product extends Common_Controller {
         print json_encode($res);
     }
     public function chooseYourLens(){
-        if(!$this->session->userdata('choosenProduct') && !$this->session->userdata('choosenColor')){
+        /*if(!$this->session->userdata('product')){
             redirect(base_url());
-        }else{
-            
-            echo $this->session->userdata('choosenProduct'). ' '.$this->session->userdata('choosenColor'); die;
-            
+        }else{*/
             $this->load->view('frontend/layout/header');
             $this->load->view('frontend/pages/choose-your-lens');
             $this->load->view('frontend/layout/footer');
-        }
-        
+        //}
     }
     
     
