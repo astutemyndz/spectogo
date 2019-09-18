@@ -16,7 +16,7 @@ class WishlistService extends BaseService implements WishlistInterface{
     }
     public function removeProductFromWishlistById($params)
     {
-        return $this->model->find($params);
+        return $this->model->remove($params);
     }
     public function getWishlistProducts()
     {

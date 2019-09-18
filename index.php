@@ -130,6 +130,7 @@ switch (ENVIRONMENT)
  * NO TRAILING SLASH!
  */
 	$view_folder = '';
+	$controller_folder = '';
 
 
 /*
@@ -273,6 +274,7 @@ switch (ENVIRONMENT)
 	{
 		$view_folder = APPPATH.'views';
 	}
+	
 	elseif (is_dir($view_folder))
 	{
 		if (($_temp = realpath($view_folder)) !== FALSE)
@@ -302,9 +304,52 @@ switch (ENVIRONMENT)
 		echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
 		exit(3); // EXIT_CONFIG
 	}
-
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
+	/**
+	 * @Author Rakesh Maity
+	 */
+	// The path to the "controllers" directory start of code
+	if ( ! isset($controller_folder[0]) && is_dir(APPPATH.'controllers'.DIRECTORY_SEPARATOR))
+	{
+		$controller_folder = APPPATH.'controllers';
+	}
+	
+	elseif (is_dir($controller_folder))
+	{
+		if (($_temp = realpath($controller_folder)) !== FALSE)
+		{
+			$controller_folder = $_temp;
+		}
+		else
+		{
+			$controller_folder = strtr(
+				rtrim($controller_folder, '/\\'),
+				'/\\',
+				DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
+			);
+		}
+	}
+	elseif (is_dir(APPPATH.$controller_folder.DIRECTORY_SEPARATOR))
+	{
+		$controller_folder = APPPATH.strtr(
+			trim($controller_folder, '/\\'),
+			'/\\',
+			DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
+		);
+	}
+	else
+	{
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+		exit(3); // EXIT_CONFIG
+	}
+
+	
+	define('CONTROLLERPATH', $controller_folder.DIRECTORY_SEPARATOR);
+	// The path to the "controllers" directory end of code
+	
+	
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

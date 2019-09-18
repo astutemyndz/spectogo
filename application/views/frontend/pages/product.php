@@ -1,7 +1,3 @@
-<?php 
-print_r($this->session->userdata());
-//exit;
-?>
 <div id="main" class="content_section product-wrap">
     <div class="product_banner_section">
         <?php if(!empty($product)){ ?>
@@ -36,13 +32,16 @@ print_r($this->session->userdata());
             </div>
             <div class="row justify-content-center mt-5">
                 <div class="col-lg-9 col-md-11 col-sm-12">
-                    <div class="row">
+                
+                    <div class="row" id="productListFragment">
                         <input type="hidden" data-categoryName="<?php echo ($this->uri->segment(3)) ? $this->uri->segment(3) : '';?>" id="categoryName">
+                        
                        <!-- Single Product start of code -->
-                       <div id="productListFragment"></div>
-                        <!-- Single Product end of code -->
+                       
                        
                     </div>
+                  
+                        <!-- Single Product end of code -->
                 </div>
             </div>
         </div>

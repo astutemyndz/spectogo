@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/vendor/revolution/settings.css')?>" />
     <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/sweetalert.min.css')?>">
+    <link rel="stylesheet" href="<?=base_url('assets/css/jquery.loading.css')?>">
     <meta name="theme-color" content="#fafafa">
     <script>
         var page = '';
@@ -89,7 +90,7 @@
                             </a>
                         </li>
                         <li class="list-inline-item d-none d-sm-inline-block">
-                            <?php if(!$this->session->userdata('UserId')){ ?>
+                            <?php if(!isLoggedIn()){ ?>
                             <a href="<?=base_url('sign-in')?>" class="btn btn-primary text-uppercase">Sign In</a>
                             <?php }else{ ?>
                             <a href="<?=base_url('sign-out')?>" class="btn btn-primary text-uppercase">Sign Out</a>
@@ -100,4 +101,5 @@
             </div>
         </div>
     </header>
+    <input type="hidden" data-userId="<?php echo userId();?>" id="userId">
     <!--<div id="header"></div>-->

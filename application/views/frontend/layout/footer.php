@@ -179,7 +179,8 @@
 
 <!--<div id="footer"></div>-->
 <script src="<?=base_url('assets/js/vendor/modernizr-3.7.1.min.js')?>"></script>
-<script src="<?=base_url('assets/js/jquery-3.4.1.min.js')?>" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="<?=base_url('assets/js/jquery-3.4.1.min.js')?>"></script>
+<script src="<?=base_url('assets/js/jquery.loading.js')?>"></script>
 <script>
     //window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')
 
@@ -203,11 +204,12 @@
 <script src="<?=base_url('assets/js/sweetalert.min.js')?>"></script>
 <script type="text/javascript">
     var base_url = '<?=base_url()?>';
-    var UserId = '<?=$this->session->userdata('UserId')?>';
+    var UserId = '<?=userId()?>';
 
 </script>
 <script src="<?=base_url('assets/js/custom.js')?>"></script>
 <script src="<?=base_url('assets/js/spectogo.js')?>"></script>
+<!-- <script src="<?=base_url('dist/index.js')?>"></script> -->
 </body>
 
 </html>

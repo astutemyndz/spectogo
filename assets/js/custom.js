@@ -80,49 +80,8 @@ const callbackOwl = function (data) {
     $bigImage.html(content);
 }
 
-function chooseColor(prodId, colorHex) {
-    $.ajax({
-        type: "POST",
-        url: base_url + "set-color",
-        data: {
-            'prod_id': prodId,
-            'color_hex': colorHex
-        },
-        cache: false,
-        beforeSend: function () {
-            //$(".logInBtn").prop("disabled", true);
-        },
-        success: function (res) {
-            JSON.parse(res).forEach(function (object) {
-                $('#choosenColor').val(colorHex);
-                $('.sellPrice').text('$' + object.sell_price);
-                if (object.stock != 0) {
-                    $('.gtToCart').text("Not Available");
-                    $("#gtToCartLnk").attr("href", "javascript:void(0);");
-                } else {
-                    $('.gtToCart').text("Choose Your Lenses");
-                    $("#gtToCartLnk").attr("href", base_url + "choose-your-lens");
-                }
-                var html = '';
-                var htmlTwo = '';
-                var img = object.images.split(',');
-                for (var i = 0; i < img.length; i++) {
-                    html += '<div class="item">\
-                                <img src="' + base_url + 'assets/images/productImage/' + img[i] + '" class="w-75 w-sm-100 mx-auto" />\
-                            </div>';
-                    htmlTwo += '<div class="item">\
-                                <img src="' + base_url + 'assets/images/productImage/' + img[i] + '" />\
-                            </div>';
-                }
-                $('#big').html('');
-                $('#thumbs').html('');
-                $('#big').html(html);
-                $('#thumbs').html(htmlTwo);
-            });
-        }
-    });
-}
 
+/*
 if (page == 'product-details' || page == 'choose-your-lens') {
     $(document).ready(function () {
         $('header').removeClass('home-header');
@@ -223,6 +182,7 @@ if (page == 'product-details' || page == 'choose-your-lens') {
         }
     });
 }
+*/
 
 function swal_success(txt) {
     swal({
@@ -257,6 +217,19 @@ function swal_confirm_then(txt, btn, url) {
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: btn,
+        closeOnConfirm: false
+    }).then(function () {
+        window.location = url;
+    });
+}
+function messageBox(title, text, type = 'info', url) {
+    swal({
+        title: title,
+        text: text,
+        type: type,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: 'OK',
         closeOnConfirm: false
     }).then(function () {
         window.location = url;
@@ -403,11 +376,13 @@ $("#loginForm").submit(function (e) {
                 $(".logInBtn").prop("disabled", true);
             },
             success: function (res) {
+                console.log(res);
+                let STATUS_CODE = res.statusCode;
                 $(".logInBtn").prop("disabled", false);
-                if (res == 'ok') {
-                    swal_success_then('Login Successful !!!', 'OK', base_url);
+                if (STATUS_CODE === 200) {
+                    swal_success_then(res.message, 'OK', base_url);
                 } else {
-                    swal_warning(res);
+                    swal_warning(res.message);
                 }
             }
         });

@@ -1580,3 +1580,9 @@ ul.cart-add li a:hover{
   display: none;
   transition: all 0.4s;
 }
+.removeWishlist i:hover {
+  color: red;
+}
+.removeWishlist i {
+  color: red;
+}

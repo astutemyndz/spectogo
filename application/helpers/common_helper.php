@@ -90,5 +90,28 @@
             
             $fatch_data = $ci->Common_model->select('product_cart c', ['c.cookie_cart_id'=> $cookie_cart_id], 'c.id,p.name,p.slug,cc.name category,cc.slug cat_slug,sc.name sub_category,sc.slug sub_cat_slug,p.primary_image,p.purchase_quantity,p.sell_price,p.set_discount,p.discount_percentage,c.product_id,c.product_variation_id,c.quantity,ps.name size,pc.name color', 'c.id', 'desc', $join);
             return $fatch_data ? $fatch_data:array();
-		}
-	}
+    }
+  }
+
+if(!function_exists('isLoggedIn')) {        
+    function isLoggedIn() {
+      $ci = & get_instance();
+      $ci->load->library('session');
+      if(!empty($ci->session->userdata('user'))) {
+          return true;
+      }
+      return false;
+    }
+}
+if(!function_exists('userId')) {        
+  function userId() {
+    $ci = & get_instance();
+    $ci->load->library('session');
+    if(!empty($ci->session->userdata('user'))) {
+        return $ci->session->userdata('user')->id;
+    }
+    return false;
+  }
+}
+    
+    

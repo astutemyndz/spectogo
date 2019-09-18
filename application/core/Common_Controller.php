@@ -1,9 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+
 class Common_Controller extends CI_Controller {
 
     protected $data         = array();
     protected $request      = array();
+    protected $response      = array();
     protected $category     = '';
     protected $details      = '';
     protected $options      = array();
@@ -14,6 +17,7 @@ class Common_Controller extends CI_Controller {
     protected $join         = array();
     protected $joinCategory = true;
     protected $joinFrames   = true;
+    protected $joinProduct  = false;
     protected $user         = array();
     protected $userId;
     protected $primaryTable = '';
@@ -21,11 +25,44 @@ class Common_Controller extends CI_Controller {
     protected $categoryId;
     protected $categoryName;
 
+    protected $productId;
+    protected $hexColorCode;
+    protected $resultArray;
+    protected $filterArray;
+    
+
+    public $sessionVar;
 
 	function __construct() {
          parent::__construct();
-         //$this->checkLogin();
-	}
+         $this->userdata();
+    }
+    
+    public function setResponse($response) {
+        $this->response = $response;
+        return $this;
+    }
+    public function getResponse() {
+        return $this->response;
+    }
+
+    public function sendResponse() {
+        $this->response->send();
+    }
+    public function setProductId($productId) {
+        $this->productId = $productId;
+        return $this;
+    }
+    public function getProductId() {
+        return $this->productId;
+    }
+    public function setHexColorCode($hexColorCode) {
+        $this->hexColorCode = $hexColorCode;
+        return $this;
+    }
+    public function getHexColorCode() {
+        return $this->hexColorCode;
+    }
     public function checkLogin(){
         if(!$this->session->userdata('UserId')){
             redirect(base_url('sign-in'));
@@ -142,6 +179,9 @@ class Common_Controller extends CI_Controller {
     public function setUser($user) {
         $this->user = $user;
         return $this;
+    }
+    public function getUser() {
+        return $this->user;
     }
     public function setUserId($userId) {
         $this->userId = $userId;
@@ -262,6 +302,8 @@ class Common_Controller extends CI_Controller {
             } 
 
             if($this->userId && $this->wishlist) {
+               // echo "ok";
+                
                 $this->condition[]  = array('wl.id_users' => $this->userId);
                 $this->joinWishlist = true;
             }
@@ -357,7 +399,116 @@ class Common_Controller extends CI_Controller {
         return $this->request;
     }
     
+    public function filterArray($options = null) {
 
+        $this->sql = '';
+        $this->primaryTable = 'product_attribute pa';
+        $this->condition = array();
+
+        $this->setOptions($options);
+
+         if(isset($this->options) || !empty($this->options) || $this->options != null) {
+            
+            if(isset($this->options['productId']) || !empty($this->options['productId'])) {
+                if(is_array($this->options) && in_array($this->options['productId'], $this->options)) {
+                    $this->setProductId($this->options['productId']);
+                } 
+            }
+            if(isset($this->options['hexColorCode']) || !empty($this->options['hexColorCode'])) {
+                if(is_array($this->options) && in_array($this->options['hexColorCode'], $this->options)) {
+                    $this->setHexColorCode($this->options['hexColorCode']);
+                } 
+            }
+        }
+        $this->joinProduct = false;
+
+        if($this->productId) {
+            $this->joinProduct = true;
+            $this->condition[]  = array("pa.product_id" => $this->productId);
+        }
+        if($this->hexColorCode) {
+            $this->condition[]  = array("pa.color" => $this->hexColorCode);
+        }
+
+        $condition = array();
+        if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
+            for($i = 0; $i < count($this->condition); $i++) {
+                foreach($this->condition[$i] as $k => $v) {
+                    $condition[$k] = $v;
+                }
+            }
+        }
+         $this->condition = $condition;
+        // echo "<pre>";
+        // print_r($this->condition);
+        // exit;
+        $this->sql .= 'pa.price, pa.sell_price, pa.discount, pa.stock, (select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = pa.product_id AND pi.color = pa.color order by pi.id ASC) images';
+        
+        // Join with product table
+        if($this->joinProduct) {
+            $this->join[] = ['table' => 'products p', 'on' => 'p.id = pa.product_id', 'type' => 'left'];
+            $this->sql   .= ',p.id as productId, p.primary_image as productPrimaryImage';
+        }
+
+        $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'pa.id', 'asc', $this->join);
+        if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
+            $this->filterArray = $this->resultArray;
+        } else {
+            $this->filterArray = array();
+        }
+        return $this->filterArray;
+     }
+    public function setSession($key, $value) {
+        (isset($key)) ? $this->session->set_userdata($key, $value) : $this->session->set_userdata('default', array());
+    }
+    public function getSession($key) {
+        return (isset($key)) ? $this->session->userdata($key) : $this->session->userdata('default');
+    }
+    public function userdata() {
+         if($this->session->userdata()) {
+            $this->sessionVar = $this->session->all_userdata();
+         } else {
+            $this->sessionVar = array();
+         }
+         return $this->sessionVar;
+    }
+
+    public function loggedInUser() {
+        if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
+            if(is_array($this->sessionVar) && in_array('user', $this->sessionVar)) {
+                if(!empty($this->sessionVar['user']) || isset($this->sessionVar['user'])) {
+                    $this->setUser($this->sessionVar['user']);
+                } 
+            }
+        }
+    }
+
+
+
+    // public function userId() {
+        // if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
+        //     if(is_array($this->sessionVar) && in_array('user', $this->sessionVar)) {
+        //         if(!empty($this->sessionVar['user']) || isset($this->sessionVar['user'])) {
+        //             $this->setUserId($this->sessionVar['user']['id']);
+        //         } 
+        //     }
+        // }
+    // }
+    public function isLoggedIn() {
+        if(!empty($this->sessionVar)) {
+            if(!empty($this->sessionVar['user'])) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    }
+
+    public function emptyUser() {
+        $this->session->unset_userdata('user');
+        return true;
+    }
+    
 
     
 }

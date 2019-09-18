@@ -6,14 +6,14 @@ $route['default_controller'] = 'Home/index';
 */
 $route['home']                                          = 'Home';
 
-$route['sign-in']                                       = 'Login';
-$route['sign-up']                                       = 'Login/signUp';
-$route['sign-out']                                      = 'Login/logOut';
-$route['do-registration']                               = 'Login/doRegistration';
-$route['do-login']                                      = 'Login/doLogin';
+$route['sign-in']                                       = 'AuthController';
+$route['sign-up']                                       = 'AuthController/signUp';
+$route['sign-out']                                      = 'AuthController/logOut';
+$route['do-registration']                               = 'AuthController/doRegistration';
+$route['do-login']                                      = 'AuthController/doLogin';
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
 $route['product-details/(:any)']                        = 'Product/productDetails/$1';
-$route['set-color']                                     = 'Product/setColor';
+$route['filterProductImageByColor']                                     = 'ApiController/filterProductImageByColor';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 
 
@@ -74,6 +74,7 @@ $route['translate_uri_dashes'] = FALSE;
  */
 
 $route['wishlist/add'] = 'WishlistController/save';
+$route['wishlist/remove'] = 'WishlistController/remove';
 $route['wishlist'] = 'WishlistController/index';
 $route['products'] = 'ApiController/products';
 $route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';

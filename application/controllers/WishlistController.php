@@ -51,10 +51,20 @@ class WishlistController extends Common_Controller {
     public function save()
     {
         if($this->isPost()) {
-            $this->setRequest($_POST);
-            if(!empty($this->request['id_users'])) {
+            if(!$this->isLoggedIn()) {
+                $this->setResponse(new Response(
+                    array(
+                        'data' => [],
+                        'statusCode' => Response::HTTP_UNAUTHORIZED,
+                        'message' => Response::$statusTexts[401]
+                    ),
+                    Response::HTTP_OK,
+                    ['Content-Type', 'application/json']
+                ));
+            }  else {
+                $this->setRequest($_POST);
                 if($this->wishlistService->addProductToWishlist($this->request)) {
-                    $response = new Response(
+                    $this->setResponse(new Response(
                         array(
                             'data' => [
                                 'lastInsertId' => $this->wishlistService->getLastInsertId()
@@ -64,12 +74,10 @@ class WishlistController extends Common_Controller {
                         ),
                         Response::HTTP_OK,
                         ['Content-Type', 'application/json']
-                    );
-                    $response->send();
+                    ));
     
                 } else {
-                   
-                    $response = new Response(
+                    $this->setResponse(new Response(
                         array(
                             'data' => [
                                 'lastInsertId' => null
@@ -79,27 +87,11 @@ class WishlistController extends Common_Controller {
                         ),
                         Response::HTTP_OK,
                         ['Content-Type', 'application/json']
-                    );
-                    $response->send();
+                    ));
                 }
-            } else {
-                $response = new Response(
-                    array(
-                        'data' => [
-                            'lastInsertId' => null
-                        ],
-                        'statusCode' => Response::HTTP_UNAUTHORIZED,
-                        'message' => Response::$statusTexts[401]
-                    ),
-                    Response::HTTP_OK,
-                    ['Content-Type', 'application/json']
-                );
-                $response->send();
             }
-            
-            
         } else {
-            $response = new Response(
+            $this->sentResponse(new Response(
                 array(
                     'data' => [
                         'lastInsertId' => null
@@ -109,10 +101,54 @@ class WishlistController extends Common_Controller {
                 ),
                 Response::HTTP_OK,
                 ['Content-Type', 'application/json']
-            );
-            $response->send();
+            ));
+            
         }
-        
+        $this->sendResponse();
+    }
+    public function remove()
+    {
+        if($this->isPost()) {
+           
+            $this->setRequest($_POST);
+            $this->condition = array('id' => $this->request['wishlistId']);
+            if($this->wishlistService->removeProductFromWishlistById($this->condition)) {
+                $this->setResponse(new Response(
+                    array(
+                        'data' => [],
+                        'statusCode' => Response::HTTP_OK,
+                        'message' => 'removed product from your wishlist'
+                    ),
+                    Response::HTTP_OK,
+                    ['Content-Type', 'application/json']
+                ));
+    
+            } else {
+                    $this->setResponse(new Response(
+                        array(
+                            'data' => [],
+                            'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                            'message' => Response::$statusTexts[500]
+                        ),
+                        Response::HTTP_OK,
+                        ['Content-Type', 'application/json']
+                    ));
+            }
+        } else {
+            $this->setResponse(new Response(
+                array(
+                    'data' => [
+                        'lastInsertId' => null
+                    ],
+                    'statusCode' => Response::HTTP_METHOD_NOT_ALLOWED,
+                    'message' => Response::$statusTexts[405]
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            ));
+            
+        }
+        $this->sendResponse();
     }
         
 }

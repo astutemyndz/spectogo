@@ -429,6 +429,11 @@ abstract class Model implements ModelInterface
         // TODO: Implement lastInsertId() method.
         
     }
+
+    public function remove($params)
+    {
+        return $this->db->delete($this->table, $params);
+    }
     
 
 

@@ -13,4 +13,5 @@ interface ModelInterface
 
 //   public function findOrFail($id, array $columns = ['*']);
 //   public function find($id, array $columns = ['*']);
+   public function remove($params);
 }

@@ -1,3 +1,8 @@
+
+<?php 
+// echo "<pre>";
+// print_r($product);
+?>
 <div id="main" class="content_section product-inner">
     <div class="bg-secondary pt-5 pb-5">
         <div class="container">
@@ -30,7 +35,7 @@
     <span class="pl-2">5/5</span>
 </p>
 <p class="text-color-7 mb-3" style="font-size:0.75rem">100% of customers recommend this product</p>-->
-                                    <button tyoe="button" class="text-uppercase btn pt-3 pb-3" style="background:#dbdbdb;margin-top:5px;">
+                                    <button type="button" class="text-uppercase btn pt-3 pb-3" style="background:#dbdbdb;margin-top:5px;">
                                         <i class="fa fa-heart pr-2" aria-hidden="true"></i> wishlist
                                     </button>
                                 </div>
@@ -64,7 +69,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-8 col-md-8">
-                                    <div id="thumbs" class="owl-carousel owl-theme mt-5">
+                                     <div id="thumbs" class="owl-carousel owl-theme mt-5">
                                         <?php
                                         if($product[0]['product_images'] != ''){
                                             for($k = 0; $k < count(explode(',', $product[0]['product_images'])); $k++){
@@ -78,12 +83,24 @@
                                         ?>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4">
+                                <!-- <div class="col-lg-4 col-md-4">
                                     <div class="choose_lense_button">
-                                        <h4 class="font-weight-bold text-color-1 d-block mt-4 mt-md-0 mb-4 text-center sellPrice">$<?=explode(',', $product[0]['sell_price'])[0]?></h4>
+                                        <h4 class="font-weight-bold text-color-1 d-block mt-4 mt-md-0 mb-4 text-center ">$<span class="sellPrice"><?=explode(',', $product[0]['sell_price'])[0]?></span></h4>
                                         <a id="gtToCartLnk" <?php if(explode(',', $product[0]['sell_price'])[0] != 0){ ?> href="<?=base_url('choose-your-lens')?>" <?php }else{ ?> href="javascript:void(0);" <?php } ?>>
                                             <button type="button" class="btn btn-primary text-uppercase text-white pt-3 pb-3 w-100 gtToCart <?php if(explode(',', $product[0]['sell_price'])[0] == 0){ print 'disabled'; } ?>"><?php if(explode(',', $product[0]['sell_price'])[0] != 0){ print 'Choose Your Lenses'; }else{ print 'Not Available'; }?></button>
                                         </a>
+                                    </div>
+                                </div> -->
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="choose_lense_button">
+                                        <h4 class="font-weight-bold text-color-1 d-block mt-4 mt-md-0 mb-4 text-center ">$<span class="sellPrice"><?=explode(',', $product[0]['sell_price'])[0]?></span></h4>
+                                        <form id="frmChooseYourLense">
+                                            <input type="hidden" id="productId">
+                                            <input type="hidden" id="hexColorCode">
+                                            <input type="hidden" id="chooseLense">
+                                            <button type="button" class="btn btn-primary text-uppercase text-white pt-3 pb-3 w-100 gtToCart <?php if(explode(',', $product[0]['sell_price'])[0] == 0){ print 'disabled'; } ?>"><?php if(explode(',', $product[0]['sell_price'])[0] != 0){ print 'Choose Your Lenses'; }else{ print 'Not Available'; }?></button>
+                                        </form>
+                                        
                                     </div>
                                 </div>
                             </div>
