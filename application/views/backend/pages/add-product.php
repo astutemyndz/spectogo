@@ -230,7 +230,7 @@
                                 <div class="col-sm-10">
                                     <span class="input-with-icon">
                                         <input type="text" class="form-control" onkeypress="return isNumber(this.event)" name="productStock" id="productStock" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['stock'];}?>">
-                                        <input type="hidden" name="old_productStock" alue="<?php if(isset($products)){ print $products[0]['stock'];}?>">
+                                        <input type="hidden" name="old_productStock" value="<?php if(isset($products)){ print $products[0]['stock'];}?>">
                                     </span>
                                 </div>
                             </div>
