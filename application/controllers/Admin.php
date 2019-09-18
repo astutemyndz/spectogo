@@ -72,14 +72,14 @@ class Admin extends Common_Controller {
         if($this->input->post()){
             if($this->input->post('category_edit_id') == ''){
                 if(empty($this->cm->get_specific('categories', array("LOWER(name)" => strtolower($this->input->post('catName')))))){
-                    $this->cm->insert('categories', array("name" => ucfirst($this->input->post('catName'))));
+                    $this->cm->insert('categories', array("name" => ucwords($this->input->post('catName'))));
                     $this->session->set_flashdata('msg', 'Category Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Category Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from categories where LOWER(name) = '".$this->input->post('catName')."' AND id != '".$this->input->post('category_edit_id')."'")->result())){
-                    $this->cm->update('categories', array("id" => $this->input->post('category_edit_id')), array("name" => ucfirst($this->input->post('catName')), "updated_at" => date('Y-m-d H:i:s')));
+                if(empty($this->cm->get_specific('categories', array("LOWER(name)" => strtolower($this->input->post('catName')), "id != " => $this->input->post('category_edit_id'))))){
+                    $this->cm->update('categories', array("id" => $this->input->post('category_edit_id')), array("name" => ucwords($this->input->post('catName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Category Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Category Already Exists !!!');
@@ -146,7 +146,7 @@ class Admin extends Common_Controller {
                     $this->session->set_flashdata('msg', 'Specs Type Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from specs where LOWER(name) = '".$this->input->post('specsName')."' AND id != '".$this->input->post('specs_edit_id')."'")->result())){
+                if(empty($this->cm->get_specific('specs', array("LOWER(name)" => strtolower($this->input->post('specsName')), "id != "=> $this->input->post('specs_edit_id'))))){
                     $this->cm->update('specs', array("id" => $this->input->post('specs_edit_id')), array("name" => ucfirst($this->input->post('specsName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Specs Type Successfully Updated !!!');
                 }else{
@@ -181,7 +181,7 @@ class Admin extends Common_Controller {
                     $this->session->set_flashdata('msg', 'Frame Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from frames where LOWER(name) = '".$this->input->post('frameName')."' AND id != '".$this->input->post('frame_edit_id')."'")->result())){
+                if(empty($this->cm->get_specific('frames', array("LOWER(name)" => strtolower($this->input->post('frameName')), "id != " => $this->input->post('frame_edit_id'))))){
                     $this->cm->update('frames', array("id" => $this->input->post('frame_edit_id')), array("name" => ucfirst($this->input->post('frameName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Frame Successfully Updated !!!');
                 }else{
@@ -222,7 +222,7 @@ class Admin extends Common_Controller {
                     $this->session->set_flashdata('msg', 'Brand Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from brands where LOWER(name) = '".$this->input->post('brandName')."' AND id != '".$this->input->post('brand_edit_id')."'")->result())){
+                if(empty($this->cm->get_specific('brands', array("LOWER(name)" => strtolower($this->input->post('brandName')), "id != " => $this->input->post('brand_edit_id'))))){
                     $files = $_FILES;
                     if (!empty($files) && $files['file']['name'] != '') {
                         $image = $this->commonFileUpload('assets/images/brandImage/', $files['file']['name'], 'file', $this->input->post('old_brand_image'));
@@ -258,11 +258,6 @@ class Admin extends Common_Controller {
             if($this->input->post('product_edit_id') == ''){
                 if(empty($this->cm->get_specific('products', array("LOWER(name)" => strtolower($this->input->post('productName')), "LOWER(sku)" => strtolower($this->input->post('productSKU')))))){
                     $files = $_FILES;
-                    if (!empty($files) && $files['mainImage']['name'] != '') {
-                        $mainImage = $this->commonFileUpload('assets/images/productImage/', $files['mainImage']['name'], 'mainImage');                        
-                    }else{
-                        $mainImage = '';
-                    }
                     $insertArray = array(
                         "name"                  => $this->input->post('productName'),
                         "slug"                  => str_replace(' ', '-', strtolower($this->input->post('productName'))).'-'.str_replace(' ', '-', strtolower($this->input->post('productSKU'))),
@@ -271,7 +266,12 @@ class Admin extends Common_Controller {
                         "frame_id"              => $this->input->post('productFrame'),
                         "brand_id"              => $this->input->post('productBrand'),
                         "description"           => $this->input->post('productDesc'),
-                        "primary_image"         => $mainImage,
+                        "main_color"            => $this->input->post('productColor'),
+                        "main_color_name"       => $this->input->post('productColorName'),
+                        "price"                 => $this->input->post('productPrice'),
+                        "sell_price"            => $this->input->post('productSellPrice'),
+                        "discount"              => $this->input->post('productDiscount'),
+                        "stock"                 => $this->input->post('productStock'),
                         "arm"                   => $this->input->post('productArm'),
                         "bridge"                => $this->input->post('productBridge'),
                         "lens"                  => $this->input->post('productLens'),
@@ -285,18 +285,68 @@ class Admin extends Common_Controller {
                         "suitable_for_tints"    => $this->input->post('productSuitableforTints')
                     );
                     $prodId = $this->cm->insert('products', $insertArray);
+                    $insertArrayTwo = array(
+                        "product_id"    => $prodId,
+                        "color"         => $this->input->post('productColor'),
+                        "color_name"    => $this->input->post('productColorName'),
+                        "price"         => $this->input->post('productPrice'),
+                        "sell_price"    => $this->input->post('productSellPrice'),
+                        "discount"      => $this->input->post('productDiscount'),
+                        "stock"         => $this->input->post('productStock')
+                    );
+                    $atrId = $this->cm->insert('product_attribute', $insertArrayTwo);
+                    $this->productLedger($prodId, $atrId, $this->input->post('productColor'), 'in', $this->input->post('productStock'), 'Product Opening Stock');
+                    if(count($files['moreImage']['name'])> 0){
+                        $fileArray = $files['moreImage'];
+                        $upPath = FCPATH . 'assets/images/productImage/';
+                        if (!file_exists($upPath)) {
+                            mkdir($upPath, 0777, true);
+                        }
+                        $config = array(
+                            'upload_path' => $upPath,
+                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
+                            'overwrite' => TRUE,
+                            'max_size' => "8192000",
+                            'encrypt_name' => TRUE
+                        );
+                        for($p = 0; $p<count($fileArray['name']); $p++){
+                            $tmp = '';
+                            if($fileArray['name'][$p] !='' ){
+                                $_FILES['file']['name']     = $fileArray['name'][$p];
+                                $_FILES['file']['type']     = $fileArray['type'][$p];
+                                $_FILES['file']['tmp_name'] = $fileArray['tmp_name'][$p];
+                                $_FILES['file']['error']    = $fileArray['error'][$p];
+                                $_FILES['file']['size']     = $fileArray['size'][$p];
+                                $config['file_name']        = time().$fileArray['name'][$p];
+                                $this->upload->initialize($config);
+                                if($this->upload->do_upload('file')){
+                                    $imageDetailArray = $this->upload->data();
+                                    if($p == 0){
+                                        $tmp = 'primary_image';
+                                    }elseif($p == 1){
+                                        $tmp = 'primary_image_one';
+                                    }elseif($p == 2){
+                                        $tmp = 'primary_image_two';
+                                    }else{
+                                        $tmp = 'primary_image_three';
+                                    }
+                                    $this->cm->update('products', array("id" => $prodId), array($tmp => $imageDetailArray['file_name']));
+                                    $this->cm->insert('product_images', array("product_id" => $prodId, "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
+                                }
+                            }
+                        }
+                    }
                     $this->session->set_flashdata('msg', 'Product Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from products where LOWER(name) = '".$this->input->post('productName')."' AND LOWER(sku) = '".$this->input->post('productSKU')."' AND id != '".$this->input->post('product_edit_id')."'")->result())){
+                if(empty($this->cm->get_specific('products', array("LOWER(name)" => strtolower($this->input->post('productName')), "LOWER(sku)" => strtolower($this->input->post('productSKU')), "id != " => $this->input->post('product_edit_id'))))){
                     $files = $_FILES;
-                    if (!empty($files) && $files['mainImage']['name'] != '') {
-                        $mainImage = $this->commonFileUpload('assets/images/productImage/', $files['mainImage']['name'], 'mainImage', $this->input->post('old_primary_image'));                        
-                    }else{
-                        $mainImage = $this->input->post('old_primary_image');
-                    }
+                    $old_primary_image = $this->input->post('old_primary_image');
+                    $old_primary_image_one = $this->input->post('old_primary_image_one');
+                    $old_primary_image_two = $this->input->post('old_primary_image_two');
+                    $old_primary_image_three = $this->input->post('old_primary_image_three'); 
                     $updateArray = array(
                         "name"                  => $this->input->post('productName'),
                         "cat_id"                => $this->input->post('productCat'),
@@ -304,7 +354,12 @@ class Admin extends Common_Controller {
                         "frame_id"              => $this->input->post('productFrame'),
                         "brand_id"              => $this->input->post('productBrand'),
                         "description"           => $this->input->post('productDesc'),
-                        "primary_image"         => $mainImage,
+                        "main_color"            => $this->input->post('productColor'),
+                        "main_color_name"       => $this->input->post('productColorName'),
+                        "price"                 => $this->input->post('productPrice'),
+                        "sell_price"            => $this->input->post('productSellPrice'),
+                        "discount"              => $this->input->post('productDiscount'),
+                        "stock"                 => $this->input->post('productStock'),
                         "arm"                   => $this->input->post('productArm'),
                         "bridge"                => $this->input->post('productBridge'),
                         "lens"                  => $this->input->post('productLens'),
@@ -318,7 +373,92 @@ class Admin extends Common_Controller {
                         "suitable_for_tints"    => $this->input->post('productSuitableforTints'),
                         "updated_at"            => date('Y-m-d H:i:s')
                     );
+                    if($old_primary_image != ''){
+                        $updateArray['primary_image'] = $old_primary_image;
+                    }
+                    if($old_primary_image_one != ''){
+                        $updateArray['primary_image_one'] = $old_primary_image_one;
+                    }
+                    if($old_primary_image_two != ''){
+                        $updateArray['primary_image_two'] = $old_primary_image_two;
+                    }
+                    if($old_primary_image_three != ''){
+                        $updateArray['primary_image_three'] = $old_primary_image_three;
+                    }
                     $this->cm->update('products', array("id" => $this->input->post('product_edit_id')), $updateArray);
+                    $prodAttr = $this->cm->get_specific('product_attribute', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')));
+                    $prodAttrId = $prodAttr[0]->id;
+                    if($this->input->post('productColor') != $this->input->post('old_productColor')){
+                        $this->cm->update('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')), array("color" => $this->input->post('productColor')));
+                        $this->cm->update('product_ledger', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')), array("color" => $this->input->post('productColor')));
+                    }
+                    if($this->input->post('productStock') != $this->input->post('old_productStock')){
+                        if($this->input->post('productStock') > $this->input->post('old_productStock')){
+                            $inout = 'in';
+                            $quantity = $this->input->post('productStock') - $this->input->post('old_productStock');
+                        }elseif($this->input->post('productStock') < $this->input->post('old_productStock')){
+                            $inout = 'out';
+                            $quantity = $this->input->post('old_productStock') - $this->input->post('productStock');
+                        }
+                        $this->productLedger($this->input->post('product_edit_id'), $prodAttrId, $this->input->post('productColor'), $inout, $quantity, 'Product Stock Adjustment');
+                    }
+                    $updateArray = array(
+                        "color"         => $this->input->post('productColor'),
+                        "color_name"    => $this->input->post('productColorName'),
+                        "price"         => $this->input->post('productPrice'),
+                        "sell_price"    => $this->input->post('productSellPrice'),
+                        "discount"      => $this->input->post('productDiscount'),
+                        "stock"         => $this->input->post('productStock'),
+                        "updated_at"    => date('Y-m-d H:i:s')
+                    );
+                    $this->cm->update('product_attribute', array("id" => $prodAttrId), $updateArray);                    
+                    if(count($files['moreImage']['name'])> 0){
+                        $fileArray = $files['moreImage'];
+                        $upPath = FCPATH . 'assets/images/productImage/';
+                        if (!file_exists($upPath)) {
+                            mkdir($upPath, 0777, true);
+                        }
+                        $config = array(
+                            'upload_path' => $upPath,
+                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
+                            'overwrite' => TRUE,
+                            'max_size' => "8192000",
+                            'encrypt_name' => TRUE
+                        );
+                        for($p = 0; $p<count($fileArray['name']); $p++){
+                            $tmp = '';
+                            if($fileArray['name'][$p] !='' ){
+                                $_FILES['file']['name']     = $fileArray['name'][$p];
+                                $_FILES['file']['type']     = $fileArray['type'][$p];
+                                $_FILES['file']['tmp_name'] = $fileArray['tmp_name'][$p];
+                                $_FILES['file']['error']    = $fileArray['error'][$p];
+                                $_FILES['file']['size']     = $fileArray['size'][$p];
+                                $config['file_name']        = time().$fileArray['name'][$p];
+                                $this->upload->initialize($config);
+                                if($this->upload->do_upload('file')){
+                                    $imageDetailArray = $this->upload->data();
+                                    if($old_primary_image == ''){
+                                        $tmp = 'primary_image';
+                                        $old_primary_image = 'notnull';
+                                    }
+                                    if($old_primary_image_one == ''){
+                                        $tmp = 'primary_image_one';
+                                        $old_primary_image_one = 'notnull';
+                                    }
+                                    if($old_primary_image_two == ''){
+                                        $tmp = 'primary_image_two';
+                                        $old_primary_image_two = 'notnull';
+                                    }
+                                    if($old_primary_image_three == ''){
+                                        $tmp = 'primary_image_three';
+                                        $old_primary_image_three = 'notnull';
+                                    }
+                                    $this->cm->update('products', array("id" => $this->input->post('product_edit_id')), array($tmp => $imageDetailArray['file_name']));
+                                    $this->cm->insert('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
+                                }
+                            }
+                        }
+                    }
                     $this->session->set_flashdata('msg', 'Product Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Already Exists !!!');
@@ -340,6 +480,15 @@ class Admin extends Common_Controller {
         $this->load->view('backend/layout/sidemenu');
         $this->load->view('backend/pages/add-product');
         $this->load->view('backend/layout/footer');
+    }
+    public function deletePrimaryImage(){
+        if($this->input->post()){
+        $this->cm->delete('product_images', array("image" => $this->input->post('image'), "product_id" => $this->input->post('prod_id')));
+        $this->cm->update('products', array("id" => $this->input->post('prod_id')), array($this->input->post('img_field') => ''));
+        if (file_exists(FCPATH.'assets/images/productImage/'.$this->input->post('image'))) {
+            unlink(FCPATH.'assets/images/productImage/'.$this->input->post('image'));
+        }
+        }
     }
     public function deleteRelImage(){
         $this->cm->delete('product_images', array("id" => $this->input->post('id')));
@@ -366,7 +515,7 @@ class Admin extends Common_Controller {
     public function saveProductAttributeDetails(){
         if($this->input->post()){
             if($this->input->post('product_attribute_id') == ''){
-                if(empty($this->cm->get_specific('product_attribute', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'))))){                
+                if(empty($this->cm->get_specific('product_attribute', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'))))){
                     $insertArray = array(
                         "product_id"    => $this->input->post('product_edit_id'),
                         "color"         => $this->input->post('productColor'),
@@ -380,41 +529,14 @@ class Admin extends Common_Controller {
                     $this->productLedger($this->input->post('product_edit_id'), $atrId, $this->input->post('productColor'), 'in', $this->input->post('productStock'), 'Product Opening Stock');
                     $files = $_FILES;
                     if(count($files['moreImage']['name'])> 0){
-                        $upPath = FCPATH . 'assets/images/productImage/';
-                        if (!file_exists($upPath)) {
-                            mkdir($upPath, 0777, true);
-                        }
-                        $config = array(
-                            'upload_path' => $upPath,
-                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
-                            'overwrite' => TRUE,
-                            'max_size' => "8192000",
-                            'max_height' => "1536",
-                            'max_width' => "2048",
-                            'encrypt_name' => TRUE
-                        );
-                        for($p = 0; $p<count($files['moreImage']['name']); $p++){
-                            if($files['moreImage']['name'][$p] !='' ){
-                                $_FILES['file']['name']     = $files['moreImage']['name'][$p];
-                                $_FILES['file']['type']     = $files['moreImage']['type'][$p];
-                                $_FILES['file']['tmp_name'] = $files['moreImage']['tmp_name'][$p];
-                                $_FILES['file']['error']    = $files['moreImage']['error'][$p];
-                                $_FILES['file']['size']     = $files['moreImage']['size'][$p];
-                                $config['file_name']        = time().$files['moreImage']['name'][$p];
-                                $this->upload->initialize($config);
-                                if($this->upload->do_upload('file')){
-                                    $imageDetailArray = $this->upload->data();
-                                    $this->cm->insert('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
-                                }
-                            }
-                        }
+                        $this->commonFileArrayUpload('assets/images/productImage/', $files['moreImage'], 'product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor')));
                     }
                     $this->session->set_flashdata('msg', 'Product Attributes Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Attributes Already Exists !!!');
                 }
             }else{
-                if(empty($this->db->query("select id from product_attribute where product_id = '".$this->input->post('product_edit_id')."' AND color = '".$this->input->post('productColor')."' AND id != '".$this->input->post('product_attribute_id')."'")->result())){
+                if(empty($this->cm->get_specific('product_attribute', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'), "id != " => $this->input->post('product_attribute_id'))))){
                     $updateArray = array(
                         "color"         => $this->input->post('productColor'),
                         "color_name"    => $this->input->post('productColorName'),
@@ -423,8 +545,7 @@ class Admin extends Common_Controller {
                         "discount"      => $this->input->post('productDiscount'),
                         "stock"         => $this->input->post('productStock'),
                         "updated_at"    => date('Y-m-d H:i:s')
-                    );                
-                
+                    );
                     $this->cm->update('product_attribute', array("id" => $this->input->post('product_attribute_id')), $updateArray);
                     if($this->input->post('productColor') != $this->input->post('old_productColor')){
                         $this->cm->update('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')), array("color" => $this->input->post('productColor')));
@@ -440,42 +561,10 @@ class Admin extends Common_Controller {
                         }
                         $this->productLedger($this->input->post('product_edit_id'), $this->input->post('product_attribute_id'), $this->input->post('productColor'), $inout, $quantity, 'Product Stock Adjustment');
                     }
-                    
                     $files = $_FILES;
                     if(count($files['moreImage']['name'])> 0){
-                        $upPath = FCPATH . 'assets/images/productImage/';
-                        if (!file_exists($upPath)) {
-                            mkdir($upPath, 0777, true);
-                        }
-                        $config = array(
-                            'upload_path' => $upPath,
-                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
-                            'overwrite' => TRUE,
-                            'max_size' => "8192000",
-                            'max_height' => "1536",
-                            'max_width' => "2048",
-                            'encrypt_name' => TRUE
-                        );
-                        for($p = 0; $p<count($files['moreImage']['name']); $p++){
-                            if($files['moreImage']['name'][$p] !='' ){
-                                $_FILES['file']['name']     = $files['moreImage']['name'][$p];
-                                $_FILES['file']['type']     = $files['moreImage']['type'][$p];
-                                $_FILES['file']['tmp_name'] = $files['moreImage']['tmp_name'][$p];
-                                $_FILES['file']['error']    = $files['moreImage']['error'][$p];
-                                $_FILES['file']['size']     = $files['moreImage']['size'][$p];
-                                $config['file_name']        = time().$files['moreImage']['name'][$p];
-                                $this->upload->initialize($config);
-                                if($this->upload->do_upload('file')){
-                                    $imageDetailArray = $this->upload->data();
-                                    $this->cm->insert('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
-                                }
-                            }
-                        }
+                        $this->commonFileArrayUpload('assets/images/productImage/', $files['moreImage'], 'product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor')));
                     }
-                    
-                    
-                    
-                    
                     $this->session->set_flashdata('msg', 'Product Attributes Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Attributes Already Exists !!!');
@@ -484,21 +573,281 @@ class Admin extends Common_Controller {
             redirect(base_url('admin/product-management'));
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public function lensManagement(){
+        if($this->input->post()){
+            if($this->input->post('lenscategory_edit_id') == ''){
+                if(empty($this->cm->get_specific('lens_category', array("LOWER(name)" => strtolower($this->input->post('lensCatName')))))){
+                    $this->cm->insert('lens_category', array("name" => ucwords($this->input->post('lensCatName'))));
+                    $this->session->set_flashdata('msg', 'Lens Category Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lens Category Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('lens_category', array("LOWER(name)" => strtolower($this->input->post('lensCatName')), "id != " => $this->input->post('lenscategory_edit_id'))))){
+                    $this->cm->update('lens_category', array("id" => $this->input->post('lenscategory_edit_id')), array("name" => ucwords($this->input->post('lensCatName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->session->set_flashdata('msg', 'Lens Category Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lens Category Already Exists !!!');
+                }
+            }
+        }
+        $data['lens'] = $this->cm->get_all('lens_category');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/lens-category');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addLens($id = ''){
+        if($id != ''){
+            $data['lens'] = $this->cm->get_specific('lens_category', array("id" => $id));
+        }else{
+            $data = array();
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-lens-category');
+        $this->load->view('backend/layout/footer');
+    }
+    public function lensSubCategoryManagement(){
+        if($this->input->post()){
+            $files = $_FILES;
+            if($this->input->post('lenssubcategory_edit_id') == ''){
+                if(empty($this->cm->get_specific('lens_sub_category', array("LOWER(name)" => strtolower($this->input->post('lensSubCatName')), "lens_cat_id" => $this->input->post('lensCatId'))))){
+                    if (!empty($files) && $files['lensSubCatImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/lensSubCatImage/', $files['lensSubCatImage']['name'], 'lensSubCatImage');
+                    }
+                    $inArray = array(
+                        "lens_cat_id"   => $this->input->post('lensCatId'),
+                        "name"          => ucwords($this->input->post('lensSubCatName')),
+                        "description"   => $this->input->post('lensSubCatDescription'),
+                        "image"         => $image
+                    );
+                    $this->cm->insert('lens_sub_category', $inArray);
+                    $this->session->set_flashdata('msg', 'Lens Sub Category Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lens Sub Category Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('lens_sub_category', array("LOWER(name)" => strtolower($this->input->post('lensSubCatName')), "lens_cat_id" => $this->input->post('lensCatId'), "id != " => $this->input->post('lenssubcategory_edit_id'))))){
+                    if (!empty($files) && $files['lensSubCatImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/lensSubCatImage/', $files['lensSubCatImage']['name'], 'lensSubCatImage', $this->input->post('old_lensSubCatImage'));
+                    }else{
+                        $image = $this->input->post('old_lensSubCatImage');
+                    }
+                    $upArray = array(
+                        "lens_cat_id"   => $this->input->post('lensCatId'),
+                        "name"          => ucwords($this->input->post('lensSubCatName')),
+                        "description"   => $this->input->post('lensSubCatDescription'),
+                        "image"         => $image,
+                        "updated_at" => date('Y-m-d H:i:s')
+                    );                    
+                    $this->cm->update('lens_sub_category', array("id" => $this->input->post('lenssubcategory_edit_id')), $upArray);
+                    $this->session->set_flashdata('msg', 'Lens Sub Category Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lens Sub Category Already Exists !!!');
+                }
+            }
+        }
+        $data['lens'] = $this->getLensDetails();
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/lens-sub-category');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addLensSubCategory($id = ''){
+        $data['lensCat'] = $this->cm->get_all('lens_category');
+        if($id != ''){
+            $data['lens'] = $this->getLensDetails(array("lsc.id" => $id));
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-lens-sub-category');
+        $this->load->view('backend/layout/footer');
+    }
+    public function pupillaryDistance(){
+        if($this->input->post()){
+            if($this->input->post('pd_edit_id') == ''){
+                if(empty($this->cm->get_specific('pupillary_distance', array("LOWER(name)" => strtolower($this->input->post('pdName')))))){
+                    $this->cm->insert('pupillary_distance', array("name" => ucwords($this->input->post('pdName'))));
+                    $this->session->set_flashdata('msg', 'Pupillary Distance Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Pupillary Distance Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('pupillary_distance', array("LOWER(name)" => strtolower($this->input->post('pdName')), "id != " => $this->input->post('pd_edit_id'))))){
+                    $this->cm->update('pupillary_distance', array("id" => $this->input->post('pd_edit_id')), array("name" => ucfirst($this->input->post('pdName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->session->set_flashdata('msg', 'Pupillary Distance Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Pupillary Distance Already Exists !!!');
+                }
+            }
+        }
+        $data['pds'] = $this->cm->get_all('pupillary_distance');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/pupillary-distance');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addPupillaryDistance($id = ''){
+        if($id != ''){
+            $data['pd'] = $this->cm->get_specific('pupillary_distance', array("id" => $id));
+        }else{
+            $data = array();
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-pupillary-distance');
+        $this->load->view('backend/layout/footer');
+    }
+    public function lensesAndTints(){
+        if($this->input->post()){
+            if($this->input->post('lenscategory_edit_id') == ''){
+                if(empty($this->cm->get_specific('lenses_and_tints', array("LOWER(name)" => strtolower($this->input->post('lensCatName')))))){
+                    $this->cm->insert('lenses_and_tints', array("name" => ucwords($this->input->post('lensCatName'))));
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Category Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Category Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('lenses_and_tints', array("LOWER(name)" => strtolower($this->input->post('lensCatName')), "id != " => $this->input->post('lenscategory_edit_id'))))){
+                    $this->cm->update('lenses_and_tints', array("id" => $this->input->post('lenscategory_edit_id')), array("name" => ucwords($this->input->post('lensCatName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Category Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Category Already Exists !!!');
+                }
+            }
+        }
+        $data['lens'] = $this->cm->get_all('lenses_and_tints');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/lenses-and-tints');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addLensesAndTints($id = ''){
+        if($id != ''){
+            $data['lens'] = $this->cm->get_specific('lenses_and_tints', array("id" => $id));
+        }else{
+            $data = array();
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-lenses-and-tints');
+        $this->load->view('backend/layout/footer');
+    }
+    public function lensesAndTintsDetails(){
+        if($this->input->post()){
+            $files = $_FILES;
+            if($this->input->post('lenssubcategory_edit_id') == ''){
+                if(empty($this->cm->get_specific('lenses_and_tints_details', array("LOWER(name)" => strtolower($this->input->post('lensSubCatName')), "lenses_and_tints_id" => $this->input->post('lensCatId'))))){
+                    if (!empty($files) && $files['lensSubCatImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/lensesAndTintsImage/', $files['lensSubCatImage']['name'], 'lensSubCatImage');
+                    }
+                    $inArray = array(
+                        "lenses_and_tints_id"   => $this->input->post('lensCatId'),
+                        "name"                  => ucwords($this->input->post('lensSubCatName')),
+                        "description"           => $this->input->post('lensSubCatDescription'),
+                        "includes"              => $this->input->post('lensSubCatIncludes'),
+                        "price"                 => $this->input->post('lensSubCatPrice'),
+                        "image"                 => $image
+                    );
+                    $this->cm->insert('lenses_and_tints_details', $inArray);
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Sub Category Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Sub Category Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('lenses_and_tints_details', array("LOWER(name)" => strtolower($this->input->post('lensSubCatName')), "lenses_and_tints_id" => $this->input->post('lensCatId'), "id != " => $this->input->post('lenssubcategory_edit_id'))))){
+                    if (!empty($files) && $files['lensSubCatImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/lensesAndTintsImage/', $files['lensSubCatImage']['name'], 'lensSubCatImage', $this->input->post('old_lensSubCatImage'));
+                    }else{
+                        $image = $this->input->post('old_lensSubCatImage');
+                    }
+                    $upArray = array(
+                        "lenses_and_tints_id"   => $this->input->post('lensCatId'),
+                        "name"                  => ucwords($this->input->post('lensSubCatName')),
+                        "description"           => $this->input->post('lensSubCatDescription'),
+                        "includes"              => $this->input->post('lensSubCatIncludes'),
+                        "price"                 => $this->input->post('lensSubCatPrice'),
+                        "image"                 => $image,
+                        "updated_at"            => date('Y-m-d H:i:s')
+                    );                    
+                    $this->cm->update('lenses_and_tints_details', array("id" => $this->input->post('lenssubcategory_edit_id')), $upArray);
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Sub Category Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Lenses & Tints Sub Category Already Exists !!!');
+                }
+            }
+        }
+        $data['lens'] = $this->getLensAndTints();
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/lenses-and-tints-details');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addLensesAndTintsDetails($id = ''){
+        $data['lensCat'] = $this->cm->get_all('lenses_and_tints');
+        if($id != ''){
+            $data['lens'] = $this->getLensAndTints(array("latd.id" => $id));
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-lenses-and-tints-details');
+        $this->load->view('backend/layout/footer');
+    }
+    public function reglazeManagement(){
+        if($this->input->post()){
+            $files = $_FILES;
+            if($this->input->post('reglaze_edit_id') == ''){
+                if(empty($this->cm->get_specific('reglaze', array("frame_id" => $this->input->post('frameId'))))){
+                    if (!empty($files) && $files['reglazeImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/reglazeImage/', $files['reglazeImage']['name'], 'reglazeImage');
+                    }
+                    $inArray = array(
+                        "frame_id"  => $this->input->post('frameId'),
+                        "price"     => $this->input->post('reglazePrice'),
+                        "image"     => $image
+                    );
+                    $this->cm->insert('reglaze', $inArray);
+                    $this->session->set_flashdata('msg', 'Reglaze Details Successfully Added !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Reglaze Details Already Exists !!!');
+                }
+            }else{
+                if(empty($this->cm->get_specific('reglaze', array("frame_id" => strtolower($this->input->post('frameId')), "id != " => $this->input->post('reglaze_edit_id'))))){
+                    if (!empty($files) && $files['reglazeImage']['name'] != '') {
+                        $image = $this->commonFileUpload('assets/images/reglazeImage/', $files['reglazeImage']['name'], 'reglazeImage', $this->input->post('old_reglazeImage'));
+                    }else{
+                        $image = $this->input->post('old_reglazeImage');
+                    }
+                    $upArray = array(
+                        "frame_id"      => $this->input->post('frameId'),
+                        "price"         => $this->input->post('reglazePrice'),
+                        "image"         => $image,
+                        "updated_at"    => date('Y-m-d H:i:s')
+                    );                    
+                    $this->cm->update('reglaze', array("id" => $this->input->post('reglaze_edit_id')), $upArray);
+                    $this->session->set_flashdata('msg', 'Reglaze Details Successfully Updated !!!');
+                }else{
+                    $this->session->set_flashdata('msg', 'Reglaze Details Already Exists !!!');
+                }
+            }
+        }
+        $data['frames'] = $this->cm->get_all('frames');
+        $data['reglaze'] = $this->getreglaze();
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/reglaze');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addReglaze($id = ''){
+        $data['frames'] = $this->cm->get_all('frames');
+        if($id != ''){
+            $data['reglaze'] = $this->getreglaze(array('r.id' => $id));
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-reglaze');
+        $this->load->view('backend/layout/footer');
+    }
     
 }

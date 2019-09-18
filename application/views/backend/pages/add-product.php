@@ -184,23 +184,123 @@
                                     </span>
                                 </div>
                             </div>
-                            <?php if(isset($products)){ ?>
-                            <input type="hidden" class="form-control" name="old_primary_image" value="<?=$products[0]['primary_image']?>">
-                            <?php if($products[0]['primary_image'] != ''){ ?>
                             <div class="form-group">
-                                <label for="lefticon" class="col-sm-2 control-label"></label>
+                                <label for="lefticon" class="col-sm-2 control-label">Product Main Color *</label>
                                 <div class="col-sm-10">
-                                    <img src="<?=base_url('assets/images/productImage/'.$products[0]['primary_image'])?>" style="height: 100px;">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control jscolor" name="productColor" id="productColor" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['main_color'];}?>">
+                                        <input type="hidden" name="old_productColor" value="<?php if(isset($products)){ print $products[0]['main_color'];}?>">
+                                    </span>
                                 </div>
                             </div>
-                            <?php } } ?>
                             <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Product Main Color Name *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control" name="productColorName" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['main_color_name'];}?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Product Price *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control chkPrice" onkeypress="return isNumber(this.event)" name="productPrice" id="productPrice" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['price'];}?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Product Sell Price *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control chkPrice" onkeypress="return isNumber(this.event)" name="productSellPrice" id="productSellPrice" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['sell_price'];}?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Product Discount *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control" onkeypress="return isNumber(this.event)" name="productDiscount" id="productDiscount" required aria-required="true" readonly value="<?php if(isset($products)){ print $products[0]['discount'];}?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Product Stock *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control" onkeypress="return isNumber(this.event)" name="productStock" id="productStock" required aria-required="true" value="<?php if(isset($products)){ print $products[0]['stock'];}?>">
+                                        <input type="hidden" name="old_productStock" value="<?php if(isset($products)){ print $products[0]['stock'];}?>">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <?php if(isset($products)){ $cnt = 0; ?>
+                            <input type="hidden" class="form-control" name="old_primary_image" id="old_primary_image" value="<?=$products[0]['primary_image']?>">
+                            <input type="hidden" class="form-control" name="old_primary_image_one" id="old_primary_image_one" value="<?=$products[0]['primary_image_one']?>">
+                            <input type="hidden" class="form-control" name="old_primary_image_two" id="old_primary_image_two" value="<?=$products[0]['primary_image_two']?>">
+                            <input type="hidden" class="form-control" name="old_primary_image_three" id="old_primary_image_three" value="<?=$products[0]['primary_image_three']?>">
+                            <?php if($products[0]['primary_image'] != ''){ ?>
+                            <div class="form-group dispImg<?=$cnt?>">
+                                <label for="lefticon" class="col-sm-2 control-label">Primary Image</label>
+                                <div class="col-sm-9">
+                                    <img src="<?=base_url('assets/images/productImage/'.$products[0]['primary_image'])?>" style="height: 100px;">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" onclick="delPrimImage('<?=$products[0]['id']?>','<?=$products[0]['primary_image']?>', 'primary_image', '<?=$cnt?>')">Remove Image</button>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <?php if($products[0]['primary_image_one'] != ''){ $cnt++; ?>
+                            <div class="form-group dispImg<?=$cnt?>">
+                                <label for="lefticon" class="col-sm-2 control-label">Relative Primary Image</label>
+                                <div class="col-sm-9">
+                                    <img src="<?=base_url('assets/images/productImage/'.$products[0]['primary_image_one'])?>" style="height: 100px;">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" onclick="delPrimImage('<?=$products[0]['id']?>','<?=$products[0]['primary_image']?>', 'primary_image_one', '<?=$cnt?>')">Remove Image</button>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <?php if($products[0]['primary_image_two'] != ''){ $cnt++; ?>
+                            <div class="form-group dispImg<?=$cnt?>">
+                                <label for="lefticon" class="col-sm-2 control-label">Relative Primary Image</label>
+                                <div class="col-sm-9">
+                                    <img src="<?=base_url('assets/images/productImage/'.$products[0]['primary_image_two'])?>" style="height: 100px;">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" onclick="delPrimImage('<?=$products[0]['id']?>','<?=$products[0]['primary_image']?>', 'primary_image_two', '<?=$cnt?>')">Remove Image</button>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <?php if($products[0]['primary_image_three'] != ''){ $cnt++; ?>
+                            <div class="form-group dispImg<?=$cnt?>">
+                                <label for="lefticon" class="col-sm-2 control-label">Relative Primary Image</label>
+                                <div class="col-sm-9">
+                                    <img src="<?=base_url('assets/images/productImage/'.$products[0]['primary_image_three'])?>" style="height: 100px;">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" onclick="delPrimImage('<?=$products[0]['id']?>','<?=$products[0]['primary_image']?>', 'primary_image_three', '<?=$cnt?>')">Remove Image</button>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <?php } ?>
+                            <div class="form-group primMainImgDiv <?php if(isset($products)){ if($products[0]['primary_image'] != ''){ print 'hide'; } } ?>">
                                 <label for="lefticon" class="col-sm-2 control-label">Product Main Image *</label>
                                 <div class="col-sm-10">
                                     <span class="input-with-icon">
-                                        <input type="file" class="form-control" name="mainImage" aria-required="true" <?php if(isset($products)){ if($products[0]['primary_image'] == ''){ print 'required'; }}?>>
+                                        <input type="file" class="form-control" name="moreImage[]" id="primImg" aria-required="true" <?php if(isset($products)){ if($products[0]['primary_image'] == ''){ print 'required'; } } else{ print 'required'; }?>>
                                         <p>SIZE 250 X 70</p>
                                     </span>
+                                </div>
+                            </div>
+                            <div class="morePrimImgDiv"></div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <button type="button" onclick="addPrimaryImageRow()" class="btn">Add More Image</button>
+                                    <input type="hidden" id="primImgCount" value="0">
+                                    <input type="hidden" id="primCount" value="<?php if(isset($products)){ print $cnt; }else{ print '0'; }?>">
                                 </div>
                             </div>
                             <div class="form-group">

@@ -17,7 +17,12 @@ $route['filterProductImageByColor']                                     = 'ApiCo
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 
 
-
+$route['wishlist/add'] = 'WishlistController/save';
+$route['wishlist'] = 'WishlistController/index';
+$route['products'] = 'ApiController/products';
+$route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';
+$route['filterProduct'] = 'Product/filterProduct';
+$route['banners'] = "ApiController/banners";
 
 
 
@@ -57,12 +62,31 @@ $route['admin/edit-brand/(:any)']                       = 'Admin/addBrand/$1';
 $route['admin/product-management']                      = 'Admin/productManagement';
 $route['admin/add-product']                             = 'Admin/addProduct';
 $route['admin/edit-product/(:any)']                     = 'Admin/addProduct/$1';
+$route['admin/delete-primary-image']                    = 'Admin/deletePrimaryImage';
 $route['admin/add-product-attribute/(:any)']            = 'Admin/addProductAttribute/$1';
 $route['admin/save-product-attribute-details']          = 'Admin/saveProductAttributeDetails';
 $route['admin/get-attribute-details']                   = 'Admin/getAttributeDetails';
 $route['admin/delete-rel-image']                        = 'Admin/deleteRelImage';
+$route['admin/lens-management']                         = 'Admin/lensManagement';
+$route['admin/add-lens']                                = 'Admin/addLens';
+$route['admin/edit-lens/(:any)']                        = 'Admin/addLens/$1';
+$route['admin/lens-sub-category-management']            = 'Admin/lensSubCategoryManagement';
+$route['admin/add-lens-sub-category']                   = 'Admin/addLensSubCategory';
+$route['admin/edit-lens-sub-category/(:any)']           = 'Admin/addLensSubCategory/$1';
+$route['admin/pupillary-distance']                      = 'Admin/pupillaryDistance';
+$route['admin/add-pupillary-distance']                  = 'Admin/addPupillaryDistance';
+$route['admin/edit-pupillary-distance/(:any)']          = 'Admin/addPupillaryDistance/$1';
+$route['admin/lenses-and-tints']                        = 'Admin/lensesAndTints';
+$route['admin/add-lenses-and-tints']                    = 'Admin/addLensesAndTints';
+$route['admin/edit-lenses-and-tints/(:any)']            = 'Admin/addLensesAndTints/$1';
+$route['admin/lenses-and-tints-details']                = 'Admin/lensesAndTintsDetails';
+$route['admin/add-lenses-and-tints-details']            = 'Admin/addLensesAndTintsDetails';
+$route['admin/edit-lenses-and-tints-details/(:any)']    = 'Admin/addLensesAndTintsDetails/$1';
 
 
+$route['admin/reglaze-management']                      = 'Admin/reglazeManagement';
+$route['admin/add-reglaze']                             = 'Admin/addReglaze';
+$route['admin/edit-reglaze/(:any)']                     = 'Admin/addReglaze/$1';
 
 
 $route['404_override'] = '';

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2019 at 03:16 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Sep 18, 2019 at 02:26 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 5.6.39
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,9 +32,9 @@ CREATE TABLE `banners` (
   `id` int(11) NOT NULL,
   `image` varchar(222) DEFAULT NULL,
   `cat_id` varchar(100) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=&gt;Active, 0=&gt;InActive',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=&gt;Active, 0=&gt;InActive',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -56,8 +56,8 @@ CREATE TABLE `brands` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `image` varchar(100) DEFAULT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -87,9 +87,9 @@ INSERT INTO `brands` (`id`, `name`, `image`, `status`, `created_at`, `updated_at
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '0=&gt;inactive, 1=&gt;active',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '0=&gt;inactive, 1=&gt;active',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -110,8 +110,8 @@ INSERT INTO `categories` (`id`, `name`, `status`, `created_at`, `updated_at`) VA
 CREATE TABLE `frames` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -127,6 +127,133 @@ INSERT INTO `frames` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lenses_and_tints`
+--
+
+CREATE TABLE `lenses_and_tints` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lenses_and_tints`
+--
+
+INSERT INTO `lenses_and_tints` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Basic Lenses', 1, '2019-09-16 18:34:05', '2019-09-16 18:39:10'),
+(2, 'Thinner Lenses', 1, '2019-09-16 18:37:05', NULL),
+(3, 'Blue Light Blocking Lenses', 1, '2019-09-16 18:37:21', NULL),
+(4, 'High Impact Lenses', 1, '2019-09-16 18:37:34', NULL),
+(5, 'Specialist Lenses', 1, '2019-09-16 18:37:53', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lenses_and_tints_details`
+--
+
+CREATE TABLE `lenses_and_tints_details` (
+  `id` int(11) NOT NULL,
+  `lenses_and_tints_id` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `includes` varchar(500) NOT NULL,
+  `price` varchar(200) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lenses_and_tints_details`
+--
+
+INSERT INTO `lenses_and_tints_details` (`id`, `lenses_and_tints_id`, `name`, `description`, `includes`, `price`, `image`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1', 'Standard', '<ul>\r\n	<li>1.50 index lens</li>\r\n	<li>Basic CR39 plastic lenses</li>\r\n	<li>Great with a&nbsp;<strong>Tint</strong>&nbsp;or&nbsp;<strong>Polarised</strong>&nbsp;lens option</li>\r\n</ul>\r\n', 'include FREE coating', '0', 'a449cc869706493c518d98f323ae671a.png', 1, '2019-09-17 11:23:40', NULL),
+(2, '1', 'Thin & Light', '<ul>\r\n	<li>1.56 Index lens</li>\r\n	<li>Up to&nbsp;<strong>15% thinner</strong>&nbsp;than standard</li>\r\n	<li><strong>Light Adaptive</strong>&nbsp;lens options available</li>\r\n	<li>Not recommended for semi-rimless</li>\r\n</ul>\r\n', 'include FREE coating', '5.29', '26f744a66737ace6d41e8bd2ff0fda35.png', 1, '2019-09-17 11:28:44', NULL),
+(3, '1', 'Blueguard Thin & Light', '<ul>\r\n	<li>1.56 Index lens</li>\r\n	<li>Up to&nbsp;<strong>15% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV +420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '10.58', '809a2d80ac6ee1b6bdee0a5e0d7f1fe7.png', 1, '2019-09-17 11:29:41', NULL),
+(4, '1', 'Super Thin', '<ul>\r\n	<li>1.61 Index lens</li>\r\n	<li>Up to&nbsp;<strong>20% thinner</strong>&nbsp;than standard</li>\r\n	<li>Outstanding optical quality and durability</li>\r\n	<li>Great with a&nbsp;<strong>Tint</strong>&nbsp;or&nbsp;<strong>Polarised</strong>&nbsp;lens option</li>\r\n</ul>\r\n', 'include FREE coating', '21.17', 'a7f22903c4e4be13e6a359cca05652ca.png', 1, '2019-09-17 11:30:32', NULL),
+(5, '2', 'Blueguard Super Thin', '<ul>\r\n	<li>1.61 Index lens</li>\r\n	<li>Up to&nbsp;<strong>20% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV 420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '31.75', '094eda30b2eb4b6e1af926ca76110d53.png', 1, '2019-09-17 11:34:06', NULL),
+(6, '2', 'Ultra Super Thin', '<ul>\r\n	<li>1.67 Index lens</li>\r\n	<li>Up to&nbsp;<strong>30% thinner</strong>&nbsp;than standard</li>\r\n	<li>Ideal for higher prescriptions</li>\r\n	<li>Aspheric lens design</li>\r\n	<li>Great with a&nbsp;<strong>Tint</strong>&nbsp;or&nbsp;<strong>Polarised</strong>&nbsp;lens option</li>\r\n</ul>\r\n', 'include FREE coating', '42.33', '3b13f74525794018f7e20b182cf7bffa.png', 1, '2019-09-17 11:34:58', NULL),
+(7, '2', 'Blueguard Ultra Super Thin', '<ul>\r\n	<li>1.67 Index lens</li>\r\n	<li>Up to&nbsp;<strong>30% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV 420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '52.91', '32a460894f0aaebe70ed33b66db5e757.png', 1, '2019-09-17 11:35:40', NULL),
+(8, '2', 'UltraX SUper Thin 1.74', '<ul>\r\n	<li>1.74 Index lens</li>\r\n	<li>Up to&nbsp;<strong>40% thinner</strong>&nbsp;than standard</li>\r\n	<li>One of the thinnest plastic lenses available</li>\r\n	<li>Aspheric lens design</li>\r\n</ul>\r\n', 'include FREE coating', '6350', 'c903feb1c7ffd9969c6e2e21b4275d28.png', 1, '2019-09-17 11:36:37', NULL),
+(9, '3', 'BLUEGUARD THIN & LIGHT', '<ul>\r\n	<li>1.56 Index lens</li>\r\n	<li>Up to&nbsp;<strong>15% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV +420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '10.58', '9a65a0d98c4bd7ebe5c2ccdcb4ee8e75.png', 1, '2019-09-17 11:39:07', NULL),
+(10, '3', 'BLUEGUARD SUPER THIN', '<ul>\r\n	<li>1.61 Index lens</li>\r\n	<li>Up to&nbsp;<strong>20% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV 420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '31.75', 'f042933d6ba2c53b5d97780c6dac8921.png', 1, '2019-09-17 11:39:55', NULL),
+(11, '3', 'Blueguard Ultra Super Thin', '<ul>\r\n	<li>1.67 Index lens</li>\r\n	<li>Up to&nbsp;<strong>30% thinner</strong>&nbsp;than standard</li>\r\n	<li>Blue Block UV 420 cut</li>\r\n	<li>Reduces High-Energy Visible Light</li>\r\n	<li>Ideal for use with computers, smart phones and tablets</li>\r\n</ul>\r\n', 'include FREE coating', '52.91', '3149e55ee994b415673d126966f73477.png', 1, '2019-09-17 11:40:54', NULL),
+(12, '4', 'Polycarbonate 1.59', '<ul>\r\n	<li>1.59 index lens</li>\r\n	<li>Impact resistant lens</li>\r\n	<li>Great for rimless frames &amp; sports</li>\r\n</ul>\r\n', 'include FREE coating', '10.58', 'c0166ece0bf2475a1123f9c3a7427e2f.png', 1, '2019-09-17 11:42:45', NULL),
+(13, '4', 'High Impact Thin & Light', '<ul>\r\n	<li>1.56 Index lens</li>\r\n	<li>Up to&nbsp;<strong>15% thinner</strong>&nbsp;than standard</li>\r\n	<li>Light weight &amp; impact resistant</li>\r\n	<li>Aspheric lens design</li>\r\n	<li>Cannot be provided without coatings</li>\r\n	<li>Not available with sun lens options</li>\r\n</ul>\r\n', 'include FREE coating', '15.87', '5fd97b58592470c1516b56be0dfff86d.png', 1, '2019-09-17 11:43:37', '2019-09-17 12:23:42'),
+(14, '5', 'Ultra Super Thin Double Concave', '<ul>\r\n	<li>1.67 Index lens</li>\r\n	<li>Ideal for&nbsp;<strong>very high minus</strong>&nbsp;powers</li>\r\n	<li>Concave and aspheric in design</li>\r\n	<li>Reduction in edge thickness of up to&nbsp;<u><strong>35%</strong></u></li>\r\n</ul>\r\n', 'include FREE coating', '137.58', '02a61d72c83d3ae4caf82b4d5960e472.png', 1, '2019-09-17 11:46:11', NULL),
+(15, '5', 'UltraX Super Thing Double Aspheric', '<ul>\r\n	<li>1.74 Index lens</li>\r\n	<li>Aspheric lens design with large focal area</li>\r\n	<li>Thinner &amp; lighter compared to regular 1.74 index</li>\r\n	<li><strong>Only suitable for minus prescriptions</strong></li>\r\n</ul>\r\n', 'include FREE coating', '169.33', '4c0a92e6f91707aeec3bca69f4341794.png', 1, '2019-09-17 11:47:23', NULL),
+(16, '5', 'Elite Super Thin 1.76', '<ul>\r\n	<li>1.76 Index lens</li>\r\n	<li>The thinnest &amp; lightest plastic lenses available!</li>\r\n	<li>Designed for high prescriptions</li>\r\n	<li>Aspheric lens design</li>\r\n	<li>Not available with sun lens options</li>\r\n	<li>Not recommended for rimless</li>\r\n</ul>\r\n', 'include FREE coating', '190.49', '28a6f2e345e2041a1f23ba296bb0fc89.png', 1, '2019-09-17 11:48:25', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lens_category`
+--
+
+CREATE TABLE `lens_category` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lens_category`
+--
+
+INSERT INTO `lens_category` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Single Vision', 1, '2019-09-16 14:10:37', '2019-09-16 14:16:39'),
+(2, 'Vertifocal And Progressive', 1, '2019-09-16 14:17:26', NULL),
+(3, 'Bifocal', 1, '2019-09-16 14:25:20', NULL),
+(4, 'Occupational Office Lenses', 1, '2019-09-16 14:25:42', NULL),
+(5, 'Fashion / Non Prescription', 1, '2019-09-16 14:27:09', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lens_sub_category`
+--
+
+CREATE TABLE `lens_sub_category` (
+  `id` int(11) NOT NULL,
+  `lens_cat_id` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1: active, 0: Inactive',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lens_sub_category`
+--
+
+INSERT INTO `lens_sub_category` (`id`, `lens_cat_id`, `name`, `description`, `image`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1', 'Distance', 'One Distance power across lens Perfect for general every day use or driving', '4251ac7aaa7b9ce12fa97b4de9e13f45.png', 1, '2019-09-16 16:32:42', NULL),
+(2, '1', 'Reading', 'One Reading power across lens mostly for reading things close to you', '01e44466a5de7c609dcfaa4dffb4dc0d.png', 1, '2019-09-16 16:35:13', NULL),
+(3, '1', 'Intermediate', 'One power across lens, Ideal for computer work, Requires an Intermediate ADD or Intermediate prescription.', '6e07053ec7cd7c9ec29ca69d5a71376f.png', 1, '2019-09-16 16:36:03', NULL),
+(4, '2', 'Standard', 'Freeform Technology, Tremendous clarity from distance through to near vision with minimal soft focus. Ideal for new and familiar progressive lens wearers', '86655146a90504dd557e784b92bf08cb.png', 1, '2019-09-16 16:41:47', NULL),
+(5, '2', 'Premium', 'Freeform Technology, Optimised Digital Ray-Path technology. Enhanced power distribution between distance, intermediate and near visions', 'cc818f8419f44391f0ca2fc0094577ba.png', 1, '2019-09-16 16:42:33', NULL),
+(6, '2', 'Elite', 'Freeform Technology, Optimised Digital Ray-Path® technology. Advanced power balance between near and far visions', '8034418de201e96f032336b788ef06ee.png', 1, '2019-09-16 16:43:14', NULL),
+(7, '3', 'R28 Roumd Segment', 'Circular shaped reading segment, Ideal for prescriptions with positive figures', 'dfd707fc781ee9df924a9bd2b14d1de0.png', 1, '2019-09-16 16:45:31', NULL),
+(8, '3', 'D28 Flat Top', 'D-shaped reading segment, Most common bifocal. Very stable.', 'e14c78691d6a06ef3755e074fc0487ba.png', 1, '2019-09-16 16:46:22', NULL),
+(9, '3', 'D35 Flat Top', 'D-shaped reading segment. Larger reading area than the D28 bifocal', 'c6f5690af0c3cf5e42fc322759f95774.png', 1, '2019-09-16 16:47:13', NULL),
+(10, '3', 'C28 Curved Top', 'Curved top C-shaped reading segment. Reduced light reflected from segment. Available in high index.', '0020202de0f082d76fbd4a8b1a8d1f98.png', 1, '2019-09-16 16:48:09', NULL),
+(11, '4', 'Freeform Desktop', 'Designed specifically for near and intermediate distances. For use generally in the office environment. Please note: If you require distance vision, please see our vertifocal & progressive lenses.', 'bd9460d9ae6e976532e0824793f4d610.png', 1, '2019-09-16 16:49:53', NULL),
+(12, '5', 'Frame Only', 'Supplied with manufacturers plastic demo lenses. No optical lenses included.', 'bb34370522e5ffb35850eac1b5325c18.png', 1, '2019-09-16 16:51:52', NULL),
+(13, '5', 'Plano / Fashion', 'Plano lenses (blank / no RX). Ideal for fashion use for those without a prescription.', 'cc36026f400f5e501f7f8104c71155c3.png', 1, '2019-09-16 16:52:37', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -138,8 +265,17 @@ CREATE TABLE `products` (
   `spec_id` int(11) NOT NULL,
   `frame_id` int(11) NOT NULL,
   `brand_id` int(11) NOT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `main_color` varchar(200) NOT NULL,
+  `main_color_name` varchar(200) NOT NULL,
+  `price` varchar(100) NOT NULL,
+  `sell_price` varchar(100) NOT NULL,
+  `discount` varchar(100) NOT NULL,
+  `stock` varchar(100) NOT NULL,
   `primary_image` varchar(100) DEFAULT NULL,
+  `primary_image_one` varchar(200) DEFAULT NULL,
+  `primary_image_two` varchar(200) DEFAULT NULL,
+  `primary_image_three` varchar(200) DEFAULT NULL,
   `arm` varchar(100) NOT NULL,
   `bridge` varchar(100) NOT NULL,
   `lens` varchar(100) NOT NULL,
@@ -151,20 +287,19 @@ CREATE TABLE `products` (
   `single_vision` tinyint(2) NOT NULL COMMENT '1 = Yes, 0 = No',
   `spring_hinge` tinyint(2) NOT NULL COMMENT '1 = Yes, 0 = No',
   `suitable_for_tints` tinyint(2) NOT NULL COMMENT '1 = Yes, 0 = No',
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=>Active, 0=>InActive',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=>Active, 0=>InActive',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `slug`, `cat_id`, `spec_id`, `frame_id`, `brand_id`, `description`, `primary_image`, `arm`, `bridge`, `lens`, `height`, `sku`, `warranty`, `progressives`, `includes`, `single_vision`, `spring_hinge`, `suitable_for_tints`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Tag Heuer Soho Square SS 050', 'tag-heuer-soho-square-ss-050-ss5620', 3, 1, 1, 8, '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', '118354e65e02eb884daffe91300733b8.png', '145', '18', '52', '46', 'SS5620', '12', 'Freeform varifocal from $44.00', 'Includes Case & Cloth', 1, 0, 1, 1, '2019-09-11 15:56:46', '2019-09-12 16:31:19'),
-(2, 'Men Plastic Frame', 'men-plastic-frame-qa1234', 1, 1, 1, 1, '<p>Some Description</p>\r\n', '7925d9dfddbbecd1d6e6541eb73cee3d.png', '150', '18', '56', '42', 'QA1234', '12', 'Test Prog', 'Cloth and Box', 1, 1, 1, 1, '2019-09-12 11:48:26', '2019-09-12 16:30:57'),
-(3, 'Soho Square SS 050', 'soho-square-ss-050-sa9874', 2, 1, 2, 3, '<p>TEST DESC</p>\r\n', '9c7277e229f655e26d813e2669057078.png', '156', '14', '52', '40', 'SA9874', '12', 'NA', 'Box', 1, 1, 1, 1, '2019-09-12 11:53:04', '2019-09-12 16:30:39'),
-(4, 'Soho Square SS 050', 'soho-square-ss-050-qe1234', 3, 1, 3, 1, '<p>Test Desc</p>\r\n', 'd0560f8fb6603b7f7cd87566c5e9725a.png', '156', '17', '55', '43', 'QWE1234', '12', 'Test', 'Cloth, Box', 1, 1, 1, 1, '2019-09-12 16:30:00', '2019-09-12 16:31:26');
+INSERT INTO `products` (`id`, `name`, `slug`, `cat_id`, `spec_id`, `frame_id`, `brand_id`, `description`, `main_color`, `main_color_name`, `price`, `sell_price`, `discount`, `stock`, `primary_image`, `primary_image_one`, `primary_image_two`, `primary_image_three`, `arm`, `bridge`, `lens`, `height`, `sku`, `warranty`, `progressives`, `includes`, `single_vision`, `spring_hinge`, `suitable_for_tints`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Men Black Frame', 'men-black-frame-aa1234', 1, 1, 1, 1, '<p>Some Description</p>\r\n', '000000', 'Black', '66', '55', '16.67', '100', '4cf3f4c9e7eda2627464f0b1e84b2c0c.png', 'a81b7497a45241481645fc4af261d7f5.png', 'c9488e7ac5573b3902ecf81872432c91.png', '48b057a0bf1c4b5eae2ee943d12be16c.png', '150', '18', '56', '40', 'AA1234', '12', 'Test Prog', 'Case', 1, 0, 1, 1, '2019-09-18 17:39:58', '2019-09-18 17:41:52'),
+(2, 'Women Soho Frame', 'women-soho-frame-qq6541', 2, 1, 2, 3, '<p>Wome semi rimmed desc</p>\r\n', 'FF94B9', 'Light Pink', '52', '49', '5.77', '50', '89e6c02a0ef32cf544b7c9b109ca8a89.png', 'ada788963cbf5be5da311356ed162241.png', '002c99c49479e2718bd1d5d6e816d771.png', 'c35af7b4852ca9590c2b4770fd112e3c.png', '152', '16', '52', '41', 'QQ6541', '12', 'Testing ....', 'Case, Clothes', 1, 1, 1, 1, '2019-09-18 17:45:08', '2019-09-18 17:45:09'),
+(3, 'Unisex Soho Frame', 'unisex-soho-frame-po1234', 3, 1, 3, 8, '<p>Tagheuer description</p>\r\n', '6EFF66', 'Light Green', '62', '61', '1.61', '100', '015975188f3f2b30f2b3a55228f79cf9.png', '1a5d77948db698d57f4efb1bfb1ffc92.png', 'eae26daa9eec16775990a2f3e9b9c115.png', '38ab1d8562b56c8b3035b2410856a301.png', '155', '17', '51', '45', 'PO1234', '24', 'Prog Test', 'Case, clothes, Warranty Card', 1, 1, 1, 1, '2019-09-18 17:48:33', '2019-09-18 17:48:34');
 
 -- --------------------------------------------------------
 
@@ -181,7 +316,7 @@ CREATE TABLE `product_attribute` (
   `sell_price` varchar(100) NOT NULL,
   `discount` varchar(100) NOT NULL,
   `stock` varchar(200) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -190,13 +325,12 @@ CREATE TABLE `product_attribute` (
 --
 
 INSERT INTO `product_attribute` (`id`, `product_id`, `color`, `color_name`, `price`, `sell_price`, `discount`, `stock`, `created_at`, `updated_at`) VALUES
-(1, '1', 'FF0000', 'Red', '65', '55.25', '15.00', '100', '2019-09-12 11:15:43', '2019-09-12 11:50:31'),
-(2, '1', 'FF8605', 'Orange', '65', '55.25', '15.00', '100', '2019-09-12 11:19:44', '2019-09-12 11:51:07'),
-(3, '1', '4DFF61', 'Light Green', '65', '55.25', '15.00', '70', '2019-09-12 11:34:09', '2019-09-12 11:51:48'),
-(4, '2', 'E203FF', 'Purple', '65', '55.25', '15.00', '25', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(5, '3', '00B7FF', 'Indigo', '65', '55.25', '15.00', '55', '2019-09-12 11:54:03', NULL),
-(6, '3', 'FF006A', 'Pink', '65', '55.25', '15.00', '65', '2019-09-12 11:54:42', NULL),
-(7, '4', '0051FF', 'Blue', '55', '46.5', '15.45', '50', '2019-09-12 16:39:57', NULL);
+(1, '1', '000000', 'Black', '66', '55', '16.67', '100', '2019-09-18 17:39:59', '2019-09-18 17:41:52'),
+(2, '1', 'FF0000', 'Red', '65', '57', '12.31', '50', '2019-09-18 17:42:47', NULL),
+(3, '2', 'FF94B9', 'Light Pink', '52', '49', '5.77', '50', '2019-09-18 17:45:08', NULL),
+(4, '2', 'D230FF', 'Purple', '55', '52', '5.45', '50', '2019-09-18 17:46:28', NULL),
+(5, '3', '6EFF66', 'Light Green', '62', '61', '1.61', '100', '2019-09-18 17:48:33', NULL),
+(6, '3', 'C0FF5C', 'Lime Yellow', '62', '62', '0.00', '50', '2019-09-18 17:55:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -209,8 +343,8 @@ CREATE TABLE `product_images` (
   `product_id` varchar(100) NOT NULL,
   `color` varchar(200) DEFAULT NULL,
   `image` varchar(200) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -218,28 +352,31 @@ CREATE TABLE `product_images` (
 --
 
 INSERT INTO `product_images` (`id`, `product_id`, `color`, `image`, `created_at`, `updated_at`) VALUES
-(10, '2', 'E203FF', '84f0356c736afce0a05eaddadbe431fe.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(11, '2', 'E203FF', 'ab012e921b6cbdfa3e1149b348a93527.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(12, '2', 'E203FF', '021b42db0ee53deddb345a98a9545446.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(13, '1', 'FF0000', '4ff16906e0cfb91a1182440e15f0367b.png', '2019-09-12 11:50:31', NULL),
-(14, '1', 'FF0000', 'b9ae41529a6f3d282f4ced5a9bb8fe72.png', '2019-09-12 11:50:31', NULL),
-(15, '1', 'FF0000', 'a12ae3b56ef371951e79e6f82e7e3d0b.png', '2019-09-12 11:50:31', NULL),
-(16, '1', 'FF8605', '72ff7c2a7071fc079ff2744ebae573b8.png', '2019-09-12 11:51:07', NULL),
-(17, '1', 'FF8605', 'ee552ed8e2b12bbd98f5f687a419612f.png', '2019-09-12 11:51:07', NULL),
-(18, '1', 'FF8605', 'aec253cd2714099d8176db0c6a652841.png', '2019-09-12 11:51:07', NULL),
-(19, '1', '4DFF61', '243b197204a83257dd2c9332cefbb3ad.png', '2019-09-12 11:51:48', NULL),
-(20, '1', '4DFF61', '1b1b7a65160c46ab8dfe343849a138ab.png', '2019-09-12 11:51:48', NULL),
-(21, '1', '4DFF61', 'f43085209d9a3949517739006ea63650.png', '2019-09-12 11:51:48', NULL),
-(22, '3', '00B7FF', '79e212ad292bb21e5702ceaba8b31319.png', '2019-09-12 11:54:03', NULL),
-(23, '3', '00B7FF', 'ea54bc617e8de06e21d518b2cc139a3b.png', '2019-09-12 11:54:03', NULL),
-(24, '3', '00B7FF', 'd3c029f78ea8f0c0ba8ae46a4641d302.png', '2019-09-12 11:54:03', NULL),
-(25, '3', 'FF006A', '4c0ef4ba5dd4f897a7e436bf901c5ca0.png', '2019-09-12 11:54:42', NULL),
-(26, '3', 'FF006A', '7b6d1914299a5e1aceb8ad6bce7c213b.png', '2019-09-12 11:54:42', NULL),
-(27, '3', 'FF006A', 'd1fd96d14e11efd01ea228a19e19eb5e.png', '2019-09-12 11:54:42', NULL),
-(28, '4', '0051FF', '3048fc0aab84d55f75c3f2c1916da59a.png', '2019-09-12 16:39:57', NULL),
-(29, '4', '0051FF', 'ffd5634874d986d426d7d1d6b6a7a2ff.png', '2019-09-12 16:39:57', NULL),
-(30, '4', '0051FF', '33bf78289f1ea8cce5abf5852c4cbcf3.png', '2019-09-12 16:39:57', NULL),
-(31, '4', '0051FF', 'ba80c0e30f806ed9f7676249a0de3744.png', '2019-09-12 16:39:57', NULL);
+(1, '1', '000000', '4cf3f4c9e7eda2627464f0b1e84b2c0c.png', '2019-09-18 17:40:00', NULL),
+(2, '1', '000000', 'a81b7497a45241481645fc4af261d7f5.png', '2019-09-18 17:40:00', NULL),
+(3, '1', '000000', 'c9488e7ac5573b3902ecf81872432c91.png', '2019-09-18 17:40:01', NULL),
+(4, '1', '000000', '48b057a0bf1c4b5eae2ee943d12be16c.png', '2019-09-18 17:40:01', NULL),
+(5, '1', 'FF0000', 'de3ce37f672bf282601e8cb01ae473ad.png', '2019-09-18 17:42:48', NULL),
+(6, '1', 'FF0000', 'b0631f178811df0634f2a5f863c503fe.png', '2019-09-18 17:42:48', NULL),
+(7, '1', 'FF0000', '830ecea4fef422aaf720f254bea76099.png', '2019-09-18 17:42:48', NULL),
+(8, '1', 'FF0000', '9ca4ffb403945e7b907f05d168f515ab.png', '2019-09-18 17:42:48', NULL),
+(9, '2', 'FF94B9', '89e6c02a0ef32cf544b7c9b109ca8a89.png', '2019-09-18 17:45:09', NULL),
+(10, '2', 'FF94B9', 'ada788963cbf5be5da311356ed162241.png', '2019-09-18 17:45:09', NULL),
+(11, '2', 'FF94B9', '002c99c49479e2718bd1d5d6e816d771.png', '2019-09-18 17:45:09', NULL),
+(12, '2', 'FF94B9', 'c35af7b4852ca9590c2b4770fd112e3c.png', '2019-09-18 17:45:09', NULL),
+(13, '2', 'D230FF', '385d9867f000c5626b9aba247fe38cfb.png', '2019-09-18 17:46:28', NULL),
+(14, '2', 'D230FF', '0c752507faefa8e9b3daa187d8fa5872.png', '2019-09-18 17:46:28', NULL),
+(15, '2', 'D230FF', 'd14f8f73fe6caa1ef564b984d47faf55.png', '2019-09-18 17:46:28', NULL),
+(16, '2', 'D230FF', 'c13f4b9cfe01220a023898bde470ca7a.png', '2019-09-18 17:46:29', NULL),
+(17, '2', 'D230FF', 'af5cf6939f24f161fe9cf3699e5ddb73.png', '2019-09-18 17:46:29', NULL),
+(18, '3', '6EFF66', '015975188f3f2b30f2b3a55228f79cf9.png', '2019-09-18 17:48:34', NULL),
+(19, '3', '6EFF66', '1a5d77948db698d57f4efb1bfb1ffc92.png', '2019-09-18 17:48:34', NULL),
+(20, '3', '6EFF66', 'eae26daa9eec16775990a2f3e9b9c115.png', '2019-09-18 17:48:34', NULL),
+(21, '3', '6EFF66', '38ab1d8562b56c8b3035b2410856a301.png', '2019-09-18 17:48:34', NULL),
+(22, '3', 'C0FF5C', '94f2d2effc54deb85486cf2872e32e1f.png', '2019-09-18 17:55:37', NULL),
+(23, '3', 'C0FF5C', '77bc70c8be10524492f9970244de7bc7.png', '2019-09-18 17:55:37', NULL),
+(24, '3', 'C0FF5C', 'fd077e97cbb9eab61260a6dc9df3d3e3.png', '2019-09-18 17:55:37', NULL),
+(25, '3', 'C0FF5C', '282641c359f1d91a8a7de5b19f68d23a.png', '2019-09-18 17:55:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -251,27 +388,134 @@ CREATE TABLE `product_ledger` (
   `id` int(11) NOT NULL,
   `product_id` varchar(100) NOT NULL,
   `attribute_id` varchar(100) NOT NULL,
-  `color` varchar(100) NOT NULL,
-  `transaction_type` enum('in','out') NOT NULL,
-  `quantity` varchar(100) NOT NULL,
-  `comment` varchar(150) NOT NULL,
-  `crated_at` datetime NOT NULL DEFAULT current_timestamp()
+  `color` varchar(150) NOT NULL,
+  `transaction_type` varchar(150) NOT NULL,
+  `quantity` varchar(150) NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product_ledger`
 --
 
-INSERT INTO `product_ledger` (`id`, `product_id`, `attribute_id`, `color`, `transaction_type`, `quantity`, `comment`, `crated_at`) VALUES
-(1, '1', '1', 'FF0000', 'in', '100', 'Product Opening Stock', '2019-09-12 11:15:43'),
-(2, '1', '2', 'FF8605', 'in', '100', 'Product Opening Stock', '2019-09-12 11:19:44'),
-(3, '1', '1', 'FF0000', 'out', '25', 'Product Stock Adjustment', '2019-09-12 11:24:23'),
-(4, '1', '1', 'FF0000', 'in', '25', 'Product Stock Adjustment', '2019-09-12 11:25:31'),
-(5, '1', '3', '4DFF61', 'in', '70', 'Product Opening Stock', '2019-09-12 11:34:10'),
-(6, '2', '4', 'E203FF', 'in', '25', 'Product Opening Stock', '2019-09-12 11:49:50'),
-(7, '3', '5', '00B7FF', 'in', '55', 'Product Opening Stock', '2019-09-12 11:54:03'),
-(8, '3', '6', 'FF006A', 'in', '65', 'Product Opening Stock', '2019-09-12 11:54:42'),
-(9, '4', '7', '0051FF', 'in', '50', 'Product Opening Stock', '2019-09-12 16:39:57');
+INSERT INTO `product_ledger` (`id`, `product_id`, `attribute_id`, `color`, `transaction_type`, `quantity`, `comment`, `created_at`) VALUES
+(1, '1', '1', '000000', 'in', '100', 'Product Opening Stock', '2019-09-18 17:39:59'),
+(4, '1', '2', 'FF0000', 'in', '50', 'Product Opening Stock', '2019-09-18 17:42:47'),
+(5, '2', '3', 'FF94B9', 'in', '50', 'Product Opening Stock', '2019-09-18 17:45:09'),
+(6, '2', '4', 'D230FF', 'in', '50', 'Product Opening Stock', '2019-09-18 17:46:28'),
+(7, '3', '5', '6EFF66', 'in', '100', 'Product Opening Stock', '2019-09-18 17:48:34'),
+(8, '3', '6', 'C0FF5C', 'in', '50', 'Product Opening Stock', '2019-09-18 17:55:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pupillary_distance`
+--
+
+CREATE TABLE `pupillary_distance` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pupillary_distance`
+--
+
+INSERT INTO `pupillary_distance` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Average / Don\'t Know PD', 1, '2019-09-16 17:51:54', NULL),
+(2, 'Get PD Measurement By App', 1, '2019-09-16 17:52:20', NULL),
+(3, 'Send Glasses For PD Check - 5 (Glasses Will Be Returned)', 1, '2019-09-16 17:53:03', NULL),
+(4, 'Send Glasses For PD Check - FREE (Glasses Not Returned)', 1, '2019-09-16 17:53:30', NULL),
+(5, '50', 1, '2019-09-16 17:53:46', NULL),
+(6, '50.5', 1, '2019-09-16 17:53:52', NULL),
+(7, '51', 1, '2019-09-16 17:53:59', NULL),
+(8, '51.5', 1, '2019-09-16 17:54:04', NULL),
+(9, '52', 1, '2019-09-16 17:54:09', NULL),
+(10, '52.5', 1, '2019-09-16 17:54:14', NULL),
+(11, '53', 1, '2019-09-16 17:54:19', NULL),
+(12, '53.5', 1, '2019-09-16 17:54:25', NULL),
+(13, '54', 1, '2019-09-16 17:54:30', NULL),
+(14, '54.5', 1, '2019-09-16 17:54:35', NULL),
+(15, '55', 1, '2019-09-16 17:54:48', NULL),
+(16, '55.5', 1, '2019-09-16 17:58:37', NULL),
+(17, '56', 1, '2019-09-16 17:58:43', NULL),
+(18, '56.5', 1, '2019-09-16 17:59:03', NULL),
+(19, '57', 1, '2019-09-16 17:59:11', NULL),
+(20, '57.5', 1, '2019-09-16 17:59:17', NULL),
+(21, '58', 1, '2019-09-16 17:59:20', NULL),
+(22, '58.5', 1, '2019-09-16 17:59:25', NULL),
+(23, '59', 1, '2019-09-16 17:59:29', NULL),
+(24, '59.5', 1, '2019-09-16 17:59:35', NULL),
+(25, '60', 1, '2019-09-16 17:59:44', NULL),
+(26, '60.5', 1, '2019-09-16 17:59:51', NULL),
+(27, '61', 1, '2019-09-16 17:59:56', NULL),
+(28, '61.5', 1, '2019-09-16 18:00:01', NULL),
+(29, '62', 1, '2019-09-16 18:00:21', NULL),
+(30, '62.5', 1, '2019-09-16 18:00:27', NULL),
+(31, '63', 1, '2019-09-16 18:00:31', NULL),
+(32, '63.5', 1, '2019-09-16 18:00:36', NULL),
+(33, '64', 1, '2019-09-16 18:00:42', NULL),
+(34, '64.5', 1, '2019-09-16 18:00:47', NULL),
+(35, '65', 1, '2019-09-16 18:00:51', NULL),
+(36, '65.5', 1, '2019-09-16 18:00:57', NULL),
+(37, '66', 1, '2019-09-16 18:01:01', NULL),
+(38, '66.5', 1, '2019-09-16 18:01:07', NULL),
+(39, '67', 1, '2019-09-16 18:01:12', NULL),
+(40, '67.5', 1, '2019-09-16 18:01:16', NULL),
+(41, '68', 1, '2019-09-16 18:01:21', NULL),
+(42, '68.5', 1, '2019-09-16 18:01:26', NULL),
+(43, '69', 1, '2019-09-16 18:01:32', NULL),
+(44, '69.5', 1, '2019-09-16 18:05:32', NULL),
+(45, '70', 1, '2019-09-16 18:05:32', NULL),
+(46, '70.5', 1, '2019-09-16 18:08:00', NULL),
+(47, '71', 1, '2019-09-16 18:08:00', NULL),
+(48, '71.5', 1, '2019-09-16 18:08:00', NULL),
+(49, '72', 1, '2019-09-16 18:08:00', NULL),
+(50, '72.5', 1, '2019-09-16 18:08:00', NULL),
+(51, '73', 1, '2019-09-16 18:08:00', NULL),
+(52, '73.5', 1, '2019-09-16 18:08:00', NULL),
+(53, '74', 1, '2019-09-16 18:08:00', NULL),
+(54, '74.5', 1, '2019-09-16 18:08:00', NULL),
+(55, '75', 1, '2019-09-16 18:08:00', NULL),
+(56, '75.5', 1, '2019-09-16 18:08:00', NULL),
+(57, '76', 1, '2019-09-16 18:08:00', NULL),
+(58, '76.5', 1, '2019-09-16 18:08:00', NULL),
+(59, '77', 1, '2019-09-16 18:08:00', NULL),
+(60, '77.5', 1, '2019-09-16 18:08:00', NULL),
+(61, '78', 1, '2019-09-16 18:08:00', NULL),
+(62, '78.5', 1, '2019-09-16 18:08:00', NULL),
+(63, '79', 1, '2019-09-16 18:08:00', NULL),
+(64, '79.5', 1, '2019-09-16 18:08:00', NULL),
+(65, '80', 1, '2019-09-16 18:08:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reglaze`
+--
+
+CREATE TABLE `reglaze` (
+  `id` int(11) NOT NULL,
+  `frame_id` varchar(100) NOT NULL,
+  `image` varchar(150) NOT NULL,
+  `price` varchar(150) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reglaze`
+--
+
+INSERT INTO `reglaze` (`id`, `frame_id`, `image`, `price`, `status`, `created_at`, `updated_at`) VALUES
+(1, '1', 'ebaaf87051f85e2e5e29b056d57eb452.png', '31.75', 1, '2019-09-17 17:58:21', '2019-09-17 18:20:19'),
+(2, '2', '80dd995de00788855ec152a19f9e2ad4.png', '42.33', 1, '2019-09-17 17:58:57', NULL),
+(3, '3', 'b629dc92bca5802add80bec84ed3336e.png', '52.91', 1, '2019-09-17 17:59:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -297,10 +541,10 @@ CREATE TABLE `site_settings` (
   `site_phone_2` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `site_fax_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `site_title` text COLLATE utf8_unicode_ci NOT NULL,
-  `site_meta_description` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `site_meta_keywords` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+  `site_meta_description` text COLLATE utf8_unicode_ci,
+  `site_meta_keywords` text COLLATE utf8_unicode_ci,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -319,8 +563,8 @@ INSERT INTO `site_settings` (`id`, `site_name`, `site_sender_name`, `site_receiv
 CREATE TABLE `specs` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1 = Active, 0= Inactive',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1 = Active, 0= Inactive',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -345,10 +589,10 @@ CREATE TABLE `users` (
   `phone` varchar(50) DEFAULT NULL,
   `gender` enum('Male','Female') NOT NULL DEFAULT 'Male',
   `login_password` varchar(100) NOT NULL,
-  `login_type` tinyint(2) NOT NULL DEFAULT 2 COMMENT '1=>Admin, 2=>User',
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=Active, 0=InActive',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `login_type` tinyint(2) NOT NULL DEFAULT '2' COMMENT '1=>Admin, 2=>User',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=Active, 0=InActive',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -378,8 +622,8 @@ CREATE TABLE `user_addresses` (
   `country_id` int(11) NOT NULL,
   `state_id` int(11) NOT NULL,
   `city_id` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -400,7 +644,7 @@ CREATE TABLE `user_cities` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `state_id` int(11) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=>Active, 0=>InActive'
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=>Active, 0=>InActive'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -48387,260 +48631,9 @@ CREATE TABLE `user_countries` (
   `sortname` varchar(3) NOT NULL,
   `name` varchar(150) NOT NULL,
   `phonecode` int(11) NOT NULL,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=>Active, 0=>InActive'
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=>Active, 0=>InActive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `user_countries`
---
-
-INSERT INTO `user_countries` (`id`, `sortname`, `name`, `phonecode`, `status`) VALUES
-(1, 'AF', 'Afghanistan', 93, 0),
-(2, 'AL', 'Albania', 355, 0),
-(3, 'DZ', 'Algeria', 213, 0),
-(4, 'AS', 'American Samoa', 1684, 0),
-(5, 'AD', 'Andorra', 376, 0),
-(6, 'AO', 'Angola', 244, 0),
-(7, 'AI', 'Anguilla', 1264, 0),
-(8, 'AQ', 'Antarctica', 0, 0),
-(9, 'AG', 'Antigua And Barbuda', 1268, 0),
-(10, 'AR', 'Argentina', 54, 0),
-(11, 'AM', 'Armenia', 374, 0),
-(12, 'AW', 'Aruba', 297, 0),
-(13, 'AU', 'Australia', 61, 0),
-(14, 'AT', 'Austria', 43, 0),
-(15, 'AZ', 'Azerbaijan', 994, 0),
-(16, 'BS', 'Bahamas The', 1242, 0),
-(17, 'BH', 'Bahrain', 973, 0),
-(18, 'BD', 'Bangladesh', 880, 0),
-(19, 'BB', 'Barbados', 1246, 0),
-(20, 'BY', 'Belarus', 375, 0),
-(21, 'BE', 'Belgium', 32, 0),
-(22, 'BZ', 'Belize', 501, 0),
-(23, 'BJ', 'Benin', 229, 0),
-(24, 'BM', 'Bermuda', 1441, 0),
-(25, 'BT', 'Bhutan', 975, 0),
-(26, 'BO', 'Bolivia', 591, 0),
-(27, 'BA', 'Bosnia and Herzegovina', 387, 0),
-(28, 'BW', 'Botswana', 267, 0),
-(29, 'BV', 'Bouvet Island', 0, 0),
-(30, 'BR', 'Brazil', 55, 0),
-(31, 'IO', 'British Indian Ocean Territory', 246, 0),
-(32, 'BN', 'Brunei', 673, 0),
-(33, 'BG', 'Bulgaria', 359, 0),
-(34, 'BF', 'Burkina Faso', 226, 0),
-(35, 'BI', 'Burundi', 257, 0),
-(36, 'KH', 'Cambodia', 855, 0),
-(37, 'CM', 'Cameroon', 237, 0),
-(38, 'CA', 'Canada', 1, 0),
-(39, 'CV', 'Cape Verde', 238, 0),
-(40, 'KY', 'Cayman Islands', 1345, 0),
-(41, 'CF', 'Central African Republic', 236, 0),
-(42, 'TD', 'Chad', 235, 0),
-(43, 'CL', 'Chile', 56, 0),
-(44, 'CN', 'China', 86, 0),
-(45, 'CX', 'Christmas Island', 61, 0),
-(46, 'CC', 'Cocos (Keeling) Islands', 672, 0),
-(47, 'CO', 'Colombia', 57, 0),
-(48, 'KM', 'Comoros', 269, 0),
-(49, 'CG', 'Republic Of The Congo', 242, 0),
-(50, 'CD', 'Democratic Republic Of The Congo', 242, 0),
-(51, 'CK', 'Cook Islands', 682, 0),
-(52, 'CR', 'Costa Rica', 506, 0),
-(53, 'CI', 'Cote D\'Ivoire (Ivory Coast)', 225, 0),
-(54, 'HR', 'Croatia (Hrvatska)', 385, 0),
-(55, 'CU', 'Cuba', 53, 0),
-(56, 'CY', 'Cyprus', 357, 0),
-(57, 'CZ', 'Czech Republic', 420, 0),
-(58, 'DK', 'Denmark', 45, 0),
-(59, 'DJ', 'Djibouti', 253, 0),
-(60, 'DM', 'Dominica', 1767, 0),
-(61, 'DO', 'Dominican Republic', 1809, 0),
-(62, 'TP', 'East Timor', 670, 0),
-(63, 'EC', 'Ecuador', 593, 0),
-(64, 'EG', 'Egypt', 20, 0),
-(65, 'SV', 'El Salvador', 503, 0),
-(66, 'GQ', 'Equatorial Guinea', 240, 0),
-(67, 'ER', 'Eritrea', 291, 0),
-(68, 'EE', 'Estonia', 372, 0),
-(69, 'ET', 'Ethiopia', 251, 0),
-(70, 'XA', 'External Territories of Australia', 61, 0),
-(71, 'FK', 'Falkland Islands', 500, 0),
-(72, 'FO', 'Faroe Islands', 298, 0),
-(73, 'FJ', 'Fiji Islands', 679, 0),
-(74, 'FI', 'Finland', 358, 0),
-(75, 'FR', 'France', 33, 0),
-(76, 'GF', 'French Guiana', 594, 0),
-(77, 'PF', 'French Polynesia', 689, 0),
-(78, 'TF', 'French Southern Territories', 0, 0),
-(79, 'GA', 'Gabon', 241, 0),
-(80, 'GM', 'Gambia The', 220, 0),
-(81, 'GE', 'Georgia', 995, 0),
-(82, 'DE', 'Germany', 49, 0),
-(83, 'GH', 'Ghana', 233, 0),
-(84, 'GI', 'Gibraltar', 350, 0),
-(85, 'GR', 'Greece', 30, 0),
-(86, 'GL', 'Greenland', 299, 0),
-(87, 'GD', 'Grenada', 1473, 0),
-(88, 'GP', 'Guadeloupe', 590, 0),
-(89, 'GU', 'Guam', 1671, 0),
-(90, 'GT', 'Guatemala', 502, 0),
-(91, 'XU', 'Guernsey and Alderney', 44, 0),
-(92, 'GN', 'Guinea', 224, 0),
-(93, 'GW', 'Guinea-Bissau', 245, 0),
-(94, 'GY', 'Guyana', 592, 0),
-(95, 'HT', 'Haiti', 509, 0),
-(96, 'HM', 'Heard and McDonald Islands', 0, 0),
-(97, 'HN', 'Honduras', 504, 0),
-(98, 'HK', 'Hong Kong S.A.R.', 852, 0),
-(99, 'HU', 'Hungary', 36, 0),
-(100, 'IS', 'Iceland', 354, 0),
-(101, 'IN', 'India', 91, 0),
-(102, 'ID', 'Indonesia', 62, 0),
-(103, 'IR', 'Iran', 98, 0),
-(104, 'IQ', 'Iraq', 964, 0),
-(105, 'IE', 'Ireland', 353, 0),
-(106, 'IL', 'Israel', 972, 0),
-(107, 'IT', 'Italy', 39, 0),
-(108, 'JM', 'Jamaica', 1876, 0),
-(109, 'JP', 'Japan', 81, 0),
-(110, 'XJ', 'Jersey', 44, 0),
-(111, 'JO', 'Jordan', 962, 0),
-(112, 'KZ', 'Kazakhstan', 7, 0),
-(113, 'KE', 'Kenya', 254, 0),
-(114, 'KI', 'Kiribati', 686, 0),
-(115, 'KP', 'Korea North', 850, 0),
-(116, 'KR', 'Korea South', 82, 0),
-(117, 'KW', 'Kuwait', 965, 0),
-(118, 'KG', 'Kyrgyzstan', 996, 0),
-(119, 'LA', 'Laos', 856, 0),
-(120, 'LV', 'Latvia', 371, 0),
-(121, 'LB', 'Lebanon', 961, 0),
-(122, 'LS', 'Lesotho', 266, 0),
-(123, 'LR', 'Liberia', 231, 0),
-(124, 'LY', 'Libya', 218, 0),
-(125, 'LI', 'Liechtenstein', 423, 0),
-(126, 'LT', 'Lithuania', 370, 0),
-(127, 'LU', 'Luxembourg', 352, 0),
-(128, 'MO', 'Macau S.A.R.', 853, 0),
-(129, 'MK', 'Macedonia', 389, 0),
-(130, 'MG', 'Madagascar', 261, 0),
-(131, 'MW', 'Malawi', 265, 0),
-(132, 'MY', 'Malaysia', 60, 0),
-(133, 'MV', 'Maldives', 960, 0),
-(134, 'ML', 'Mali', 223, 0),
-(135, 'MT', 'Malta', 356, 0),
-(136, 'XM', 'Man (Isle of)', 44, 0),
-(137, 'MH', 'Marshall Islands', 692, 0),
-(138, 'MQ', 'Martinique', 596, 0),
-(139, 'MR', 'Mauritania', 222, 0),
-(140, 'MU', 'Mauritius', 230, 0),
-(141, 'YT', 'Mayotte', 269, 0),
-(142, 'MX', 'Mexico', 52, 0),
-(143, 'FM', 'Micronesia', 691, 0),
-(144, 'MD', 'Moldova', 373, 0),
-(145, 'MC', 'Monaco', 377, 0),
-(146, 'MN', 'Mongolia', 976, 0),
-(147, 'MS', 'Montserrat', 1664, 0),
-(148, 'MA', 'Morocco', 212, 0),
-(149, 'MZ', 'Mozambique', 258, 0),
-(150, 'MM', 'Myanmar', 95, 0),
-(151, 'NA', 'Namibia', 264, 0),
-(152, 'NR', 'Nauru', 674, 0),
-(153, 'NP', 'Nepal', 977, 0),
-(154, 'AN', 'Netherlands Antilles', 599, 0),
-(155, 'NL', 'Netherlands The', 31, 0),
-(156, 'NC', 'New Caledonia', 687, 0),
-(157, 'NZ', 'New Zealand', 64, 0),
-(158, 'NI', 'Nicaragua', 505, 0),
-(159, 'NE', 'Niger', 227, 0),
-(160, 'NG', 'Nigeria', 234, 0),
-(161, 'NU', 'Niue', 683, 0),
-(162, 'NF', 'Norfolk Island', 672, 0),
-(163, 'MP', 'Northern Mariana Islands', 1670, 0),
-(164, 'NO', 'Norway', 47, 0),
-(165, 'OM', 'Oman', 968, 0),
-(166, 'PK', 'Pakistan', 92, 0),
-(167, 'PW', 'Palau', 680, 0),
-(168, 'PS', 'Palestinian Territory Occupied', 970, 0),
-(169, 'PA', 'Panama', 507, 0),
-(170, 'PG', 'Papua new Guinea', 675, 0),
-(171, 'PY', 'Paraguay', 595, 0),
-(172, 'PE', 'Peru', 51, 0),
-(173, 'PH', 'Philippines', 63, 0),
-(174, 'PN', 'Pitcairn Island', 0, 0),
-(175, 'PL', 'Poland', 48, 0),
-(176, 'PT', 'Portugal', 351, 0),
-(177, 'PR', 'Puerto Rico', 1787, 0),
-(178, 'QA', 'Qatar', 974, 0),
-(179, 'RE', 'Reunion', 262, 0),
-(180, 'RO', 'Romania', 40, 0),
-(181, 'RU', 'Russia', 70, 0),
-(182, 'RW', 'Rwanda', 250, 0),
-(183, 'SH', 'Saint Helena', 290, 0),
-(184, 'KN', 'Saint Kitts And Nevis', 1869, 0),
-(185, 'LC', 'Saint Lucia', 1758, 0),
-(186, 'PM', 'Saint Pierre and Miquelon', 508, 0),
-(187, 'VC', 'Saint Vincent And The Grenadines', 1784, 0),
-(188, 'WS', 'Samoa', 684, 0),
-(189, 'SM', 'San Marino', 378, 0),
-(190, 'ST', 'Sao Tome and Principe', 239, 0),
-(191, 'SA', 'Saudi Arabia', 966, 0),
-(192, 'SN', 'Senegal', 221, 0),
-(193, 'RS', 'Serbia', 381, 0),
-(194, 'SC', 'Seychelles', 248, 0),
-(195, 'SL', 'Sierra Leone', 232, 0),
-(196, 'SG', 'Singapore', 65, 0),
-(197, 'SK', 'Slovakia', 421, 0),
-(198, 'SI', 'Slovenia', 386, 0),
-(199, 'XG', 'Smaller Territories of the UK', 44, 0),
-(200, 'SB', 'Solomon Islands', 677, 0),
-(201, 'SO', 'Somalia', 252, 0),
-(202, 'ZA', 'South Africa', 27, 0),
-(203, 'GS', 'South Georgia', 0, 0),
-(204, 'SS', 'South Sudan', 211, 0),
-(205, 'ES', 'Spain', 34, 0),
-(206, 'LK', 'Sri Lanka', 94, 0),
-(207, 'SD', 'Sudan', 249, 0),
-(208, 'SR', 'Suriname', 597, 0),
-(209, 'SJ', 'Svalbard And Jan Mayen Islands', 47, 0),
-(210, 'SZ', 'Swaziland', 268, 0),
-(211, 'SE', 'Sweden', 46, 0),
-(212, 'CH', 'Switzerland', 41, 0),
-(213, 'SY', 'Syria', 963, 0),
-(214, 'TW', 'Taiwan', 886, 0),
-(215, 'TJ', 'Tajikistan', 992, 0),
-(216, 'TZ', 'Tanzania', 255, 0),
-(217, 'TH', 'Thailand', 66, 0),
-(218, 'TG', 'Togo', 228, 0),
-(219, 'TK', 'Tokelau', 690, 0),
-(220, 'TO', 'Tonga', 676, 0),
-(221, 'TT', 'Trinidad And Tobago', 1868, 0),
-(222, 'TN', 'Tunisia', 216, 0),
-(223, 'TR', 'Turkey', 90, 0),
-(224, 'TM', 'Turkmenistan', 7370, 0),
-(225, 'TC', 'Turks And Caicos Islands', 1649, 0),
-(226, 'TV', 'Tuvalu', 688, 0),
-(227, 'UG', 'Uganda', 256, 0),
-(228, 'UA', 'Ukraine', 380, 0),
-(229, 'AE', 'United Arab Emirates', 971, 0),
-(230, 'GB', 'United Kingdom', 44, 1),
-(231, 'US', 'United States', 1, 0),
-(232, 'UM', 'United States Minor Outlying Islands', 1, 0),
-(233, 'UY', 'Uruguay', 598, 0),
-(234, 'UZ', 'Uzbekistan', 998, 0),
-(235, 'VU', 'Vanuatu', 678, 0),
-(236, 'VA', 'Vatican City State (Holy See)', 39, 0),
-(237, 'VE', 'Venezuela', 58, 0),
-(238, 'VN', 'Vietnam', 84, 0),
-(239, 'VG', 'Virgin Islands (British)', 1284, 0),
-(240, 'VI', 'Virgin Islands (US)', 1340, 0),
-(241, 'WF', 'Wallis And Futuna Islands', 681, 0),
-(242, 'EH', 'Western Sahara', 212, 0),
-(243, 'YE', 'Yemen', 967, 0),
-(244, 'YU', 'Yugoslavia', 38, 0),
-(245, 'ZM', 'Zambia', 260, 0),
-(246, 'ZW', 'Zimbabwe', 263, 0);
+-- Error reading data for table spectogo.user_countries: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `spectogo`.`user_countries`' at line 1
 
 -- --------------------------------------------------------
 
@@ -48651,8 +48644,8 @@ INSERT INTO `user_countries` (`id`, `sortname`, `name`, `phonecode`, `status`) V
 CREATE TABLE `user_states` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
-  `country_id` int(11) NOT NULL DEFAULT 1,
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=>Active, 0=>InActive'
+  `country_id` int(11) NOT NULL DEFAULT '1',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1=>Active, 0=>InActive'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -52757,15 +52750,6 @@ INSERT INTO `user_states` (`id`, `name`, `country_id`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `view_product_listing`
--- (See below for the actual view)
---
-CREATE TABLE `view_product_listing` (
-);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `wishlists`
 --
 
@@ -52783,15 +52767,6 @@ INSERT INTO `wishlists` (`id`, `id_products`, `id_users`) VALUES
 (2, 1, 3),
 (3, 2, 3),
 (4, 3, 3);
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_product_listing`
---
-DROP TABLE IF EXISTS `view_product_listing`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_product_listing`  AS  select `p`.`id` AS `id`,`p`.`name` AS `name`,`p`.`slug` AS `slug`,`p`.`cat_id` AS `cat_id`,`p`.`sub_cat_id` AS `sub_cat_id`,`p`.`brand_id` AS `brand_id`,`p`.`description` AS `description`,`p`.`primary_image` AS `primary_image`,`p`.`quantity` AS `quantity`,`p`.`purchase_quantity` AS `purchase_quantity`,`p`.`price` AS `price`,`p`.`sell_price` AS `sell_price`,`p`.`set_discount` AS `set_discount`,`p`.`discount_percentage` AS `discount_percentage`,`p`.`seller_id` AS `seller_id`,`p`.`status` AS `status`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at`,if(`p`.`discount_percentage` > 0,format(`p`.`sell_price` - `p`.`sell_price` * `p`.`discount_percentage` / 100,2),`p`.`sell_price`) AS `display_discount_price`,`pb`.`name` AS `product_brand`,`pb`.`slug` AS `brand_slug`,`c`.`slug` AS `cat_slug`,`sc`.`slug` AS `sub_cat_slug`,(select group_concat(distinct `si`.`name` separator ',') from (`product_variations` `pv` join `product_sizes` `si` on(`pv`.`size_id` = `si`.`id`)) where `pv`.`product_id` = `p`.`id`) AS `product_sizes`,(select group_concat(distinct `pc`.`name` separator ',') AS `product_colors` from (`product_variations` `pv` join `product_colors` `pc` on(`pv`.`color_id` = `pc`.`id`)) where `pv`.`product_id` = `p`.`id` and `pv`.`color_id` <> 0) AS `product_colors`,(select group_concat(distinct `pc`.`color_code` separator '**') from (`product_variations` `pv` join `product_colors` `pc` on(`pv`.`color_id` = `pc`.`id`)) where `pv`.`product_id` = `p`.`id`) AS `color_codes` from (((`products` `p` join `categories` `c` on(`p`.`cat_id` = `c`.`id`)) left join `sub_categories` `sc` on(`p`.`sub_cat_id` = `sc`.`id`)) join `product_brands` `pb` on(`p`.`brand_id` = `pb`.`id`)) ;
 
 --
 -- Indexes for dumped tables
@@ -52822,6 +52797,30 @@ ALTER TABLE `frames`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `lenses_and_tints`
+--
+ALTER TABLE `lenses_and_tints`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lenses_and_tints_details`
+--
+ALTER TABLE `lenses_and_tints_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lens_category`
+--
+ALTER TABLE `lens_category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lens_sub_category`
+--
+ALTER TABLE `lens_sub_category`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -52843,6 +52842,18 @@ ALTER TABLE `product_images`
 -- Indexes for table `product_ledger`
 --
 ALTER TABLE `product_ledger`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pupillary_distance`
+--
+ALTER TABLE `pupillary_distance`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reglaze`
+--
+ALTER TABLE `reglaze`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -52924,28 +52935,64 @@ ALTER TABLE `frames`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `lenses_and_tints`
+--
+ALTER TABLE `lenses_and_tints`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `lenses_and_tints_details`
+--
+ALTER TABLE `lenses_and_tints_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `lens_category`
+--
+ALTER TABLE `lens_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `lens_sub_category`
+--
+ALTER TABLE `lens_sub_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product_attribute`
 --
 ALTER TABLE `product_attribute`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `product_ledger`
 --
 ALTER TABLE `product_ledger`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `pupillary_distance`
+--
+ALTER TABLE `pupillary_distance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+
+--
+-- AUTO_INCREMENT for table `reglaze`
+--
+ALTER TABLE `reglaze`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `site_settings`
