@@ -258,6 +258,11 @@ class Admin extends Common_Controller {
             if($this->input->post('product_edit_id') == ''){
                 if(empty($this->cm->get_specific('products', array("LOWER(name)" => strtolower($this->input->post('productName')), "LOWER(sku)" => strtolower($this->input->post('productSKU')))))){
                     $files = $_FILES;
+                    if (!empty($files) && $files['mainImage']['name'] != '') {
+                        $mainImage = $this->commonFileUpload('assets/images/productImage/', $files['mainImage']['name'], 'mainImage');                        
+                    }else{
+                        $mainImage = '';
+                    }
                     $insertArray = array(
                         "name"                  => $this->input->post('productName'),
                         "slug"                  => str_replace(' ', '-', strtolower($this->input->post('productName'))).'-'.str_replace(' ', '-', strtolower($this->input->post('productSKU'))),
@@ -266,12 +271,7 @@ class Admin extends Common_Controller {
                         "frame_id"              => $this->input->post('productFrame'),
                         "brand_id"              => $this->input->post('productBrand'),
                         "description"           => $this->input->post('productDesc'),
-                        "main_color"            => $this->input->post('productColor'),
-                        "main_color_name"       => $this->input->post('productColorName'),
-                        "price"                 => $this->input->post('productPrice'),
-                        "sell_price"            => $this->input->post('productSellPrice'),
-                        "discount"              => $this->input->post('productDiscount'),
-                        "stock"                 => $this->input->post('productStock'),
+                        "primary_image"         => $mainImage,
                         "arm"                   => $this->input->post('productArm'),
                         "bridge"                => $this->input->post('productBridge'),
                         "lens"                  => $this->input->post('productLens'),
@@ -285,57 +285,6 @@ class Admin extends Common_Controller {
                         "suitable_for_tints"    => $this->input->post('productSuitableforTints')
                     );
                     $prodId = $this->cm->insert('products', $insertArray);
-                    $insertArrayTwo = array(
-                        "product_id"    => $prodId,
-                        "color"         => $this->input->post('productColor'),
-                        "color_name"    => $this->input->post('productColorName'),
-                        "price"         => $this->input->post('productPrice'),
-                        "sell_price"    => $this->input->post('productSellPrice'),
-                        "discount"      => $this->input->post('productDiscount'),
-                        "stock"         => $this->input->post('productStock')
-                    );
-                    $atrId = $this->cm->insert('product_attribute', $insertArrayTwo);
-                    $this->productLedger($prodId, $atrId, $this->input->post('productColor'), 'in', $this->input->post('productStock'), 'Product Opening Stock');
-                    if(count($files['moreImage']['name'])> 0){
-                        $fileArray = $files['moreImage'];
-                        $upPath = FCPATH . 'assets/images/productImage/';
-                        if (!file_exists($upPath)) {
-                            mkdir($upPath, 0777, true);
-                        }
-                        $config = array(
-                            'upload_path' => $upPath,
-                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
-                            'overwrite' => TRUE,
-                            'max_size' => "8192000",
-                            'encrypt_name' => TRUE
-                        );
-                        for($p = 0; $p<count($fileArray['name']); $p++){
-                            $tmp = '';
-                            if($fileArray['name'][$p] !='' ){
-                                $_FILES['file']['name']     = $fileArray['name'][$p];
-                                $_FILES['file']['type']     = $fileArray['type'][$p];
-                                $_FILES['file']['tmp_name'] = $fileArray['tmp_name'][$p];
-                                $_FILES['file']['error']    = $fileArray['error'][$p];
-                                $_FILES['file']['size']     = $fileArray['size'][$p];
-                                $config['file_name']        = time().$fileArray['name'][$p];
-                                $this->upload->initialize($config);
-                                if($this->upload->do_upload('file')){
-                                    $imageDetailArray = $this->upload->data();
-                                    if($p == 0){
-                                        $tmp = 'primary_image';
-                                    }elseif($p == 1){
-                                        $tmp = 'primary_image_one';
-                                    }elseif($p == 2){
-                                        $tmp = 'primary_image_two';
-                                    }else{
-                                        $tmp = 'primary_image_three';
-                                    }
-                                    $this->cm->update('products', array("id" => $prodId), array($tmp => $imageDetailArray['file_name']));
-                                    $this->cm->insert('product_images', array("product_id" => $prodId, "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
-                                }
-                            }
-                        }
-                    }
                     $this->session->set_flashdata('msg', 'Product Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Already Exists !!!');
@@ -343,10 +292,11 @@ class Admin extends Common_Controller {
             }else{
                 if(empty($this->cm->get_specific('products', array("LOWER(name)" => strtolower($this->input->post('productName')), "LOWER(sku)" => strtolower($this->input->post('productSKU')), "id != " => $this->input->post('product_edit_id'))))){
                     $files = $_FILES;
-                    $old_primary_image = $this->input->post('old_primary_image');
-                    $old_primary_image_one = $this->input->post('old_primary_image_one');
-                    $old_primary_image_two = $this->input->post('old_primary_image_two');
-                    $old_primary_image_three = $this->input->post('old_primary_image_three'); 
+                    if (!empty($files) && $files['mainImage']['name'] != '') {
+                        $mainImage = $this->commonFileUpload('assets/images/productImage/', $files['mainImage']['name'], 'mainImage', $this->input->post('old_primary_image'));                        
+                    }else{
+                        $mainImage = $this->input->post('old_primary_image');
+                    }
                     $updateArray = array(
                         "name"                  => $this->input->post('productName'),
                         "cat_id"                => $this->input->post('productCat'),
@@ -354,12 +304,7 @@ class Admin extends Common_Controller {
                         "frame_id"              => $this->input->post('productFrame'),
                         "brand_id"              => $this->input->post('productBrand'),
                         "description"           => $this->input->post('productDesc'),
-                        "main_color"            => $this->input->post('productColor'),
-                        "main_color_name"       => $this->input->post('productColorName'),
-                        "price"                 => $this->input->post('productPrice'),
-                        "sell_price"            => $this->input->post('productSellPrice'),
-                        "discount"              => $this->input->post('productDiscount'),
-                        "stock"                 => $this->input->post('productStock'),
+                        "primary_image"         => $mainImage,
                         "arm"                   => $this->input->post('productArm'),
                         "bridge"                => $this->input->post('productBridge'),
                         "lens"                  => $this->input->post('productLens'),
@@ -373,92 +318,7 @@ class Admin extends Common_Controller {
                         "suitable_for_tints"    => $this->input->post('productSuitableforTints'),
                         "updated_at"            => date('Y-m-d H:i:s')
                     );
-                    if($old_primary_image != ''){
-                        $updateArray['primary_image'] = $old_primary_image;
-                    }
-                    if($old_primary_image_one != ''){
-                        $updateArray['primary_image_one'] = $old_primary_image_one;
-                    }
-                    if($old_primary_image_two != ''){
-                        $updateArray['primary_image_two'] = $old_primary_image_two;
-                    }
-                    if($old_primary_image_three != ''){
-                        $updateArray['primary_image_three'] = $old_primary_image_three;
-                    }
                     $this->cm->update('products', array("id" => $this->input->post('product_edit_id')), $updateArray);
-                    $prodAttr = $this->cm->get_specific('product_attribute', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')));
-                    $prodAttrId = $prodAttr[0]->id;
-                    if($this->input->post('productColor') != $this->input->post('old_productColor')){
-                        $this->cm->update('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')), array("color" => $this->input->post('productColor')));
-                        $this->cm->update('product_ledger', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('old_productColor')), array("color" => $this->input->post('productColor')));
-                    }
-                    if($this->input->post('productStock') != $this->input->post('old_productStock')){
-                        if($this->input->post('productStock') > $this->input->post('old_productStock')){
-                            $inout = 'in';
-                            $quantity = $this->input->post('productStock') - $this->input->post('old_productStock');
-                        }elseif($this->input->post('productStock') < $this->input->post('old_productStock')){
-                            $inout = 'out';
-                            $quantity = $this->input->post('old_productStock') - $this->input->post('productStock');
-                        }
-                        $this->productLedger($this->input->post('product_edit_id'), $prodAttrId, $this->input->post('productColor'), $inout, $quantity, 'Product Stock Adjustment');
-                    }
-                    $updateArray = array(
-                        "color"         => $this->input->post('productColor'),
-                        "color_name"    => $this->input->post('productColorName'),
-                        "price"         => $this->input->post('productPrice'),
-                        "sell_price"    => $this->input->post('productSellPrice'),
-                        "discount"      => $this->input->post('productDiscount'),
-                        "stock"         => $this->input->post('productStock'),
-                        "updated_at"    => date('Y-m-d H:i:s')
-                    );
-                    $this->cm->update('product_attribute', array("id" => $prodAttrId), $updateArray);                    
-                    if(count($files['moreImage']['name'])> 0){
-                        $fileArray = $files['moreImage'];
-                        $upPath = FCPATH . 'assets/images/productImage/';
-                        if (!file_exists($upPath)) {
-                            mkdir($upPath, 0777, true);
-                        }
-                        $config = array(
-                            'upload_path' => $upPath,
-                            'allowed_types' => "gif|jpg|png|jpeg|JPEG|JPG|GIF|PNG",
-                            'overwrite' => TRUE,
-                            'max_size' => "8192000",
-                            'encrypt_name' => TRUE
-                        );
-                        for($p = 0; $p<count($fileArray['name']); $p++){
-                            $tmp = '';
-                            if($fileArray['name'][$p] !='' ){
-                                $_FILES['file']['name']     = $fileArray['name'][$p];
-                                $_FILES['file']['type']     = $fileArray['type'][$p];
-                                $_FILES['file']['tmp_name'] = $fileArray['tmp_name'][$p];
-                                $_FILES['file']['error']    = $fileArray['error'][$p];
-                                $_FILES['file']['size']     = $fileArray['size'][$p];
-                                $config['file_name']        = time().$fileArray['name'][$p];
-                                $this->upload->initialize($config);
-                                if($this->upload->do_upload('file')){
-                                    $imageDetailArray = $this->upload->data();
-                                    if($old_primary_image == ''){
-                                        $tmp = 'primary_image';
-                                        $old_primary_image = 'notnull';
-                                    }
-                                    if($old_primary_image_one == ''){
-                                        $tmp = 'primary_image_one';
-                                        $old_primary_image_one = 'notnull';
-                                    }
-                                    if($old_primary_image_two == ''){
-                                        $tmp = 'primary_image_two';
-                                        $old_primary_image_two = 'notnull';
-                                    }
-                                    if($old_primary_image_three == ''){
-                                        $tmp = 'primary_image_three';
-                                        $old_primary_image_three = 'notnull';
-                                    }
-                                    $this->cm->update('products', array("id" => $this->input->post('product_edit_id')), array($tmp => $imageDetailArray['file_name']));
-                                    $this->cm->insert('product_images', array("product_id" => $this->input->post('product_edit_id'), "color" => $this->input->post('productColor'), "image" => $imageDetailArray['file_name']));
-                                }
-                            }
-                        }
-                    }
                     $this->session->set_flashdata('msg', 'Product Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Product Already Exists !!!');
@@ -480,15 +340,6 @@ class Admin extends Common_Controller {
         $this->load->view('backend/layout/sidemenu');
         $this->load->view('backend/pages/add-product');
         $this->load->view('backend/layout/footer');
-    }
-    public function deletePrimaryImage(){
-        if($this->input->post()){
-        $this->cm->delete('product_images', array("image" => $this->input->post('image'), "product_id" => $this->input->post('prod_id')));
-        $this->cm->update('products', array("id" => $this->input->post('prod_id')), array($this->input->post('img_field') => ''));
-        if (file_exists(FCPATH.'assets/images/productImage/'.$this->input->post('image'))) {
-            unlink(FCPATH.'assets/images/productImage/'.$this->input->post('image'));
-        }
-        }
     }
     public function deleteRelImage(){
         $this->cm->delete('product_images', array("id" => $this->input->post('id')));

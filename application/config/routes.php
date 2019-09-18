@@ -62,6 +62,7 @@ $route['admin/edit-brand/(:any)']                       = 'Admin/addBrand/$1';
 $route['admin/product-management']                      = 'Admin/productManagement';
 $route['admin/add-product']                             = 'Admin/addProduct';
 $route['admin/edit-product/(:any)']                     = 'Admin/addProduct/$1';
+$route['admin/delete-primary-image']                    = 'Admin/deletePrimaryImage';
 $route['admin/add-product-attribute/(:any)']            = 'Admin/addProductAttribute/$1';
 $route['admin/save-product-attribute-details']          = 'Admin/saveProductAttributeDetails';
 $route['admin/get-attribute-details']                   = 'Admin/getAttributeDetails';

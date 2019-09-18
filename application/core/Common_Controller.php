@@ -347,9 +347,7 @@ class Common_Controller extends CI_Controller {
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
-       
-        
-        $this->sql .= ',p.id, p.name,p.name as productName,p.id as productId, p.slug, p.primary_image, p.description, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
+        $this->sql .= ',p.id, p.name,p.name as productName,p.id as productId, p.slug, p.primary_image, p.primary_image_one, p.primary_image_two, p.primary_image_three, p.description, p.main_color, p.main_color_name, p.price, p.sell_price, p.discount, p.stock, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
         $this->sql .= ',b.name brand_name';
         $this->sql .= ',s.name spec_name';
         $this->sql .= ',bn.image banner_image';
