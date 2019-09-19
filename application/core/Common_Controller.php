@@ -377,12 +377,21 @@ class Common_Controller extends CI_Controller {
                 } 
             } 
 
-            if($this->userId && $this->wishlist) {
-               // echo "ok";
-                
-                $this->condition[]  = array('wl.id_users' => $this->userId);
-                $this->joinWishlist = true;
+            if($this->userId) {
+               if($this->isProductAvailableInWishlist()) {
+                    $this->condition[]  = array('wl.id_users' => $this->userId);
+                    $this->joinWishlist = true;
+               } else {
+                    $this->condition[]  = array();
+                    $this->joinWishlist = false;
+               }
             }
+            if($this->userId && $this->wishlist) {
+                // echo "ok";
+                 
+                 $this->condition[]  = array('wl.id_users' => $this->userId);
+                 $this->joinWishlist = true;
+             }
 
         /** ########## Join tables start of code ########## */
             // Categories
@@ -448,41 +457,27 @@ class Common_Controller extends CI_Controller {
         }
          return false;
     }
-   
-
-   
-
     public function isPost() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             return true;
         }
         return false;
     }
-
     public function setRequest(array $request) {
-        //if($this->isPost()) {
             foreach($request as $key => $value){
                 $this->request[$key] = $_REQUEST[$key];
            }
-        // } else {
-        //     $this->request = array();
-        // }
         return $this;
     }
     public function getRequest() {
         return $this->request;
     }
-    
     public function filterArray($options = null) {
-
         $this->sql = '';
         $this->primaryTable = 'product_attribute pa';
         $this->condition = array();
-
         $this->setOptions($options);
-
          if(isset($this->options) || !empty($this->options) || $this->options != null) {
-            
             if(isset($this->options['productId']) || !empty($this->options['productId'])) {
                 if(is_array($this->options) && in_array($this->options['productId'], $this->options)) {
                     $this->setProductId($this->options['productId']);
@@ -495,7 +490,6 @@ class Common_Controller extends CI_Controller {
             }
         }
         $this->joinProduct = false;
-
         if($this->productId) {
             $this->joinProduct = true;
             $this->condition[]  = array("pa.product_id" => $this->productId);
@@ -549,12 +543,13 @@ class Common_Controller extends CI_Controller {
 
     public function loggedInUser() {
         if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
-            if(is_array($this->sessionVar) && in_array('user', $this->sessionVar)) {
+            if(is_array($this->sessionVar)) {
                 if(!empty($this->sessionVar['user']) || isset($this->sessionVar['user'])) {
-                    $this->setUser($this->sessionVar['user']);
+                    $this->setUser((array) $this->sessionVar['user']);
                 } 
             }
-        }
+        } 
+        return false;
     }
 
 
@@ -582,58 +577,15 @@ class Common_Controller extends CI_Controller {
         $this->session->unset_userdata('user');
         return true;
     }
-    public function filterLens($options = null) {
-        $this->sql = '';
-        $this->primaryTable = 'lens_category lc';
-        $this->condition = array();
-        $this->setOptions($options);
-        if(isset($this->options) || !empty($this->options) || $this->options != null) {
-            if(isset($this->options['lensCatId']) || !empty($this->options['lensCatId'])) {
-                if(is_array($this->options) && in_array($this->options['lensCatId'], $this->options)) {
-                    $this->setLensCatId($this->options['lensCatId']);
-                } 
-            }
-            if(isset($this->options['lensSubCatId']) || !empty($this->options['lensSubCatId'])) {
-                if(is_array($this->options) && in_array($this->options['lensSubCatId'], $this->options)) {
-                    $this->setLensSubCatId($this->options['lensSubCatId']);
-                } 
-            }
-            
+
+    public function isProductAvailableInWishlist() {
+        $this->resultArray = $this->db->get_where('wishlists', array('id_users' => $this->getUserId()))->result_array();
+        if(!empty($this->resultArray)) {
+            return true;
         }
-        $this->joinLens = false;
-        if($this->lensCatId) {
-            $this->joinLens = true;
-            $this->condition[]  = array("lc.id" => $this->lensCatId);
-            $this->condition[]  = array("lsc.status" => 1);
-        }
-        if($this->lensSubCatId) {
-            $this->joinLens = true;
-            $this->condition[]  = array("lsc.id" => $this->lensSubCatId);
-        }
-        $this->condition[]  = array("lc.status" => 1);
-        $condition = array();
-        if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
-            for($i = 0; $i < count($this->condition); $i++) {
-                foreach($this->condition[$i] as $k => $v) {
-                    $condition[$k] = $v;
-                }
-            }
-        }
-        $this->condition = $condition;
-        $this->sql .= 'lc.id lensCatId, lc.name as lensCatName';
-        // Join with product table
-        if($this->joinLens) {
-            $this->join[] = ['table' => 'lens_sub_category lsc', 'on' => 'lc.id = lsc.lens_cat_id', 'type' => 'left'];
-            $this->sql   .= ',lsc.id as lensSubCatId, lsc.name as lensSubCatName, lsc.description, lsc.image';
-        }
-        $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'lc.id', 'asc', $this->join);
-        if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
-            $this->filterArray = $this->resultArray;
-        } else {
-            $this->filterArray = array();
-        }
-        return $this->filterArray;
+        return false;
     }
+    
 
     
 }

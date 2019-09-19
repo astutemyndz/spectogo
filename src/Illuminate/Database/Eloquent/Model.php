@@ -403,7 +403,7 @@ abstract class Model implements ModelInterface
     public function all()
     {
         // TODO: Implement all() method.
-        return $this->db->get($this->table)->result();
+        return $this->db->order_by('id', 'ASC')->get($this->table)->result();
     }
     public function save(array $data)
     {

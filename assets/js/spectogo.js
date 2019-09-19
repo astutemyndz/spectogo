@@ -1,151 +1,207 @@
 
 
 var API_URL = 'http://localhost/spectogo';
-var banners = [];
-fetch(API_URL + '/banners')
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (myJson) {
-        let res = myJson;
-        //console.log(res);
-        let banners = myJson.data;
-        let bannerArr = [];
-        //console.log(banners);
-        $.each(banners, function (index, banner) {
-            // console.log(banner);
-            bannerArr.push(BannerComponent({
-                index: index,
-                banner: banner,
-                bannerImageUrl: res.bannerImageUrl
-            }));
-        })
-        /// console.log(bannerArr);
-        $bannerUL = $('#bannerUL');
-        $bannerUL.append(bannerArr.join(''));
+
+$(document).ready(function(){
+    // let $bannerUL = $('#bannerUL');
+    // $bannerUL.loading();
+    // setTimeout(function(){
+    //     $bannerUL.loading('stop');
+    // },1000);
+    // setTimeout(function(){
+    //     loadBanner();
+    // },1001);
+    var $bannerCategoryLink = $('.bannerCategoryLink');
+    $bannerCategoryLink.on('click', function () {
+        let categoryId = $(this).attr('data-categoryId');
+        let categoryName = $(this).attr('data-categoryName');
+        setTimeout(() => {
+            location.href = API_URL + '/product/category/' + categoryName;
+    
+        }, 300);
+    
     });
-
-
-const BannerComponent = function (props) {
-    //console.log(props);
-    let categoryName = props.banner.categoryName;
-    categoryName = categoryName.toUpperCase();
-    categoryName = categoryName.replace(" ", "_");
-    return ('<li class="tp-revslider-slidesli" data-categoryId="' + props.banner.categoryId + '" data-categoryName="' + props.banner.categoryName + '" data-transition="crossfade" data-param1="' + props.index + '" ><a href="' + API_URL + '/products/categories/' + categoryName + '"><img src="' + props.bannerImageUrl + props.banner.bannerImage + '" class="w-100 rev-slidebg " alt="' + categoryName + '" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
-}
-
-var $bannerCategoryLink = $('.bannerCategoryLink');
-
-$bannerCategoryLink.on('click', function () {
-    let categoryId = $(this).attr('data-categoryId');
-    let categoryName = $(this).attr('data-categoryName');
-    setTimeout(() => {
-        location.href = API_URL + '/product/category/' + categoryName;
-
-    }, 300);
-
-});
-
-if (page == 'product-details' || page == 'choose-your-lens') {
-    var owl = $('.owl-carousel');
-    $(document).ready(function () {
-        $('header').removeClass('home-header');
-        var bigimage = $("#big");
-        var thumbs = $("#thumbs");
-        //var totalslides = 10;
-        var syncedSecondary = true;
-
-        bigimage
-            .owlCarousel({
-                items: 1,
-                slideSpeed: 2000,
-                nav: false,
-                autoplay: true,
-                dots: false,
-                loop: true,
-                responsiveRefreshRate: 200,
-                navText: [
-        '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        '<i class="fa fa-arrow-right" aria-hidden="true"></i>'
-      ]
-            })
-            .on("changed.owl.carousel", syncPosition);
-
-        thumbs
-            .on("initialized.owl.carousel", function () {
+    if (page == 'product-details' || page == 'choose-your-lens') {
+        var owl = $('.owl-carousel');
+        $(document).ready(function () {
+            $('header').removeClass('home-header');
+            var bigimage = $("#big");
+            var thumbs = $("#thumbs");
+            //var totalslides = 10;
+            var syncedSecondary = true;
+    
+            bigimage
+                .owlCarousel({
+                    items: 1,
+                    slideSpeed: 2000,
+                    nav: false,
+                    autoplay: true,
+                    dots: false,
+                    loop: true,
+                    responsiveRefreshRate: 200,
+                    navText: [
+            '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
+            '<i class="fa fa-arrow-right" aria-hidden="true"></i>'
+          ]
+                })
+                .on("changed.owl.carousel", syncPosition);
+    
+            thumbs
+                .on("initialized.owl.carousel", function () {
+                    thumbs
+                        .find(".owl-item")
+                        .eq(0)
+                        .addClass("current");
+                })
+                .owlCarousel({
+                    items: 4,
+                    dots: true,
+                    nav: true,
+                    navText: [
+            '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
+            '<i class="fa fa-arrow-right" aria-hidden="true"></i>'
+          ],
+                    smartSpeed: 200,
+                    slideSpeed: 500,
+                    slideBy: 4,
+                    responsiveRefreshRate: 100
+                })
+                .on("changed.owl.carousel", syncPosition2);
+    
+            function syncPosition(el) {
+                //if loop is set to false, then you have to uncomment the next line
+                //var current = el.item.index;
+    
+                //to disable loop, comment this block
+                var count = el.item.count - 1;
+                var current = Math.round(el.item.index - el.item.count / 2 - 0.5);
+    
+                if (current < 0) {
+                    current = count;
+                }
+                if (current > count) {
+                    current = 0;
+                }
+                //to this
                 thumbs
                     .find(".owl-item")
-                    .eq(0)
+                    .removeClass("current")
+                    .eq(current)
                     .addClass("current");
-            })
-            .owlCarousel({
-                items: 4,
-                dots: true,
-                nav: true,
-                navText: [
-        '<i class="fa fa-arrow-left" aria-hidden="true"></i>',
-        '<i class="fa fa-arrow-right" aria-hidden="true"></i>'
-      ],
-                smartSpeed: 200,
-                slideSpeed: 500,
-                slideBy: 4,
-                responsiveRefreshRate: 100
-            })
-            .on("changed.owl.carousel", syncPosition2);
-
-        function syncPosition(el) {
-            //if loop is set to false, then you have to uncomment the next line
-            //var current = el.item.index;
-
-            //to disable loop, comment this block
-            var count = el.item.count - 1;
-            var current = Math.round(el.item.index - el.item.count / 2 - 0.5);
-
-            if (current < 0) {
-                current = count;
+                var onscreen = thumbs.find(".owl-item.active").length - 1;
+                var start = thumbs
+                    .find(".owl-item.active")
+                    .first()
+                    .index();
+                var end = thumbs
+                    .find(".owl-item.active")
+                    .last()
+                    .index();
+    
+                if (current > end) {
+                    thumbs.data("owl.carousel").to(current, 100, true);
+                }
+                if (current < start) {
+                    thumbs.data("owl.carousel").to(current - onscreen, 100, true);
+                }
             }
-            if (current > count) {
-                current = 0;
+    
+            function syncPosition2(el) {
+                if (syncedSecondary) {
+                    var number = el.item.index;
+                    bigimage.data("owl.carousel").to(number, 100, true);
+                }
             }
-            //to this
-            thumbs
-                .find(".owl-item")
-                .removeClass("current")
-                .eq(current)
-                .addClass("current");
-            var onscreen = thumbs.find(".owl-item.active").length - 1;
-            var start = thumbs
-                .find(".owl-item.active")
-                .first()
-                .index();
-            var end = thumbs
-                .find(".owl-item.active")
-                .last()
-                .index();
-
-            if (current > end) {
-                thumbs.data("owl.carousel").to(current, 100, true);
-            }
-            if (current < start) {
-                thumbs.data("owl.carousel").to(current - onscreen, 100, true);
-            }
-        }
-
-        function syncPosition2(el) {
-            if (syncedSecondary) {
-                var number = el.item.index;
-                bigimage.data("owl.carousel").to(number, 100, true);
-            }
-        }
-
-        thumbs.on("click", ".owl-item", function (e) {
-            e.preventDefault();
-            var number = $(this).index();
-            bigimage.data("owl.carousel").to(number, 300, true);
+    
+            thumbs.on("click", ".owl-item", function (e) {
+                e.preventDefault();
+                var number = $(this).index();
+                bigimage.data("owl.carousel").to(number, 300, true);
+            });
         });
-    });
-}
+    }
+    loadFooterCategoryComponent();
+    loadHeaderCategoryComponent();
+});
+// const loadBanner = function() {
+//     fetch(API_URL + '/banners')
+//       .then(function(response) {
+//         return response.json();
+//     }).then(function(myJson) {
+//         let res = myJson;
+//         let banners = myJson.data;
+//         let bannerArr = [];
+//         $.each(banners, function(index, banner) {
+//             bannerArr.push(BannerComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+//         })
+//        $bannerUL = $('#bannerUL');
+//        $bannerUL.append(bannerArr.join(''));
+//     });
+// }
 
+
+const BannerComponent = function(props) {
+    let categoryName = props.banner.categoryName;
+        categoryName = categoryName.toUpperCase();
+        categoryName = categoryName.replace(" ", "_");
+     return ('<li class="tp-revslider-slidesli " data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-transition="crossfade" data-param1="'+props.index+'" ><a href="'+API_URL+'/products/categories/'+categoryName+'"><img src="'+props.bannerImageUrl+props.banner.bannerImage+'" class="w-100 rev-slidebg " alt="'+categoryName+'" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
+}
+const loadHeaderCategoryComponent = function() {
+    var category = [];
+    fetch(API_URL + '/banners')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        let data = myJson.data;
+        $.each(data, function(index, banner) {
+            category.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+        });
+        $HeaderCategoryComponent = $('.HeaderCategoryComponent');
+        $HeaderCategoryComponent.loading();
+        setTimeout(function(){
+            $HeaderCategoryComponent.loading('stop');
+        },1000);
+        setTimeout(function(){
+            $HeaderCategoryComponent.prepend(category.join(''));
+            console.log('done');
+        },1001);
+       
+    });
+    
+}
+const loadFooterCategoryComponent = function() {
+    var bannerCategory = [];
+    fetch(API_URL + '/banners')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        let data = myJson.data;
+        $.each(data, function(index, banner) {
+            bannerCategory.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+        });
+        $FooterCategoryComponent = $('.FooterCategoryComponent');
+        $FooterCategoryComponent.loading();
+        setTimeout(function(){
+            $FooterCategoryComponent.loading('stop');
+        },1000);
+        setTimeout(function(){
+            $FooterCategoryComponent.prepend(bannerCategory.join(''));
+            console.log(' FooterCategoryComponent done');
+        },1001);
+       
+    });
+    
+}
+const CategoryComponent = function(props) {
+    let categoryName = props.banner.categoryName;
+        categoryName = categoryName.toUpperCase();
+        categoryName = categoryName.replace(" ", "_");
+     return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'/products/categories/'+categoryName+'">'+categoryName+'</a</li>');
+}
 
 // Private method
 const ProductComponent = function (props) {
@@ -190,11 +246,9 @@ const ProductComponent = function (props) {
             `<li style="background-color : #` + color + `"></li>`
         }) +
         `
-                    
-                </ul>
                 <div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                     <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
-                        <button data-id_products="` + props.product.id + `" data-id_users="` + props.user.id + `" data-wishlistId="` + props.product.wishlistId + `" type="button" class="text-uppercase btn btn-primary ` + style.wishlistButton.class + `"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
+                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
                     </div>
                 </div>
             </div>
