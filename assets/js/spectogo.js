@@ -1,31 +1,103 @@
 var API_URL = 'http://localhost/spectogo';
-var banners = [];
-fetch(API_URL + '/banners')
-  .then(function(response) {
-    return response.json();
-})
-  .then(function(myJson) {
-    let res = myJson;
-    //console.log(res);
-    let banners = myJson.data;
-    let bannerArr = [];
-    //console.log(banners);
-    $.each(banners, function(index, banner) {
-       // console.log(banner);
-        bannerArr.push(BannerComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
-    })
-   /// console.log(bannerArr);
-   $bannerUL = $('#bannerUL');
-   $bannerUL.append(bannerArr.join(''));
+
+$(document).ready(function(){
+    let $bannerUL = $('#bannerUL');
+    $bannerUL.loading();
+    setTimeout(function(){
+        $bannerUL.loading('stop');
+    },1000);
+    setTimeout(function(){
+        loadBanner();
+    },1001);
+    
+    loadFooterCategoryComponent();
+    loadHeaderCategoryComponent();
 });
+const loadBanner = function() {
+    var banners = [];
+    fetch(API_URL + '/banners')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        //console.log(res);
+        let banners = myJson.data;
+        let bannerArr = [];
+        //console.log(banners);
+        $.each(banners, function(index, banner) {
+           // console.log(banner);
+            bannerArr.push(BannerComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+        })
+       /// console.log(bannerArr);
+       $bannerUL = $('#bannerUL');
+       $bannerUL.append(bannerArr.join(''));
+    });
+    
+}
 
 
 const BannerComponent = function(props) {
-    //console.log(props);
     let categoryName = props.banner.categoryName;
         categoryName = categoryName.toUpperCase();
         categoryName = categoryName.replace(" ", "_");
-     return ('<li class="tp-revslider-slidesli" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-transition="crossfade" data-param1="'+props.index+'" ><a href="'+API_URL+'/products/categories/'+categoryName+'"><img src="'+props.bannerImageUrl+props.banner.bannerImage+'" class="w-100 rev-slidebg " alt="'+categoryName+'" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
+     return ('<li class="tp-revslider-slidesli " data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-transition="crossfade" data-param1="'+props.index+'" ><a href="'+API_URL+'/products/categories/'+categoryName+'"><img src="'+props.bannerImageUrl+props.banner.bannerImage+'" class="w-100 rev-slidebg " alt="'+categoryName+'" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
+}
+const loadHeaderCategoryComponent = function() {
+    var category = [];
+    fetch(API_URL + '/banners')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        let data = myJson.data;
+        $.each(data, function(index, banner) {
+            category.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+        });
+        $HeaderCategoryComponent = $('.HeaderCategoryComponent');
+        $HeaderCategoryComponent.loading();
+        setTimeout(function(){
+            $HeaderCategoryComponent.loading('stop');
+        },1000);
+        setTimeout(function(){
+            $HeaderCategoryComponent.prepend(category.join(''));
+            console.log('done');
+        },1001);
+       
+    });
+    
+}
+const loadFooterCategoryComponent = function() {
+    var bannerCategory = [];
+    fetch(API_URL + '/banners')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        let data = myJson.data;
+        $.each(data, function(index, banner) {
+            bannerCategory.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
+        });
+        $FooterCategoryComponent = $('.FooterCategoryComponent');
+        $FooterCategoryComponent.loading();
+        setTimeout(function(){
+            $FooterCategoryComponent.loading('stop');
+        },1000);
+        setTimeout(function(){
+            $FooterCategoryComponent.prepend(bannerCategory.join(''));
+            console.log(' FooterCategoryComponent done');
+        },1001);
+       
+    });
+    
+}
+const CategoryComponent = function(props) {
+    let categoryName = props.banner.categoryName;
+        categoryName = categoryName.toUpperCase();
+        categoryName = categoryName.replace(" ", "_");
+     return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'/products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
 
 var $bannerCategoryLink = $('.bannerCategoryLink');
@@ -189,7 +261,7 @@ const ProductComponent = function(props) {
                 </ul>
                 <div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                     <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
-                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
+                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
                     </div>
                 </div>
             </div>

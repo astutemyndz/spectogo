@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Models\Distance\PupillaryDistanceModel;
+use Services\Distance\PupillaryDistanceService;
 use Illuminate\Http\Response;
 class ApiController extends Common_Controller {
 
@@ -8,8 +9,12 @@ class ApiController extends Common_Controller {
     private $banners = array();
     private $chooseLense = false;
     private $productAdditionalImage = array();
+    private $pupillaryDistanceService;
+    private $pupillaryDistances;
+
     public function __construct() {
         parent::__construct();
+        $this->pupillaryDistanceService = new PupillaryDistanceService(new PupillaryDistanceModel());
     }
 
     public function setBanners($banners) {
@@ -49,6 +54,37 @@ class ApiController extends Common_Controller {
         $this->sendResponse();
         
     }
+    /**
+     * /PupillaryDistanceModel Api
+     */
+    public function distance() {
+        $this->pupillaryDistances = (array) $this->pupillaryDistanceService->getPupillaryDistance();
+        if(!empty($this->pupillaryDistances)) {
+            $this->setResponse(new Response(
+                array(
+                    'data' => $this->pupillaryDistances,
+                    'statusCode' => Response::HTTP_OK,
+                    'message' => Response::$statusTexts[200],
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            ));
+        } else {
+            $this->setResponse(new Response(
+                array(
+                    'data' => [],
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'message' => Response::$statusTexts[404],
+                    'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            ));
+        }
+       
+        $this->sendResponse();
+        
+    }
     public function setChooseLense($chooseLense) {
         $this->chooseLense = $chooseLense;
         return $this;
@@ -57,12 +93,13 @@ class ApiController extends Common_Controller {
      * /products Api
      */
     public function products() {
-        /**
-         * Only for post request
-         */
+        
+      
+        if(isLoggedIn()) {
+            $this->setUser((array)$this->sessionVar['user']);
+        }
         $this->setRequest($_REQUEST);
-        // print_r($this->getRequest());
-        // exit;
+
         if(isset($this->request['category']) || !empty($this->request['category'])) {
             $this->setCategory($this->request['category']);
         } 
@@ -113,7 +150,9 @@ class ApiController extends Common_Controller {
         } 
 
         if($this->user) {
-            $this->options[] = $this->user;
+            $this->options[] =  array(
+                'user' => $this->user
+            );
         }
         $options = array();
         if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
@@ -125,7 +164,8 @@ class ApiController extends Common_Controller {
         }
         $this->options = $options;
 
-
+        // echo "<pre>";
+        // print_r($this->options);
         if(isset($this->options) || !empty($this->options)) {
             $this->listOfProduct = $this->getProductListDetails($this->options);
         } else {

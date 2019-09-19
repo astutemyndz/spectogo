@@ -345,12 +345,21 @@ class Common_Controller extends CI_Controller {
                 } 
             } 
 
-            if($this->userId && $this->wishlist) {
-               // echo "ok";
-                
-                $this->condition[]  = array('wl.id_users' => $this->userId);
-                $this->joinWishlist = true;
+            if($this->userId) {
+               if($this->isProductAvailableInWishlist()) {
+                    $this->condition[]  = array('wl.id_users' => $this->userId);
+                    $this->joinWishlist = true;
+               } else {
+                    $this->condition[]  = array();
+                    $this->joinWishlist = false;
+               }
             }
+            if($this->userId && $this->wishlist) {
+                // echo "ok";
+                 
+                 $this->condition[]  = array('wl.id_users' => $this->userId);
+                 $this->joinWishlist = true;
+             }
 
         /** ########## Join tables start of code ########## */
             // Categories
@@ -416,41 +425,27 @@ class Common_Controller extends CI_Controller {
         }
          return false;
     }
-   
-
-   
-
     public function isPost() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             return true;
         }
         return false;
     }
-
     public function setRequest(array $request) {
-        //if($this->isPost()) {
             foreach($request as $key => $value){
                 $this->request[$key] = $_REQUEST[$key];
            }
-        // } else {
-        //     $this->request = array();
-        // }
         return $this;
     }
     public function getRequest() {
         return $this->request;
     }
-    
     public function filterArray($options = null) {
-
         $this->sql = '';
         $this->primaryTable = 'product_attribute pa';
         $this->condition = array();
-
         $this->setOptions($options);
-
          if(isset($this->options) || !empty($this->options) || $this->options != null) {
-            
             if(isset($this->options['productId']) || !empty($this->options['productId'])) {
                 if(is_array($this->options) && in_array($this->options['productId'], $this->options)) {
                     $this->setProductId($this->options['productId']);
@@ -463,7 +458,6 @@ class Common_Controller extends CI_Controller {
             }
         }
         $this->joinProduct = false;
-
         if($this->productId) {
             $this->joinProduct = true;
             $this->condition[]  = array("pa.product_id" => $this->productId);
@@ -517,12 +511,13 @@ class Common_Controller extends CI_Controller {
 
     public function loggedInUser() {
         if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
-            if(is_array($this->sessionVar) && in_array('user', $this->sessionVar)) {
+            if(is_array($this->sessionVar)) {
                 if(!empty($this->sessionVar['user']) || isset($this->sessionVar['user'])) {
-                    $this->setUser($this->sessionVar['user']);
+                    $this->setUser((array) $this->sessionVar['user']);
                 } 
             }
-        }
+        } 
+        return false;
     }
 
 
@@ -549,6 +544,14 @@ class Common_Controller extends CI_Controller {
     public function emptyUser() {
         $this->session->unset_userdata('user');
         return true;
+    }
+
+    public function isProductAvailableInWishlist() {
+        $this->resultArray = $this->db->get_where('wishlists', array('id_users' => $this->getUserId()))->result_array();
+        if(!empty($this->resultArray)) {
+            return true;
+        }
+        return false;
     }
     
 

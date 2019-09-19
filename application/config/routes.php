@@ -15,6 +15,7 @@ $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
 $route['product-details/(:any)']                        = 'Product/productDetails/$1';
 $route['filterProductImageByColor']                                     = 'ApiController/filterProductImageByColor';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
+$route['distance']                              = 'ApiController/distance';
 
 
 $route['wishlist/add'] = 'WishlistController/save';

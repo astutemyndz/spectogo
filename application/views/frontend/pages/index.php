@@ -3,8 +3,6 @@
         <ul id="bannerUL">
             <?php
             if(!empty($banners)){
-                //print_r($banners);
-                //<?=base_url('products/categories/'.str_replace(' ', '_', strtoupper($banners[$i]['cat_name'])))
                 for($i = 0; $i < count($banners); $i++){
             ?>
             <li data-transition="crossfade" data-param1="<?=$i?>">

@@ -43,17 +43,8 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-0 text-uppercase text-spacing">
-                                <?php
-                                /*
-                                if(!empty($banners)){
-                                for($i = 0; $i < count($banners); $i++){ ?>
-                                <li class="nav-item nav-<?=strtoupper($banners[$i]['cat_name'])?>">
-                                    <a class="nav-link" href="<?=base_url('products/categories/'.strtoupper($banners[$i]['cat_name']))?>">
-                                        <?=$banners[$i]['cat_name']?>
-                                    </a>
-                                </li>
-                                <?php } } */?>
+                            <ul class="navbar-nav mr-0 text-uppercase text-spacing HeaderCategoryComponent">
+                               
                                 <li class="nav-item"> <a class="nav-link" href="reglaze.html">Reglaze</a></li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>
