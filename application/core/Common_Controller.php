@@ -585,6 +585,58 @@ class Common_Controller extends CI_Controller {
         }
         return false;
     }
+    public function filterLens($options = null) {
+        $this->sql = '';
+        $this->primaryTable = 'lens_category lc';
+        $this->condition = array();
+        $this->setOptions($options);
+        if(isset($this->options) || !empty($this->options) || $this->options != null) {
+            if(isset($this->options['lensCatId']) || !empty($this->options['lensCatId'])) {
+                if(is_array($this->options) && in_array($this->options['lensCatId'], $this->options)) {
+                    $this->setLensCatId($this->options['lensCatId']);
+                } 
+            }
+            if(isset($this->options['lensSubCatId']) || !empty($this->options['lensSubCatId'])) {
+                if(is_array($this->options) && in_array($this->options['lensSubCatId'], $this->options)) {
+                    $this->setLensSubCatId($this->options['lensSubCatId']);
+                } 
+            }
+            
+        }
+        $this->joinLens = false;
+        if($this->lensCatId) {
+            $this->joinLens = true;
+            $this->condition[]  = array("lc.id" => $this->lensCatId);
+            $this->condition[]  = array("lsc.status" => 1);
+        }
+        if($this->lensSubCatId) {
+            $this->joinLens = true;
+            $this->condition[]  = array("lsc.id" => $this->lensSubCatId);
+        }
+        $this->condition[]  = array("lc.status" => 1);
+        $condition = array();
+        if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
+            for($i = 0; $i < count($this->condition); $i++) {
+                foreach($this->condition[$i] as $k => $v) {
+                    $condition[$k] = $v;
+                }
+            }
+        }
+        $this->condition = $condition;
+        $this->sql .= 'lc.id lensCatId, lc.name as lensCatName';
+        // Join with product table
+        if($this->joinLens) {
+            $this->join[] = ['table' => 'lens_sub_category lsc', 'on' => 'lc.id = lsc.lens_cat_id', 'type' => 'left'];
+            $this->sql   .= ',lsc.id as lensSubCatId, lsc.name as lensSubCatName, lsc.description, lsc.image';
+        }
+        $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'lc.id', 'asc', $this->join);
+        if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
+            $this->filterArray = $this->resultArray;
+        } else {
+            $this->filterArray = array();
+        }
+        return $this->filterArray;
+    }
     
 
     

@@ -140,12 +140,12 @@ $(document).ready(function(){
 // }
 
 
-const BannerComponent = function(props) {
-    let categoryName = props.banner.categoryName;
-        categoryName = categoryName.toUpperCase();
-        categoryName = categoryName.replace(" ", "_");
-     return ('<li class="tp-revslider-slidesli " data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-transition="crossfade" data-param1="'+props.index+'" ><a href="'+API_URL+'/products/categories/'+categoryName+'"><img src="'+props.bannerImageUrl+props.banner.bannerImage+'" class="w-100 rev-slidebg " alt="'+categoryName+'" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
-}
+// const BannerComponent = function(props) {
+//     let categoryName = props.banner.categoryName;
+//         categoryName = categoryName.toUpperCase();
+//         categoryName = categoryName.replace(" ", "_");
+//      return ('<li class="tp-revslider-slidesli " data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-transition="crossfade" data-param1="'+props.index+'" ><a href="'+API_URL+'/products/categories/'+categoryName+'"><img src="'+props.bannerImageUrl+props.banner.bannerImage+'" class="w-100 rev-slidebg " alt="'+categoryName+'" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" /></a</li>');
+// }
 const loadHeaderCategoryComponent = function() {
     var category = [];
     fetch(API_URL + '/banners')
@@ -165,7 +165,6 @@ const loadHeaderCategoryComponent = function() {
         },1000);
         setTimeout(function(){
             $HeaderCategoryComponent.prepend(category.join(''));
-            console.log('done');
         },1001);
        
     });
@@ -190,7 +189,6 @@ const loadFooterCategoryComponent = function() {
         },1000);
         setTimeout(function(){
             $FooterCategoryComponent.prepend(bannerCategory.join(''));
-            console.log(' FooterCategoryComponent done');
         },1001);
        
     });
@@ -202,8 +200,6 @@ const CategoryComponent = function(props) {
         categoryName = categoryName.replace(" ", "_");
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'/products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
-
-// Private method
 const ProductComponent = function (props) {
     //console.log(props);
     let sellePrice = props.product.sell_price;
@@ -363,8 +359,10 @@ $(document).ready(function () {
                         lensSubCategory: subCategory,
                         subCatImageUrl: (res.subCatImageUrl) ? res.subCatImageUrl : ''
                     }));
+                    
                 });
             }
+            
             $lensSubCategoryListFragment.html(subCategoryArr.join(''));
         });
     }, 1001);
@@ -554,7 +552,6 @@ $(document).ready(function () {
             success: function (res) {
                 let STATUS_CODE = res.statusCode;
                 let data = res.data;
-                console.log(data);
                 if (STATUS_CODE === 200) {
                     location.href = API_URL + '/choose-your-lens';
                 }
@@ -602,7 +599,6 @@ $(document).ready(function () {
         return response.json();
     }).then(function (myJson) {
         let res = myJson;
-        console.log(res);
         if (res.statusCode === 401) {
             messageBox('Authentication', res.message, 'warning', API_URL + '/sign-in')
         }
