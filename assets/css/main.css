@@ -1589,3 +1589,42 @@ ul.cart-add li a:hover{
 .choose-your-lens.tab-content>.tab-pane{
     display: block;
 }
+
+
+/*new style*/
+.login-from-area h4{
+	text-align:center;
+}
+.login-from-area form{
+	padding:15px;
+	margin-top:15px;
+}
+.login-from-area form label{
+	font-weight:500;
+}
+.login-from-area form .form-control{
+	border-radius:0;
+	height:40px;
+	box-shadow: 0px 0px 2px #efefef inset;
+    border-color: #ececec;
+}
+.my-btn{
+	background:#1e99b2;
+	border-radius:3px;
+	font-size:15px;
+	padding:8px 20px;
+	color:#fff;
+	margin-right:15px;
+	transition:all 0.4s;
+}
+.my-btn:hover{
+	background:#156f82;
+	color:#fff;
+}
+.login-from-area form a.forgot-pass{
+	color:#333;
+	transition:all 0.4s;
+}
+.login-from-area form a.forgot-pass:hover{
+	color:#156f82;
+}

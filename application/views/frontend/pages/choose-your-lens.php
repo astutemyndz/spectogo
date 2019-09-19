@@ -109,7 +109,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div class="col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
+                                <div class="addPres col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
                                     <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
                                         <img src="<?=base_url('assets/images/add-prescription.png')?>" />
                                     </div>
@@ -126,7 +126,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div class="col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
+                                <div class="useOldPres col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
                                     <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
                                         <img src="<?=base_url('assets/images/download.png')?>" />
                                     </div>
@@ -160,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container border-bottom pt-4 pb-4">
+            <div class="container border-bottom pt-4 pb-4 addPresDiv d-none">
                 <div class="row pt-4 pb-4 d-flex justify-content-md-center">
                     <div class="col-lg-9 col-md-12 col-sm-12 col-12 text-center">
                         <h4 class="font-weight-bold">Add your prescription</h4>
@@ -300,9 +300,36 @@
                             </div>
                         </form>
                     </div>
+                    
                 </div>
             </div>
+            <div class="container border-bottom pt-4 pb-4 login-from-area d-none">
+                <div class="col-sm-12 ">
+                        <h4 class="font-weight-bold">Your saved prescription</h4>
+                        <p class="text-center text-color-1">Sign in to retrieve a previously used prescription.</p>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-5">
+                                <form class="bg-secondary">
+                                    <div class="form-group">
+                                        <label>Your email address</label>
+                                        <input type="email" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control"/>
+                                    </div>
+                                    <button type="submit" class="btn my-btn">Sign In</button>
+                                    <a href="#" class="forgot-pass">Forgotten your password?</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
+
+        
+
+
         <div class="tab-pane" id="lenses" role="tabpanel" aria-labelledby="nav-vision-tab">
             <div class="bg-secondary">
                 <div class="container">

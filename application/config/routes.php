@@ -19,7 +19,7 @@ $route['filterProductImageByColor']                     = 'ApiController/filterP
 $route['filterLensDetails']                             = 'ApiController/filterLensDetails';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
-$route['distance']                              = 'ApiController/distance';
+$route['distance']                                      = 'ApiController/distance';
 
 
 $route['wishlist/add'] = 'WishlistController/save';
