@@ -202,6 +202,15 @@ const ProductComponent = function (props) {
     );
 }
 
+$('.addPres').click(function(){
+    $('.addPresDiv').removeClass('d-none');
+    $('.login-from-area').addClass('d-none');
+});
+$('.useOldPres').click(function(){
+    $('.addPresDiv').addClass('d-none');
+    $('.login-from-area').removeClass('d-none');
+});
+
 const LensCategoryComponent = function(options) {
     return(`
     <li class="nav-item">
