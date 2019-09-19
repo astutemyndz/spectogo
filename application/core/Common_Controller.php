@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Common_Controller extends CI_Controller {
 
     protected $data         = array();
+    protected $product         = array();
     protected $request      = array();
     protected $response      = array();
     protected $category     = '';
@@ -18,6 +19,7 @@ class Common_Controller extends CI_Controller {
     protected $joinCategory = true;
     protected $joinFrames   = true;
     protected $joinProduct  = false;
+    protected $joinLens     = false;
     protected $user         = array();
     protected $userId;
     protected $primaryTable = '';
@@ -29,7 +31,9 @@ class Common_Controller extends CI_Controller {
     protected $hexColorCode;
     protected $resultArray;
     protected $filterArray;
-    
+
+    protected $lensCatId;
+    protected $lensSubCatId;
 
     public $sessionVar;
 
@@ -37,7 +41,13 @@ class Common_Controller extends CI_Controller {
          parent::__construct();
          $this->userdata();
     }
-    
+    public function setProduct($product) {
+        $this->product = $product;
+        return $this;
+    }
+    public function getProduct() {
+        return $this->product;
+    }
     public function setResponse($response) {
         $this->response = $response;
         return $this;
@@ -63,6 +73,28 @@ class Common_Controller extends CI_Controller {
     public function getHexColorCode() {
         return $this->hexColorCode;
     }
+    
+    
+
+    
+    public function setLensCatId($lensCatId) {
+        $this->lensCatId = $lensCatId;
+        return $this;
+    }
+    public function getLensCatId() {
+        return $this->lensCatId;
+    }
+    public function setLensSubCatId($lensSubCatId) {
+        $this->lensSubCatId = $lensSubCatId;
+        return $this;
+    }
+    public function getLensSubCatId() {
+        return $this->lensSubCatId;
+    }
+    
+    
+    
+    
     public function checkLogin(){
         if(!$this->session->userdata('UserId')){
             redirect(base_url('sign-in'));
@@ -499,7 +531,7 @@ class Common_Controller extends CI_Controller {
             $this->filterArray = array();
         }
         return $this->filterArray;
-     }
+    }
     public function setSession($key, $value) {
         (isset($key)) ? $this->session->set_userdata($key, $value) : $this->session->set_userdata('default', array());
     }
@@ -550,7 +582,58 @@ class Common_Controller extends CI_Controller {
         $this->session->unset_userdata('user');
         return true;
     }
-    
+    public function filterLens($options = null) {
+        $this->sql = '';
+        $this->primaryTable = 'lens_category lc';
+        $this->condition = array();
+        $this->setOptions($options);
+        if(isset($this->options) || !empty($this->options) || $this->options != null) {
+            if(isset($this->options['lensCatId']) || !empty($this->options['lensCatId'])) {
+                if(is_array($this->options) && in_array($this->options['lensCatId'], $this->options)) {
+                    $this->setLensCatId($this->options['lensCatId']);
+                } 
+            }
+            if(isset($this->options['lensSubCatId']) || !empty($this->options['lensSubCatId'])) {
+                if(is_array($this->options) && in_array($this->options['lensSubCatId'], $this->options)) {
+                    $this->setLensSubCatId($this->options['lensSubCatId']);
+                } 
+            }
+            
+        }
+        $this->joinLens = false;
+        if($this->lensCatId) {
+            $this->joinLens = true;
+            $this->condition[]  = array("lc.id" => $this->lensCatId);
+            $this->condition[]  = array("lsc.status" => 1);
+        }
+        if($this->lensSubCatId) {
+            $this->joinLens = true;
+            $this->condition[]  = array("lsc.id" => $this->lensSubCatId);
+        }
+        $this->condition[]  = array("lc.status" => 1);
+        $condition = array();
+        if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
+            for($i = 0; $i < count($this->condition); $i++) {
+                foreach($this->condition[$i] as $k => $v) {
+                    $condition[$k] = $v;
+                }
+            }
+        }
+        $this->condition = $condition;
+        $this->sql .= 'lc.id lensCatId, lc.name as lensCatName';
+        // Join with product table
+        if($this->joinLens) {
+            $this->join[] = ['table' => 'lens_sub_category lsc', 'on' => 'lc.id = lsc.lens_cat_id', 'type' => 'left'];
+            $this->sql   .= ',lsc.id as lensSubCatId, lsc.name as lensSubCatName, lsc.description, lsc.image';
+        }
+        $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'lc.id', 'asc', $this->join);
+        if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
+            $this->filterArray = $this->resultArray;
+        } else {
+            $this->filterArray = array();
+        }
+        return $this->filterArray;
+    }
 
     
 }

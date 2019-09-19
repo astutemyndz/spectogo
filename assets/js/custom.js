@@ -71,10 +71,8 @@ var $thumbs = $("#thumbs");
 const callbackOwl = function (data) {
     var content = "";
     for (var i in data["items"]) {
-
         var img = data["items"][i].img;
         var alt = data["items"][i].alt;
-
         content += "<img src=\"" + img + "\" alt=\"" + alt + "\">"
     }
     $bigImage.html(content);
@@ -388,3 +386,4 @@ $("#loginForm").submit(function (e) {
         });
     }
 });
+

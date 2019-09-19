@@ -5,6 +5,7 @@ use Illuminate\Http\Response;
 class ApiController extends Common_Controller {
 
     private $listOfProduct = array();
+    private $listOfLens = array();
     private $banners = array();
     private $chooseLense = false;
     private $productAdditionalImage = array();
@@ -262,6 +263,65 @@ class ApiController extends Common_Controller {
         }
         $this->response->send();
 
+    }
+    public function filterLensDetails(){
+        $this->setRequest($_REQUEST);
+        if(isset($this->request['lensCatId']) || !empty($this->request['lensCatId'])) {
+            $this->setLensCatId($this->request['lensCatId']);
+        }
+        if(isset($this->request['lensSubCatId']) || !empty($this->request['lensSubCatId'])) {
+            $this->setLensSubCatId($this->request['lensSubCatId']);
+        }
+        if($this->lensCatId) {
+            $this->options[] = array(
+                'lensCatId' => $this->lensCatId
+            );
+        } 
+        if($this->lensSubCatId) {
+            $this->options[] = array(
+                'lensSubCatId' => $this->lensSubCatId
+            );
+        }
+        $options = array();
+        if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
+            for($i = 0; $i < count($this->options); $i++) {
+                foreach($this->options[$i] as $k => $v) {
+                    $options[$k] = $v;
+                }
+            }
+        }
+        $this->options = $options;
+        if(isset($this->options) || !empty($this->options)) {
+            $this->listOfLens = $this->filterLens($this->options);
+        } else {
+            $this->listOfLens = $this->filterLens();
+        }
+        //echo '<pre>';
+        //print_r($this->listOfLens); die;
+        if($this->listOfLens) {
+            $this->response = new Response(
+                array(
+                    'data' => $this->listOfLens,
+                    'statusCode' => Response::HTTP_OK,
+                    'message' => Response::$statusTexts[200],
+                    'subCatImageUrl' => base_url().'assets/images/lensSubCatImage/',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+            
+        } else {
+            $this->response = new Response(
+                array(
+                    'data' => [],
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'message' => Response::$statusTexts[404],
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+        }
+        $this->response->send();
     }
     
 }

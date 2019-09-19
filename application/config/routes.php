@@ -13,8 +13,12 @@ $route['do-registration']                               = 'AuthController/doRegi
 $route['do-login']                                      = 'AuthController/doLogin';
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
 $route['product-details/(:any)']                        = 'Product/productDetails/$1';
-$route['filterProductImageByColor']                                     = 'ApiController/filterProductImageByColor';
+$route['filterProductImageByColor']                     = 'ApiController/filterProductImageByColor';
+
+
+$route['filterLensDetails']                             = 'ApiController/filterLensDetails';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
+$route['set-lens-for-product']                          = 'Product/setLensForProduct';
 
 
 $route['wishlist/add'] = 'WishlistController/save';

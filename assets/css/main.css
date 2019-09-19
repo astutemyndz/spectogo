@@ -1586,3 +1586,6 @@ ul.cart-add li a:hover{
 .removeWishlist i {
   color: red;
 }
+.choose-your-lens.tab-content>.tab-pane{
+    display: block;
+}

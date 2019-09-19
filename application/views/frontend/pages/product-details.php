@@ -1,4 +1,3 @@
-
 <?php 
 // echo "<pre>";
 // print_r($product);
@@ -44,7 +43,7 @@
                         <div class="col-md-9 col-sm-6 mt-4 mt-sm-0">
                             <div class="row">
                                 <div class="col-lg-9 col-md-9 order-md-1 order-2">
-                                    <div id="big" class="owl-carousel owl-theme mb-3">
+                                    <div id="big" class="owl-carousel owl-theme mb-3 commomProduct">
                                         <?php
                                         if($product[0]['product_images'] != ''){
                                             for($j = 0; $j < count(explode(',', $product[0]['product_images'])); $j++){
@@ -69,7 +68,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-8 col-md-8">
-                                     <div id="thumbs" class="owl-carousel owl-theme mt-5">
+                                    <div id="thumbs" class="owl-carousel owl-theme mt-5 commomProduct">
                                         <?php
                                         if($product[0]['product_images'] != ''){
                                             for($k = 0; $k < count(explode(',', $product[0]['product_images'])); $k++){
@@ -100,7 +99,7 @@
                                             <input type="hidden" id="chooseLense">
                                             <button type="button" class="btn btn-primary text-uppercase text-white pt-3 pb-3 w-100 gtToCart <?php if(explode(',', $product[0]['sell_price'])[0] == 0){ print 'disabled'; } ?>"><?php if(explode(',', $product[0]['sell_price'])[0] != 0){ print 'Choose Your Lenses'; }else{ print 'Not Available'; }?></button>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
                             </div>
