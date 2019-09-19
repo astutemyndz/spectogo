@@ -116,6 +116,67 @@ class Product extends Common_Controller {
         $this->load->view('frontend/layout/footer');
         
     }
+    public function setLensForProduct(){
+        $this->setRequest($_REQUEST);
+        if(isset($this->request['lensSubCatId']) || !empty($this->request['lensSubCatId'])) {
+            if(is_array($this->request) && in_array($this->request['lensSubCatId'], $this->request)) {
+                $this->setLensSubCatId($this->request['lensSubCatId']);
+            } 
+        }
+        $lens = array(
+            "lensSubCatId" => $this->lensSubCatId
+        );
+        $sessionUserData = $this->session->userdata();
+        if($this->lensSubCatId) {
+            if(!empty($sessionUserData)|| isset($sessionUserData)) {                
+                if(is_array($sessionUserData) && array_key_exists('product', $sessionUserData)) { 
+                    $this->setProduct($sessionUserData['product']); // previous session product wihtout lensCatId
+                    if(!empty($this->product)){
+                        $this->session->set_userdata('product', array_merge($this->getProduct(), $lens));
+                        $flag = true;
+                    }else{
+                        $flag = false;
+                    }
+                    if($flag) {
+                        $this->setProduct($sessionUserData['product']); // new session product with lensCatId
+                        $this->response = new Response(
+                            array(
+                                'data' => $this->product,
+                                'statusCode' => Response::HTTP_OK,
+                                'message' => Response::$statusTexts[200]
+                            ),
+                            Response::HTTP_OK,
+                            ['Content-Type', 'application/json']
+                        );
+                    } else {
+                        $this->response = new Response(
+                            array(
+                                'data' => [],
+                                'statusCode' => Response::HTTP_NOT_FOUND,
+                                'message' => Response::$statusTexts[404],
+                            ),
+                            Response::HTTP_OK,
+                            ['Content-Type', 'application/json']
+                        );
+                    
+                        
+                    }
+                }
+            }
+        } else {
+            $this->response = new Response(
+                array(
+                    'data' => [],
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'message' => 'lens cat id not set',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+        }
+
+        $this->response->send();
+    }
     
     
     

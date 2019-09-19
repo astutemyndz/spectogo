@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Common_Controller extends CI_Controller {
 
     protected $data         = array();
+    protected $product         = array();
     protected $request      = array();
     protected $response      = array();
     protected $category     = '';
@@ -18,6 +19,7 @@ class Common_Controller extends CI_Controller {
     protected $joinCategory = true;
     protected $joinFrames   = true;
     protected $joinProduct  = false;
+    protected $joinLens     = false;
     protected $user         = array();
     protected $userId;
     protected $primaryTable = '';
@@ -29,7 +31,9 @@ class Common_Controller extends CI_Controller {
     protected $hexColorCode;
     protected $resultArray;
     protected $filterArray;
-    
+
+    protected $lensCatId;
+    protected $lensSubCatId;
 
     public $sessionVar;
 
@@ -37,7 +41,13 @@ class Common_Controller extends CI_Controller {
          parent::__construct();
          $this->userdata();
     }
-    
+    public function setProduct($product) {
+        $this->product = $product;
+        return $this;
+    }
+    public function getProduct() {
+        return $this->product;
+    }
     public function setResponse($response) {
         $this->response = $response;
         return $this;
@@ -63,6 +73,28 @@ class Common_Controller extends CI_Controller {
     public function getHexColorCode() {
         return $this->hexColorCode;
     }
+    
+    
+
+    
+    public function setLensCatId($lensCatId) {
+        $this->lensCatId = $lensCatId;
+        return $this;
+    }
+    public function getLensCatId() {
+        return $this->lensCatId;
+    }
+    public function setLensSubCatId($lensSubCatId) {
+        $this->lensSubCatId = $lensSubCatId;
+        return $this;
+    }
+    public function getLensSubCatId() {
+        return $this->lensSubCatId;
+    }
+    
+    
+    
+    
     public function checkLogin(){
         if(!$this->session->userdata('UserId')){
             redirect(base_url('sign-in'));
@@ -493,7 +525,7 @@ class Common_Controller extends CI_Controller {
             $this->filterArray = array();
         }
         return $this->filterArray;
-     }
+    }
     public function setSession($key, $value) {
         (isset($key)) ? $this->session->set_userdata($key, $value) : $this->session->set_userdata('default', array());
     }
