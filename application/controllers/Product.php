@@ -54,7 +54,10 @@ class Product extends Common_Controller {
         }
         
     }
+
+
     public function index($category = '', $details = '') {
+        
         if($category != '' && $details != ''){
             $data['banners'] = $this->getBannerDetails();
             $data['partner'] = $this->getBrandDetails();
@@ -91,16 +94,79 @@ class Product extends Common_Controller {
         );
        $response->send();
     }
-    public function productDetails($slug = ''){
-        $data['banners'] = $this->getBannerDetails();
-        $data['partner'] = $this->getBrandDetails();
-        $data['frames'] = $this->getFrameDetails();
-        $data['product'] = $this->getProductListDetails(array('slug' => $slug));
+    public function productDetails(){
+        if(isLoggedIn()) {
+            $this->setUser((array)$this->sessionVar['user']);
+        }
+
+        $this->setCategory($this->uri->segment(2));
+        $this->setDetails($this->uri->segment(3));
+        $this->setSlug($this->uri->segment(4));
+        
+        $this->request = array('category' => $this->category, 'details' => $this->details, 'slug' => $this->slug);
+
+        $this->setRequest($this->request);
+
+        if(isset($this->request['wishlist']) || !empty($this->request['wishlist'])) {
+            $this->setWishlist($this->request['wishlist']);
+        } else {
+            $this->setWishlist(false);
+        }
+     
+        if($this->category) {
+            $this->options[] = array(
+                'category' => $this->category
+            );
+        }
+      
+        if($this->details) {
+            $this->options[] = array(
+                'details' => $this->details
+            );
+        }
+
+        if($this->slug) {
+            $this->options[] = array(
+                'slug' => $this->slug
+            );
+        }
+        
+        if($this->wishlist) {
+            $this->options[] = array(
+                'wishlist' => $this->wishlist
+            );
+           
+        } 
+
+       
+        $options = array();
+        if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
+            for($i = 0; $i < count($this->options); $i++) {
+                foreach($this->options[$i] as $k => $v) {
+                    $options[$k] = $v;
+                }
+            }
+        }
+        $this->options = $options;
+
+       
+        if(isset($this->options) || !empty($this->options)) {
+            $this->listOfProduct = $this->getProductListDetails($this->options);
+        } else {
+            $this->listOfProduct = $this->getProductListDetails();
+        }
+
+        if($this->listOfProduct) {
+            $this->data['product'] = $this->listOfProduct;
+        } else {
+            $this->data['product'] = array();
+        }
+        $this->data['banners'] = $this->getBannerDetails();
+        $this->data['partner'] = $this->getBrandDetails();
+        $this->data['frames'] = $this->getFrameDetails();
         // echo '<pre>';
-        // print_r($data['product']); die;
-        $this->session->set_userdata('choosenProduct', $data['product'][0]['id']);
-        $this->session->set_userdata('choosenColor', explode(',', $data['product'][0]['color'])[0]);
-        $this->load->view('frontend/layout/header', $data);
+        // print_r($this->data['product']); die;
+        $this->load->view('frontend/layout/header', $this->data);
         $this->load->view('frontend/pages/product-details');
         $this->load->view('frontend/layout/footer');
     }

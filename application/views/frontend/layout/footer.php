@@ -196,10 +196,11 @@
 <script src="<?=base_url('assets/js/sweetalert.min.js')?>"></script>
 <script type="text/javascript">
     var base_url = '<?=base_url()?>';
+    var API_URL = '<?=base_url()?>';
     var UserId = '<?=userId()?>';
 
 </script>
-<script src="<?=base_url('assets/js/custom.js')?>"></script>
+
 <script src="<?=base_url('assets/js/spectogo.js')?>"></script>
 <!-- <script src="<?=base_url('dist/index.js')?>"></script> -->
 </body>

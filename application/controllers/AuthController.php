@@ -6,8 +6,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AuthController extends Common_Controller {
    
+    public function __construct()
+    {
+        parent::__construct();
+        
+    }
     public function index(){
-    
+        if(isLoggedIn()) {
+            redirect(base_url());
+        }
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
@@ -16,7 +23,8 @@ class AuthController extends Common_Controller {
         $this->load->view('frontend/layout/footer');
     }
     public function signUp() {
-        if($this->session->userdata('UserId')){
+        
+        if(isLoggedIn()) {
             redirect(base_url());
         }
         $data['banners'] = $this->getBannerDetails();

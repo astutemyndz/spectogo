@@ -252,6 +252,9 @@ class Common_Controller extends CI_Controller {
         $this->slug = $slug;
         return $this;
     }
+    public function getSlug() {
+        return $this->slug;
+    }
     public function setUser($user) {
         $this->user = $user;
         return $this;
@@ -298,51 +301,55 @@ class Common_Controller extends CI_Controller {
         $this->primaryTable = 'products p';
         $this->condition[] = array("p.status" => 1);
 
-        if(isset($this->options) || !empty($this->options) || $this->options != null) {
-           
-            if(isset($this->options['category']) || !empty($this->options['category'])) {
+        if(!empty($this->options) || $this->options != null) {
+          
+            if(!empty($this->options['category'])) {
                 if(is_array($this->options) && in_array($this->options['category'], $this->options)) {
                     $this->setCategory($this->options['category']);
                 } 
             }
-            if(isset($this->options['categoryId']) || !empty($this->options['categoryId'])) {
+            if(!empty($this->options['categoryId'])) {
                 if(is_array($this->options) && in_array($this->options['categoryId'], $this->options)) {
                     $this->setCategoryId($this->options['categoryId']);
                 } 
             }
-            if(isset($this->options['categoryName']) || !empty($this->options['categoryName'])) {
+            if(!empty($this->options['categoryName'])) {
                 if(is_array($this->options) && in_array($this->options['categoryName'], $this->options)) {
                     $this->setCategoryName($this->options['categoryName']);
                 } 
             }
-            if(isset($this->options['details']) || !empty($this->options['details'])) {
+            if(!empty($this->options['details'])) {
+               
                 if(is_array($this->options) && in_array($this->options['details'], $this->options)) {
+                 
                     $this->setDetails($this->options['details']);
                 }
             }
-            if(isset($this->options['wishlist']) || !empty($this->options['wishlist'])) {
+            if(!empty($this->options['wishlist'])) {
                 if(is_array($this->options) && in_array($this->options['wishlist'], $this->options)) {
                     $this->setWishlist($this->options['wishlist']);
                 }
             }
-            if(isset($this->options['slug']) || !empty($this->options['slug'])) {
+            if(!empty($this->options['slug'])) {
                 if(is_array($this->options) && in_array($this->options['slug'], $this->options)) {
                     $this->setSlug($this->options['slug']);
                 }
             }
-            if(isset($this->options['user']) || !empty($this->options['user'])) {
+            if(!empty($this->options['user'])) {
                 if(is_array($this->options) && in_array($this->options['user'], $this->options)) {
                     $this->setUser($this->options['user']);
                 }
             } 
-            
+            // echo $this->details;
+            // exit;
             //Filter data by category
-
+         
             if($this->category) {
                 switch($this->category) {
                     case 'categories':
                         $this->joinCategory = true;
                         $this->condition[]  = array("c.name" => ucwords(strtolower(str_replace('_', ' ', $this->details))));
+                     
                         break;
                     case 'frames':
                         $this->joinFrames   = true;
@@ -353,7 +360,7 @@ class Common_Controller extends CI_Controller {
                         break;
                 }
             }
-
+           
             if($this->categoryId) {
                 $this->joinCategory = true;
                 $this->condition[]  = array("c.id" => $this->categoryId);
@@ -392,7 +399,7 @@ class Common_Controller extends CI_Controller {
                  $this->condition[]  = array('wl.id_users' => $this->userId);
                  $this->joinWishlist = true;
              }
-
+           
         /** ########## Join tables start of code ########## */
             // Categories
             if($this->joinCategory) {
@@ -428,7 +435,9 @@ class Common_Controller extends CI_Controller {
                 }
             }
         }
+       
         $this->condition = $condition;
+    
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
@@ -465,7 +474,7 @@ class Common_Controller extends CI_Controller {
     }
     public function setRequest(array $request) {
             foreach($request as $key => $value){
-                $this->request[$key] = $_REQUEST[$key];
+                $this->request[$key] = $request[$key];
            }
         return $this;
     }

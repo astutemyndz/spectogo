@@ -1,8 +1,12 @@
-
-
-var API_URL = 'http://localhost/spectogo';
-
+const currentUrl = function() {
+    return $(location).attr('href');
+}
+const back = function() {
+    currentUrl();
+}
 $(document).ready(function(){
+    // var URI = $(location).attr('href');
+    // console.log(URI);
     // let $bannerUL = $('#bannerUL');
     // $bannerUL.loading();
     // setTimeout(function(){
@@ -16,7 +20,7 @@ $(document).ready(function(){
         let categoryId = $(this).attr('data-categoryId');
         let categoryName = $(this).attr('data-categoryName');
         setTimeout(() => {
-            location.href = API_URL + '/product/category/' + categoryName;
+            location.href = API_URL + 'product/category/' + categoryName;
     
         }, 300);
     
@@ -148,7 +152,7 @@ $(document).ready(function(){
 // }
 const loadHeaderCategoryComponent = function() {
     var category = [];
-    fetch(API_URL + '/banners')
+    fetch(API_URL + 'banners')
       .then(function(response) {
         return response.json();
     })
@@ -159,10 +163,10 @@ const loadHeaderCategoryComponent = function() {
             category.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
         });
         $HeaderCategoryComponent = $('.HeaderCategoryComponent');
-        $HeaderCategoryComponent.loading();
-        setTimeout(function(){
-            $HeaderCategoryComponent.loading('stop');
-        },1000);
+        //$HeaderCategoryComponent.loading();
+        // setTimeout(function(){
+        //     $HeaderCategoryComponent.loading('stop');
+        // },1000);
         setTimeout(function(){
             $HeaderCategoryComponent.prepend(category.join(''));
         },1001);
@@ -172,7 +176,7 @@ const loadHeaderCategoryComponent = function() {
 }
 const loadFooterCategoryComponent = function() {
     var bannerCategory = [];
-    fetch(API_URL + '/banners')
+    fetch(API_URL + 'banners')
       .then(function(response) {
         return response.json();
     })
@@ -183,10 +187,10 @@ const loadFooterCategoryComponent = function() {
             bannerCategory.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
         });
         $FooterCategoryComponent = $('.FooterCategoryComponent');
-        $FooterCategoryComponent.loading();
-        setTimeout(function(){
-            $FooterCategoryComponent.loading('stop');
-        },1000);
+        // $FooterCategoryComponent.loading();
+        // setTimeout(function(){
+        //     $FooterCategoryComponent.loading('stop');
+        // },1000);
         setTimeout(function(){
             $FooterCategoryComponent.prepend(bannerCategory.join(''));
         },1001);
@@ -198,9 +202,10 @@ const CategoryComponent = function(props) {
     let categoryName = props.banner.categoryName;
         categoryName = categoryName.toUpperCase();
         categoryName = categoryName.replace(" ", "_");
-     return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'/products/categories/'+categoryName+'">'+categoryName+'</a</li>');
+     return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
 const ProductComponent = function(props) {
+    //console.log(props);
     let sellPrice = props.product.sell_price;
     // sellPrice is an Array
     sellPrice = sellPrice.toString().split(",");
@@ -212,7 +217,7 @@ const ProductComponent = function(props) {
     colors = colors.split(',');
     let style = {
         wishlistButton: {
-            class: 'wislist'
+            class: 'wishlist'
         }
     };
     if (props.product.wishlistId) {
@@ -225,7 +230,7 @@ const ProductComponent = function(props) {
     return (
         `
             <div class="col-md-4 col-sm-6 text-center mb-5 product_box position-relative">
-                <a href="` + API_URL + `/product-details/` + props.product.slug + `">
+                <a href="` + API_URL + `product-details/categories/`+ props.product.cat_name + "/" + props.product.slug + `">
                     <div class="product">
                         <img src="` + props.productImageUrl + props.product.primary_image + `" class="w-50 w-sm-75 w-lg-100" />
                         <h6 class="mb-0 text-color-9 pt-2 pb-1 text-uppercase">` + props.product.brand_name + `</h6>
@@ -292,7 +297,7 @@ const LensSubCategoryComponent = function(options) {
 const onLoadLensEventHandler = function (options) {
     let lensCategoryArr = [];
     let $lensCategoryListFragment = $('#vertical_tab');
-    fetch(API_URL + '/filterLensDetails', {
+    fetch(API_URL + 'filterLensDetails', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
         },
@@ -317,7 +322,7 @@ const onLoadLensEventHandler = function (options) {
     });
 }
 const onLoadLensSubCategoryEventHandler = function (options, callback) {
-    fetch(API_URL + '/filterLensDetails', {
+    fetch(API_URL + 'filterLensDetails', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
         },
@@ -382,7 +387,7 @@ $(document).ready(function () {
 const onLoadProductEventHandler = function (options) {
     let productArr = [];
     let $productListFragment = $('#productListFragment');
-    fetch(API_URL + '/products', {
+    fetch(API_URL + 'products', {
             headers: {
                 "Content-Type": 'application/x-www-form-urlencoded'
             },
@@ -419,7 +424,7 @@ const addToWishlistProduct = function (callback) {
             id_users: id_users
         };
 
-        fetch(API_URL + '/wishlist/add', {
+        fetch(API_URL + 'wishlist/add', {
             headers: {
                 "Content-Type": 'application/x-www-form-urlencoded'
             },
@@ -429,13 +434,14 @@ const addToWishlistProduct = function (callback) {
             return response.json();
         }).then(function (myJson) {
             let res = myJson;
+            console.log(res);
             if (res.statusCode === 401) {
                 setTimeout(() => {
                     location.href = API_URL + '/sign-in';
                 }, 300);
             }
             if (res.statusCode === 201) {
-                alert(res.message);
+               
 
             }
         });
@@ -450,7 +456,7 @@ const loadProduct = function (options) {
     setTimeout(function () {
         $productListFragment.loading('stop');
     }, 1000);
-    setTimeout(function () {
+    setTimeout(function() {
         onLoadProductEventHandler(options);
     }, 1001);
 }
@@ -473,7 +479,7 @@ function chooseColor(prodId, colorHex) {
     let $chooseLense = $('#chooseLense');
     $.ajax({
         type: "POST",
-        url: API_URL + "/filterProductImageByColor",
+        url: API_URL + "filterProductImageByColor",
         data: {
             'productId': prodId,
             'hexColorCode': colorHex
@@ -550,7 +556,7 @@ $(document).ready(function () {
     $gtToCart.on('click', function () {
         $.ajax({
             type: "POST",
-            url: API_URL + "/filterProductImageByColor",
+            url: API_URL + "filterProductImageByColor",
             data: {
                 'productId': $productId.val(),
                 'hexColorCode': $hexColorCode.val(),
@@ -583,7 +589,7 @@ const options = {
 };
 $(document).ready(function () {
     loadProduct(options);
-}).on("click", ".wislist", function (e) {
+}).on("click", ".wishlist", function (e) {
     // Init variable
 
     const id_products = $(this).data("id_products");
@@ -600,7 +606,7 @@ $(document).ready(function () {
         wishlist: 1,
         user: options.user
     };
-    fetch(API_URL + '/wishlist/add', {
+    fetch(API_URL + 'wishlist/add', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
         },
@@ -615,6 +621,8 @@ $(document).ready(function () {
         }
         if (res.statusCode === 201) {
             loadProduct(optionsWithWishlist);
+            console.log('fire');
+            $('#productDetailsWishlistButton').removeClass('wishlist').addClass('removeWishlist');
         }
     });
 
@@ -629,7 +637,7 @@ $(document).ready(function () {
 
 
 
-    fetch(API_URL + '/wishlist/remove', {
+    fetch(API_URL + 'wishlist/remove', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
         },
@@ -721,4 +729,278 @@ $(document).ready(function () {
 
    // $('div.setup-panel ul li a').trigger('click');
     $('.vision').trigger('click');
+});
+
+
+jQuery(document).ready(function () {
+    /* initialize the slider based on the Slider's ID attribute */
+    jQuery('#elegant_home_banner').show().revolution({
+
+        /* options are 'auto', 'fullwidth' or 'fullscreen' */
+        sliderLayout: 'auto',
+        autoHeight: 'on',
+        fullScreenAlignForce: 'off',
+        stopAfterLoops: 0,
+        stopAtSlide: 1,
+
+        /* basic navigation arrows and bullets */
+        navigation: {
+
+            arrows: {
+                enable: true,
+                style: 'uranus',
+                hide_onleave: false,
+
+                left: {
+                    container: 'slider',
+                    h_align: 'right',
+                    v_align: 'top',
+                    h_offset: 100,
+                    v_offset: 160
+                },
+
+                right: {
+                    container: 'slider',
+                    h_align: 'right',
+                    v_align: 'top',
+                    h_offset: 50,
+                    v_offset: 160
+                }
+
+            },
+
+            bullets: {
+                enable: true,
+                style: 'uranus',
+                direction: 'verticle',
+                hide_onleave: false,
+                h_align: 'right',
+                v_align: 'top',
+                h_offset: 70,
+                v_offset: 230,
+                space: 0,
+                tmp: '<div class="tp-counter text-center">{{param1}}</div>'
+            },
+
+
+        }
+    });
+});
+
+
+var $bigImage = $("#big");
+var $thumbs = $("#thumbs");
+
+const callbackOwl = function (data) {
+    var content = "";
+    for (var i in data["items"]) {
+        var img = data["items"][i].img;
+        var alt = data["items"][i].alt;
+        content += "<img src=\"" + img + "\" alt=\"" + alt + "\">"
+    }
+    $bigImage.html(content);
+}
+function swal_success(txt) {
+    swal({
+        text: txt,
+        type: "success",
+        buttons: true,
+        confirmButtonColor: "#48cab2",
+        buttons: 'OK',
+        closeModal: false
+    });
+}
+
+function swal_success_then(txt, btn, url) {
+    swal({
+        title: "Success !!!",
+        text: txt,
+        type: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#48cab2",
+        confirmButtonText: btn,
+        closeOnConfirm: false
+    }).then(function () {
+        window.location = url;
+    });
+}
+
+function swal_confirm_then(txt, btn, url) {
+    swal({
+        title: "Confirmation",
+        text: txt,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: btn,
+        closeOnConfirm: false
+    }).then(function () {
+        window.location = url;
+    });
+}
+function messageBox(title, text, type = 'info', url) {
+    swal({
+        title: title,
+        text: text,
+        type: type,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: 'OK',
+        closeOnConfirm: false
+    }).then(function () {
+        window.location = url;
+    });
+}
+
+function swal_warning(txt) {
+    swal({
+        text: txt,
+        type: "warning",
+        buttons: true,
+        confirmButtonColor: "#DD6B55",
+        buttons: 'OK',
+        closeModal: false
+    });
+}
+
+function common_form_checking(flag, msgbox = '') {
+    $('.requiredCheck').each(function () {
+        if ($.trim($(this).val()) == '') {
+            var txt = $(this).attr('data-check') + ' is mandatory !!!';
+            if (msgbox != '') {
+                $("." + msgbox).text(txt);
+            } else {
+                swal_warning(txt);
+            }
+            flag = 'false';
+            return false;
+        } else {
+            if ($(this).attr('data-check') == 'Email') {
+                var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                if (reg.test($.trim($(this).val())) == false) {
+                    var txt = 'Enter valid Email address !!!';
+                    if (msgbox != '') {
+                        $("." + msgbox).text(txt);
+                    } else {
+                        swal_warning(txt);
+                    }
+                    flag = 'false';
+                    return false;
+                }
+            }
+            if ($(this).attr('data-check') == 'Phone') {
+                if ($.trim($(this).val()).length != 10) {
+                    var txt = 'Enter 10 digit phone number !!!';
+                    if (msgbox != '') {
+                        $("." + msgbox).text(txt);
+                    } else {
+                        swal_warning(txt);
+                    }
+                    flag = 'false';
+                    return false;
+                }
+            }
+            if ($(this).attr('data-check') == 'Zip') {
+                if ($.trim($(this).val()).length != 6) {
+                    var txt = 'Enter 6 digit Postcode !!!';
+                    if (msgbox != '') {
+                        $("." + msgbox).text(txt);
+                    } else {
+                        swal_warning(txt);
+                    }
+                    flag = 'false';
+                    return false;
+                }
+            }
+        }
+    });
+    return flag;
+}
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if (charCode == 43 || charCode == 45) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+
+function isChar(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ((charCode >= 65 && charCode <= 122) || charCode == 32 || charCode == 0) {
+        return true;
+    }
+    return false;
+}
+
+$(document).on('keyup', '.restrictSpecial', function () {
+    var yourInput = $(this).val();
+    var re = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+    var isSplChar = re.test(yourInput);
+    if (isSplChar) {
+        var no_spl_char = yourInput.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        $(this).val(no_spl_char);
+    }
+});
+$("#signupForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = common_form_checking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "do-registration",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(".signUpBtn").prop("disabled", true);
+            },
+            success: function (data) {
+                $(".signUpBtn").prop("disabled", false);
+                var res = data.split('~~');
+                if (res[0] == 'ok') {
+                    swal_success_then(res[1], 'OK', base_url + 'sign-in');
+                } else {
+                    swal_warning(res[1]);
+                }
+            }
+        });
+    }
+});
+$("#loginForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = common_form_checking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "do-login",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(".logInBtn").prop("disabled", true);
+            },
+            success: function (res) {
+                console.log(res);
+                let STATUS_CODE = res.statusCode;
+                $(".logInBtn").prop("disabled", false);
+                if (STATUS_CODE === 200) {
+                    swal_success_then(res.message, 'OK', API_URL);
+                } else {
+                    swal_warning(res.message);
+                }
+            }
+        });
+    }
 });

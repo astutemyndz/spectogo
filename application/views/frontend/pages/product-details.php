@@ -3,6 +3,7 @@
 // print_r($product);
 $productId = (!empty($product)) ? $product[0]['id'] : '';
 $defaultProductHexColorCode = (!empty($product)) ? $product[0]['main_color'] : '';
+$wishlistId = (!empty($product) && isset($product[0]['wishlistId'])) ? $product[0]['wishlistId'] : '';
 ?>
 <div id="main" class="content_section product-inner">
     <div class="bg-secondary pt-5 pb-5">
@@ -36,7 +37,7 @@ $defaultProductHexColorCode = (!empty($product)) ? $product[0]['main_color'] : '
     <span class="pl-2">5/5</span>
 </p>
 <p class="text-color-7 mb-3" style="font-size:0.75rem">100% of customers recommend this product</p>-->
-                                    <button type="button" class="text-uppercase btn pt-3 pb-3" style="background:#dbdbdb;margin-top:5px;">
+                                    <button id="productDetailsWishlistButton" type="button" data-id_products="<?php echo ($productId) ? $productId : '' ;?>" data-id_users="<?php echo userId();?>" data-wishlistId="<?php echo ($wishlistId) ? $wishlistId : '' ;?>" class="text-uppercase btn pt-3 pb-3 <?php echo ($wishlistId) ? 'removeWishlist' : 'wishlist' ;?>" style="background:#dbdbdb;margin-top:5px;">
                                         <i class="fa fa-heart pr-2" aria-hidden="true"></i> wishlist
                                     </button>
                                 </div>

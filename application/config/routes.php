@@ -12,7 +12,9 @@ $route['sign-out']                                      = 'AuthController/logOut
 $route['do-registration']                               = 'AuthController/doRegistration';
 $route['do-login']                                      = 'AuthController/doLogin';
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
-$route['product-details/(:any)']                        = 'Product/productDetails/$1';
+// product-details/frames/frame-1/slug
+// product-details/category/cat-name/slug
+$route['product-details/(:any)/(:any)/(:any)']                        = 'Product/productDetails/$1/$2/$3';
 $route['filterProductImageByColor']                     = 'ApiController/filterProductImageByColor';
 
 
