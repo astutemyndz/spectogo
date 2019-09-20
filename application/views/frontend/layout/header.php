@@ -3,10 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Specs2Go</title>
+    <title>Specs2Go v2.1.0</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
     <link rel="apple-touch-icon" href="<?=base_url('assets/images/icon.png')?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?=base_url('assets/css/normalize.css')?>">
@@ -15,11 +14,20 @@
     <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/vendor/revolution/settings.css')?>" />
     <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/sweetalert.min.css')?>">
+    <link rel="stylesheet" href="<?=base_url('assets/css/jquery.loading.css')?>">
     <meta name="theme-color" content="#fafafa">
     <script>
         var page = '';
 
     </script>
+    <style>
+
+
+.dx-toast-content {
+    min-width: 300px;
+    max-width: 400px;
+}
+    </style>
 </head>
 
 <body id="home">
@@ -35,16 +43,8 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-0 text-uppercase text-spacing">
-                                <?php
-                                if(!empty($banners)){
-                                for($i = 0; $i < count($banners); $i++){ ?>
-                                <li class="nav-item nav-<?=strtoupper($banners[$i]['cat_name'])?>">
-                                    <a class="nav-link" href="<?=base_url('products/categories/'.strtoupper($banners[$i]['cat_name']))?>">
-                                        <?=$banners[$i]['cat_name']?>
-                                    </a>
-                                </li>
-                                <?php } } ?>
+                            <ul class="navbar-nav mr-0 text-uppercase text-spacing HeaderCategoryComponent">
+                               
                                 <li class="nav-item"> <a class="nav-link" href="reglaze.html">Reglaze</a></li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>
@@ -81,7 +81,7 @@
                             </a>
                         </li>
                         <li class="list-inline-item d-none d-sm-inline-block">
-                            <?php if(!$this->session->userdata('UserId')){ ?>
+                            <?php if(!isLoggedIn()){ ?>
                             <a href="<?=base_url('sign-in')?>" class="btn btn-primary text-uppercase">Sign In</a>
                             <?php }else{ ?>
                             <a href="<?=base_url('sign-out')?>" class="btn btn-primary text-uppercase">Sign Out</a>
@@ -92,4 +92,5 @@
             </div>
         </div>
     </header>
+    <input type="hidden" data-userId="<?php echo userId();?>" id="userId">
     <!--<div id="header"></div>-->

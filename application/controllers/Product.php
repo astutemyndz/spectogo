@@ -1,32 +1,172 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+use Illuminate\Http\Response;
 class Product extends Common_Controller {
+
+    private $listOfProduct = array();
     public function __construct() {
         parent::__construct();
+       
     }
+    public function banners() {
+        
+        $response = new Response(
+            array(
+                'data' => $this->getBanners(),
+                'statusCode' => Response::HTTP_OK,
+                'message' => Response::$statusTexts[200],
+                'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+            ),
+            Response::HTTP_OK,
+            ['Content-Type', 'application/json']
+        );
+        $response->send();
+    }
+    public function products() {
+        $this->setRequest($_POST);
+        if(isset($this->request['category']) || !empty($this->request['category'])) {
+            $this->setCategory($this->request['category']);
+        } 
+        if(isset($this->request['details']) || !empty($this->request['details'])) {
+            $this->setDetails($this->request['details']);
+        } 
+      
+        if($this->category && $this->details) {
+            $this->listOfProduct = $this->getProductListDetails(array('category' => $this->category, 'details'=> $this->details));
+        } else {
+            $this->listOfProduct = $this->getProductListDetails();
+        }
+        
+        if($this->listOfProduct) {
+            $response = new Response(
+                array(
+                    'data' => $this->listOfProduct,
+                    'statusCode' => Response::HTTP_OK,
+                    'message' => Response::$statusTexts[200],
+                    'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+                    'productImageUrl' => base_url().'assets/images/productImage/',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+            $response->send();
+        }
+        
+    }
+
+
     public function index($category = '', $details = '') {
+        
         if($category != '' && $details != ''){
             $data['banners'] = $this->getBannerDetails();
             $data['partner'] = $this->getBrandDetails();
             $data['frames'] = $this->getFrameDetails();            
             $data['product'] = $this->getProductListDetails(array('category' => $category, 'details'=> $details));
-            $this->load->view('frontend/layout/header', $data);
-            $this->load->view('frontend/pages/product');
-            $this->load->view('frontend/layout/footer');
+            
         }else{
             redirect(base_url());
         }
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/product', $data);
+        $this->load->view('frontend/layout/footer');
     }
-    public function productDetails($slug = ''){
+    public function getProductCategoryWise($slug) {
+        $this->setCategoryName($slug);
         $data['banners'] = $this->getBannerDetails();
-        $data['partner'] = $this->getBrandDetails();
-        $data['frames'] = $this->getFrameDetails();
-        $data['product'] = $this->getProductListDetails(array('slug' => $slug));
-        /*echo '<pre>';
-        print_r($data['product']); die;*/
-        $this->session->set_userdata('choosenProduct', $data['product'][0]['id']);
-        $this->session->set_userdata('choosenColor', explode(',', $data['product'][0]['color'])[0]);
-        $this->load->view('frontend/layout/header', $data);
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/product', $data);
+        $this->load->view('frontend/layout/footer');
+    }
+    public function filterProduct() {
+        $this->listOfProduct = $this->getProductListDetails(array('categoryName' => $this->getCategoryName()));
+        
+        $response = new Response(
+            array(
+                'data' => $this->listOfProduct,
+                'statusCode' => Response::HTTP_OK,
+                'message' => Response::$statusTexts[200],
+                'bannerImageUrl' => base_url().'assets/images/bannerImage/',
+                'productImageUrl' => base_url().'assets/images/productImage/',
+            ),
+            Response::HTTP_OK,
+            ['Content-Type', 'application/json']
+        );
+       $response->send();
+    }
+    public function productDetails(){
+        if(isLoggedIn()) {
+            $this->setUser((array)$this->sessionVar['user']);
+        }
+
+        $this->setCategory($this->uri->segment(2));
+        $this->setDetails($this->uri->segment(3));
+        $this->setSlug($this->uri->segment(4));
+        
+        $this->request = array('category' => $this->category, 'details' => $this->details, 'slug' => $this->slug);
+
+        $this->setRequest($this->request);
+
+        if(isset($this->request['wishlist']) || !empty($this->request['wishlist'])) {
+            $this->setWishlist($this->request['wishlist']);
+        } else {
+            $this->setWishlist(false);
+        }
+     
+        if($this->category) {
+            $this->options[] = array(
+                'category' => $this->category
+            );
+        }
+      
+        if($this->details) {
+            $this->options[] = array(
+                'details' => $this->details
+            );
+        }
+
+        if($this->slug) {
+            $this->options[] = array(
+                'slug' => $this->slug
+            );
+        }
+        
+        if($this->wishlist) {
+            $this->options[] = array(
+                'wishlist' => $this->wishlist
+            );
+           
+        } 
+
+       
+        $options = array();
+        if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
+            for($i = 0; $i < count($this->options); $i++) {
+                foreach($this->options[$i] as $k => $v) {
+                    $options[$k] = $v;
+                }
+            }
+        }
+        $this->options = $options;
+
+       
+        if(isset($this->options) || !empty($this->options)) {
+            $this->listOfProduct = $this->getProductListDetails($this->options);
+        } else {
+            $this->listOfProduct = $this->getProductListDetails();
+        }
+
+        if($this->listOfProduct) {
+            $this->data['product'] = $this->listOfProduct;
+        } else {
+            $this->data['product'] = array();
+        }
+        $this->data['banners'] = $this->getBannerDetails();
+        $this->data['partner'] = $this->getBrandDetails();
+        $this->data['frames'] = $this->getFrameDetails();
+        // echo '<pre>';
+        // print_r($this->data['product']); die;
+        $this->load->view('frontend/layout/header', $this->data);
         $this->load->view('frontend/pages/product-details');
         $this->load->view('frontend/layout/footer');
     }
@@ -37,17 +177,71 @@ class Product extends Common_Controller {
         print json_encode($res);
     }
     public function chooseYourLens(){
-        if(!$this->session->userdata('choosenProduct') && !$this->session->userdata('choosenColor')){
-            redirect(base_url());
-        }else{
-            
-            echo $this->session->userdata('choosenProduct'). ' '.$this->session->userdata('choosenColor'); die;
-            
-            $this->load->view('frontend/layout/header');
-            $this->load->view('frontend/pages/choose-your-lens');
-            $this->load->view('frontend/layout/footer');
-        }
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/choose-your-lens');
+        $this->load->view('frontend/layout/footer');
         
+    }
+    public function setLensForProduct(){
+        $this->setRequest($_REQUEST);
+        if(isset($this->request['lensSubCatId']) || !empty($this->request['lensSubCatId'])) {
+            if(is_array($this->request) && in_array($this->request['lensSubCatId'], $this->request)) {
+                $this->setLensSubCatId($this->request['lensSubCatId']);
+            } 
+        }
+        $lens = array(
+            "lensSubCatId" => $this->lensSubCatId
+        );
+        $sessionUserData = $this->session->userdata();
+        if($this->lensSubCatId) {
+            if(!empty($sessionUserData)|| isset($sessionUserData)) {                
+                if(is_array($sessionUserData) && array_key_exists('product', $sessionUserData)) { 
+                    $this->setProduct($sessionUserData['product']); // previous session product wihtout lensCatId
+                    if(!empty($this->product)){
+                        $this->session->set_userdata('product', array_merge($this->getProduct(), $lens));
+                        $flag = true;
+                    }else{
+                        $flag = false;
+                    }
+                    if($flag) {
+                        $this->setProduct($sessionUserData['product']); // new session product with lensCatId
+                        $this->response = new Response(
+                            array(
+                                'data' => $this->product,
+                                'statusCode' => Response::HTTP_OK,
+                                'message' => Response::$statusTexts[200]
+                            ),
+                            Response::HTTP_OK,
+                            ['Content-Type', 'application/json']
+                        );
+                    } else {
+                        $this->response = new Response(
+                            array(
+                                'data' => [],
+                                'statusCode' => Response::HTTP_NOT_FOUND,
+                                'message' => Response::$statusTexts[404],
+                            ),
+                            Response::HTTP_OK,
+                            ['Content-Type', 'application/json']
+                        );
+                    
+                        
+                    }
+                }
+            }
+        } else {
+            $this->response = new Response(
+                array(
+                    'data' => [],
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'message' => 'lens cat id not set',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+        }
+
+        $this->response->send();
     }
     
     

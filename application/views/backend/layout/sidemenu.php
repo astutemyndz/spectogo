@@ -50,31 +50,56 @@
                             <li <?php if($this->uri->segment(2) == 'brand-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/brand-management')?>">Brand List</a></li>
                         </ul>
                     </li>
-                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'product-management' || $this->uri->segment(2) == 'add-product' || $this->uri->segment(2) == 'product-brand'){ ?> active-item <?php } ?>">
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'product-management' || $this->uri->segment(2) == 'add-product' || $this->uri->segment(2) == 'edit-product'){ ?> active-item <?php } ?>">
                         <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Product Management</span> </a>
                         <ul class="nav child-nav level-1">
                             <li <?php if($this->uri->segment(2) == 'add-product'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-product')?>">Add Product</a></li>
                             <li <?php if($this->uri->segment(2) == 'product-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/product-management')?>">Product List</a></li>
                         </ul>
                     </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'lens-management' || $this->uri->segment(2) == 'add-lens' || $this->uri->segment(2) == 'edit-lens'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Lens Category</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-lens'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-lens')?>">Add Lens Category</a></li>
+                            <li <?php if($this->uri->segment(2) == 'lens-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/lens-management')?>">Lens Category List</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'lens-sub-category-management' || $this->uri->segment(2) == 'add-lens-sub-category' || $this->uri->segment(2) == 'edit-lens-sub-category'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Lens Sub-Category</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-lens-sub-category'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-lens-sub-category')?>">Add Lens Sub-Category</a></li>
+                            <li <?php if($this->uri->segment(2) == 'lens-sub-category-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/lens-sub-category-management')?>">Lens Sub-Category List</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'pupillary-distance' || $this->uri->segment(2) == 'add-pupillary-distance' || $this->uri->segment(2) == 'edit-pupillary-distance'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Pupillary Distance</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-pupillary-distance'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-pupillary-distance')?>">Add Pupillary Distance</a></li>
+                            <li <?php if($this->uri->segment(2) == 'pupillary-distance'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/pupillary-distance')?>">Pupillary Distance List</a></li>
+                        </ul>
+                    </li>
 
-
-
-
-                    <!--<li <?php if($this->uri->segment(2) == 'banner-management'){ ?> class="active-item" <?php } ?>>
-    <a href="<?=base_url('admin/banner-management')?>">
-        <i class="fa fa-home" aria-hidden="true"></i>
-        <span>Banner Management</span>
-    </a>
-</li>-->
-
-
-
-
-
-
-
-
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'lenses-and-tints' || $this->uri->segment(2) == 'add-lenses-and-tints' || $this->uri->segment(2) == 'edit-lenses-and-tints'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Lenses & Tints</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-lenses-and-tints'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-lenses-and-tints')?>">Add Lenses & Tints</a></li>
+                            <li <?php if($this->uri->segment(2) == 'lenses-and-tints'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/lenses-and-tints')?>">Lenses & Tints List</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'lenses-and-tints-details' || $this->uri->segment(2) == 'add-lenses-and-tints-details' || $this->uri->segment(2) == 'edit-lenses-and-tints-details'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Lenses & Tints Details</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-lenses-and-tints-details'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-lenses-and-tints-details')?>">Add Lenses & Tints Details</a></li>
+                            <li <?php if($this->uri->segment(2) == 'lenses-and-tints-details'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/lenses-and-tints-details')?>">Lenses & Tints Details List</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'reglaze-management' || $this->uri->segment(2) == 'add-reglaze' || $this->uri->segment(2) == 'edit-reglaze'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Reglaze Details</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-reglaze'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-reglaze')?>">Add Reglaze Details</a></li>
+                            <li <?php if($this->uri->segment(2) == 'reglaze-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/reglaze-management')?>">Reglaze Details List</a></li>
+                        </ul>
+                    </li>
 
                 </ul>
             </nav>

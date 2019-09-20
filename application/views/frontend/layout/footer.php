@@ -23,16 +23,8 @@
                 <div class="row">
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">Spectacle</h6>
-                        <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <?php
-                            if(!empty($banners)){
-                                for($i = 0; $i < count($banners); $i++){ ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url('products/categories/'.str_replace(' ', '_', strtoupper($banners[$i]['cat_name'])))?>">
-                                    <?=$banners[$i]['cat_name']?>
-                                </a>
-                            </li>
-                            <?php } } ?>
+                        <ul class="nav footer-nav flex-column pt-2 pb-3 FooterCategoryComponent">
+                           
                             <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Spectacle On Sale</a></li>
                         </ul>
                     </div>
@@ -179,7 +171,8 @@
 
 <!--<div id="footer"></div>-->
 <script src="<?=base_url('assets/js/vendor/modernizr-3.7.1.min.js')?>"></script>
-<script src="<?=base_url('assets/js/jquery-3.4.1.min.js')?>" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="<?=base_url('assets/js/jquery-3.4.1.min.js')?>"></script>
+<script src="<?=base_url('assets/js/jquery.loading.js')?>"></script>
 <script>
     //window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')
 
@@ -203,10 +196,13 @@
 <script src="<?=base_url('assets/js/sweetalert.min.js')?>"></script>
 <script type="text/javascript">
     var base_url = '<?=base_url()?>';
-    var UserId = '<?=$this->session->userdata('UserId')?>';
+    var API_URL = '<?=base_url()?>';
+    var UserId = '<?=userId()?>';
 
 </script>
-<script src="<?=base_url('assets/js/custom.js')?>"></script>
+
+<script src="<?=base_url('assets/js/spectogo.js')?>"></script>
+<!-- <script src="<?=base_url('dist/index.js')?>"></script> -->
 </body>
 
 </html>

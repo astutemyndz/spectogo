@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = '';
-$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/projects/spectogo/';
+$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/spectogo/';
 
 
 /*
@@ -525,7 +525,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 require_once FCPATH.'bootstrap/autoload.php';
 
-$app = require_once FCPATH.'bootstrap/app.php';
+//$app = require_once FCPATH.'bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------

@@ -211,14 +211,68 @@ function addImageRow() {
                                     </span>\
                                 </div>\
                                 <div class="col-sm-1">\
-                                    <button type="button" onclick="removeImageRow(\'' + $('#imgCount').val() + '\')" class="btn">Remove</button>\
+                                    <button type="button" onclick="removeImageRow(\'' + $('#imgCount').val() + '\', \'more\' )" class="btn">Remove</button>\
                                 </div>\
                             </div>');
     $('#imgCount').val(parseInt($('#imgCount').val()) + parseInt(1));
 }
 
-function removeImageRow(row) {
-    $('.more' + row).remove();
+function removeImageRow(row, clas) {
+    $('.' + clas + row).remove();
+}
+
+function addPrimaryImageRow() {
+    if ($('#primCount').val() < 3) {
+        $('.morePrimImgDiv').append('<div class="form-group primMore' + $('#primImgCount').val() + '">\
+                                    <label for="lefticon" class="col-sm-2 control-label">Product Main Relative Image *</label>\
+                                    <div class="col-sm-9">\
+                                        <span class="input-with-icon">\
+                                            <input type="file" class="form-control" name="moreImage[]">\
+                                            <p>SIZE 250 X 70</p>\
+                                        </span>\
+                                    </div>\
+                                    <div class="col-sm-1">\
+                                        <button type="button" onclick="removeImageRow(\'' + $('#primImgCount').val() + '\', \'primMore\')" class="btn">Remove</button>\
+                                    </div>\
+                                </div>');
+        $('#primImgCount').val(parseInt($('#primImgCount').val()) + parseInt(1));
+        $('#primCount').val(parseInt($('#primCount').val()) + parseInt(1));
+    } else {
+        swal_warning("Maximum 3 Relative Primary Images !!!");
+    }
+}
+
+function delPrimImage(prod_id, img, img_field, cnt) {
+    swal({
+        title: "Confirmation",
+        text: "Are you sure want to delete image?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes !!!",
+        closeOnConfirm: false
+    }).then(function () {
+        $.ajax({
+            type: 'POST',
+            url: base_url + 'admin/delete-primary-image',
+            data: {
+                prod_id: prod_id,
+                image: img,
+                img_field: img_field
+            },
+            success: function (resultData) {
+                if (img_field == 'primary_image') {
+                    $('.primMainImgDiv').removeClass('hide');
+                    $('#primImg').prop('required', true);
+                } else {
+                    $('#primCount').val(parseInt($('#primCount').val()) - parseInt(1));
+                }
+                $('#old_' + img_field).val('');
+                $('.dispImg' + cnt).remove();
+                swal_success("Image Successfully Deleted !!!");
+            }
+        });
+    });
 }
 
 function removeImage(id, img) {

@@ -16,16 +16,11 @@ class WishlistService extends BaseService implements WishlistInterface{
     }
     public function removeProductFromWishlistById($params)
     {
-        return $this->model->find($params);
+        return $this->model->remove($params);
     }
     public function getWishlistProducts()
     {
-        //return $this->model->all();
-        // return $this->db->select('*')
-        //                 ->from($this->model->table)
-        //                 ->join('users_profiles', 'users.usrID = users_profiles.usrpID');
-        //                 ->get()
-        //                 ->result();
+        
     }
     public function getWishlistProductById($params)
     {
@@ -34,6 +29,10 @@ class WishlistService extends BaseService implements WishlistInterface{
     public function emptyWishlist()
     {
         
+    }
+
+    public function getLastInsertId() {
+        return $this->model->getLastInsertId();
     }
 
 

@@ -11,13 +11,15 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		 $productService = new ProductService(new ProductModel());
-		 echo "<pre>";
-		 print_r($productService->getProducts());
-		// echo $productService->getTable();
-		$wish = new WishlistService(new WishlistModel());
+		//  $productService = new ProductService(new ProductModel());
+		//  echo "<pre>";
+		//  print_r($productService->getProducts());
+		// // echo $productService->getTable();
+		// $wish = new WishlistService(new WishlistModel());
+		// echo "<pre>";
+		// print_r($wish->getWishlistProducts());
 		echo "<pre>";
-		print_r($wish->getWishlistProducts());
+		print_r($_SESSION);
         
 	}
 }
