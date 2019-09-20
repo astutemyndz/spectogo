@@ -270,26 +270,34 @@ select {
 .nav-tabs {
     border-bottom: 0px !important;
 }
-.nav-tabs .nav-link{
+.setup-panel .nav-tabs .nav-link{
     border:0px !important;	
-	color:#414b56;
+  color:#414b56;
+  cursor: default;
+}
+.setup-panel .nav-tabs .nav-item.active .nav-link{
+  cursor: pointer;
 }
 .nav-tabs .nav-link:hover {
 	color:#1e99b2;
+} 
+.setup-panel .nav-tabs .nav-link:hover{
+  color: #414b56;
 }
 .tab-badge-background {
   	background-color:#d5dcdf;
 }
+
 .tab-badge {
 	height:20px;
     width:20px;	
 	text-align:center;
 	line-height:15px;
 }
-.nav-tabs .nav-item.active a {
+.setup-panel .nav-tabs .nav-item.active a {
     color:#1e99b2;
 }
-.nav-item.active .tab-badge-background,.nav-item:hover .tab-badge-background {
+.setup-panel .nav-item.active .tab-badge-background {
     background-color:#1e99b2;
 	color:#fff;
 }
@@ -1627,4 +1635,9 @@ ul.cart-add li a:hover{
 }
 .login-from-area form a.forgot-pass:hover{
 	color:#156f82;
+}
+.subCategoryBox {
+  border: 1px solid #1e99b2;
+  padding: 15px;
+    min-height: 325px;
 }

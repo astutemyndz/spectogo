@@ -200,19 +200,16 @@ const CategoryComponent = function(props) {
         categoryName = categoryName.replace(" ", "_");
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'/products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
-const ProductComponent = function (props) {
-    //console.log(props);
-    let sellePrice = props.product.sell_price;
+const ProductComponent = function(props) {
+    let sellPrice = props.product.sell_price;
     // sellPrice is an Array
-    sellePrice = sellePrice.toString().split(",");
-    //console.log(sellePrice);
+    sellPrice = sellPrice.toString().split(",");
     // sellPrice is a string
-    sellePrice = sellePrice[0].toString();
-    //console.log(sellePrice);
+    sellPrice = sellPrice[0].toString();
 
-    let colurs = props.product.color;
+    let colors = props.product.color;
     // colurs is an Array
-    colurs = colurs.split(',');
+    colors = colors.split(',');
     let style = {
         wishlistButton: {
             class: 'wislist'
@@ -233,12 +230,12 @@ const ProductComponent = function (props) {
                         <img src="` + props.productImageUrl + props.product.primary_image + `" class="w-50 w-sm-75 w-lg-100" />
                         <h6 class="mb-0 text-color-9 pt-2 pb-1 text-uppercase">` + props.product.brand_name + `</h6>
                         <h5 class="mb-0 font-weight-bold pb-1">` + props.product.name + `</h5>
-                        <h5 class="mb-0 text-primary font-weight-semibold pb-2">£` + sellePrice + `</h5>
+                        <h5 class="mb-0 text-primary font-weight-semibold pb-2">£` + sellPrice + `</h5>
                     </div>
                 </a>
                 <ul class="choose-glass-color">
                     ` +
-        $.each(colurs, function (index, color) {
+        $.each(colors, function (index, color) {
             `<li style="background-color : #` + color + `"></li>`
         }) +
         `
@@ -264,7 +261,7 @@ $('.useOldPres').click(function(){
 const LensCategoryComponent = function(options) {
     return(`
     <li class="nav-item">
-        <a class="getLensSubCategory nav-link d-inline-block pl-3 pr-3 text-color-6 font-weight-bold mb-2" data-toggle="tab" href="#single-vision" role="tab" aria-controls="single-vision" id="`+options.lensCategory.lensCatId+`">
+        <a class="getLensSubCategory nav-link d-inline-block pl-3 pr-3 text-color-6 font-weight-bold mb-2" data-toggle="tab" href="#single-vision" role="tab" aria-controls="single-vision" data-lensCatId="`+options.lensCategory.lensCatId+`" id="lensCategory_`+options.index+`">
         `+options.lensCategory.lensCatName+`
         </a>
         <span class="arrow_box"></span>
@@ -273,19 +270,22 @@ const LensCategoryComponent = function(options) {
 }
 const LensSubCategoryComponent = function(options) {
     return(`
-    <div class="text-center col-md-4 col-sm-4 col-12 mb-sm-0 mb-4" onclick="setLensSubCatId('`+options.lensSubCategory.lensSubCatId+`')">
+    <a class="col-md-4 col-sm-4 " href="javascript:void(0)" class="d-block nextBtn">
+    <input type="hidden" value="">
+    <div class="text-center col-12 mb-sm-0 mb-4 subCategoryBox" onclick="setLensSubCatId('`+options.lensSubCategory.lensSubCatId+`')">
         <div class="rounded-circle mx-auto mb-3 bg-dark" style="height:100px;width:100px;line-height:100px;">
             <img src="`+options.subCatImageUrl+options.lensSubCategory.image+`" class="w-50" />
         </div>
         <h5 class="text-uppercase font-weight-bold mb-0">`+options.lensSubCategory.lensSubCatName+`</h5>
         <h6 class="text-color-3 font-italic mt-1" style="font-size:12px;">Single Vision</h6>
         <p class="text-color-5">`+options.lensSubCategory.description+`</p>
-        <a href="javascript:void(0)" class="d-block">
+        
             <span class="bg-primary badge rounded-circle p-0">
                 <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
             </span>
-        </a>
+        
     </div>
+    </a>
     `)
 }
 // Load lens start of code
@@ -313,6 +313,7 @@ const onLoadLensEventHandler = function (options) {
             }));
         });
         $lensCategoryListFragment.html(lensCategoryArr.join(''));
+        $("#lensCategory_0").trigger('click');
     });
 }
 const onLoadLensSubCategoryEventHandler = function (options, callback) {
@@ -350,8 +351,9 @@ $(document).ready(function () {
 }).on("click", ".getLensSubCategory", function (e) {
     let subCategoryArr = []; 
     const options = {
-        lensCatId: $(this).attr('id')
+        lensCatId: $(this).attr('data-lensCatId')
     }
+
     let $lensSubCategoryListFragment = $('#singleVision');
     $lensSubCategoryListFragment.loading();
     setTimeout(function () {
@@ -667,3 +669,56 @@ function setLensSubCatId(subCatId){
         }
     });
 }
+
+/**
+ * @Form validation wizard
+ */
+$(document).ready(function () {
+
+    var navListItems = $('div.setup-panel ul li a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+    allWells.hide();
+
+    navListItems.click(function (e) {
+        
+        e.preventDefault();
+       // console.log('clicked3');
+        var $target = $($(this).attr('href')),
+                $item = $(this);
+
+        if (!$item.hasClass('disabled')) {
+           // console.log('if');
+            navListItems.removeClass('active').addClass('');
+            $item.addClass('');
+            allWells.hide();
+            $target.show();
+            $target.find('input:eq(0)').focus();
+        } else {
+            console.log('else');
+        }
+    });
+
+    allNextBtn.click(function(){
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+            curInputs = curStep.find("input[type='hidden']"),
+            isValid = true;
+
+        $(".choose-your-lens").removeClass("has-error");
+        for(var i=0; i<curInputs.length; i++){
+            if (!curInputs[i].validity.valid){
+                isValid = false;
+                $(curInputs[i]).closest(".choose-your-lens").addClass("has-error");
+            }
+        }
+
+        if (isValid)
+            nextStepWizard.removeAttr('disabled').trigger('click');
+    });
+
+   // $('div.setup-panel ul li a').trigger('click');
+    $('.vision').trigger('click');
+});

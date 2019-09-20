@@ -2,20 +2,20 @@
     <div class="bg-secondary">
         <div class="container">
             <div class="row pt-5 pb-4 justify-content-center">
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-6 col-12 setup-panel">
                     <ul class="nav nav-tabs justify-content-center">
                         <li class="nav-item text-uppercase font-weight-bold d-flex justify-content-center align-items-center mr-5 active">
-                            <a class="nav-link" data-toggle="tab" href="#vision" role="tab" aria-controls="vision">
+                            <a class="nav-link vision" data-toggle="tab" href="#vision" role="tab" aria-controls="vision" >
                                 <span class="badge rounded-circle tab-badge-background tab-badge mr-2">1</span>Your Vision
                             </a>
                         </li>
                         <li class="nav-item text-uppercase font-weight-bold d-flex justify-content-center align-items-center mr-5">
-                            <a class="nav-link prescription" data-toggle="tab" href="#prescription" role="tab" aria-controls="prescription">
+                            <a class="nav-link prescription" data-toggle="tab" href="#prescription" role="tab" aria-controls="prescription" disabled="disabled">
                                 <span class="badge rounded-circle tab-badge-background tab-badge mr-2">2</span> Prescription
                             </a>
                         </li>
                         <li class="nav-item text-uppercase font-weight-bold d-flex justify-content-center align-items-center">
-                            <a class="nav-link lenses" data-toggle="tab" href="#lenses" role="tab" aria-controls="lenses">
+                            <a class="nav-link lenses" data-toggle="tab" href="#lenses" role="tab" aria-controls="lenses" disabled="disabled">
                                 <span class="badge rounded-circle tab-badge-background tab-badge mr-2">3</span> Lenses & Tints
                             </a>
                         </li>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="tab-content px-0">
-        <div class="tab-pane active" id="vision" role="tabpanel" aria-labelledby="nav-vision-tab">
+        <div class="tab-pane active setup-content" id="vision" role="tabpanel" aria-labelledby="nav-vision-tab">
             <div class="bg-secondary">
                 <div class="container">
                     <h4 class="text-center font-weight-bold">How will you use your glasses?</h4>
@@ -85,7 +85,7 @@
                 </div>
             </div> -->
         </div>
-        <div class="tab-pane" id="prescription" role="tabpanel" aria-labelledby="nav-prescription-tab">
+        <div class="tab-pane setup-content" id="prescription" role="tabpanel" aria-labelledby="nav-prescription-tab">
             <div class="bg-secondary">
                 <div class="container">
                     <h4 class="text-center font-weight-bold mt-0">Your prescription</h4>
@@ -330,7 +330,7 @@
         
 
 
-        <div class="tab-pane" id="lenses" role="tabpanel" aria-labelledby="nav-vision-tab">
+        <div class="tab-pane setup-content" id="lenses" role="tabpanel" aria-labelledby="nav-vision-tab">
             <div class="bg-secondary">
                 <div class="container">
                     <h4 class="text-center font-weight-bold">What will you use lenses' tints?</h4>

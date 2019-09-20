@@ -1,6 +1,8 @@
 <?php 
 // echo "<pre>";
 // print_r($product);
+$productId = (!empty($product)) ? $product[0]['id'] : '';
+$defaultProductHexColorCode = (!empty($product)) ? $product[0]['main_color'] : '';
 ?>
 <div id="main" class="content_section product-inner">
     <div class="bg-secondary pt-5 pb-5">
@@ -94,9 +96,9 @@
                                     <div class="choose_lense_button">
                                         <h4 class="font-weight-bold text-color-1 d-block mt-4 mt-md-0 mb-4 text-center ">$<span class="sellPrice"><?=explode(',', $product[0]['sell_price'])[0]?></span></h4>
                                         <form id="frmChooseYourLense">
-                                            <input type="hidden" id="productId">
-                                            <input type="hidden" id="hexColorCode">
-                                            <input type="hidden" id="chooseLense">
+                                            <input type="hidden" id="productId" value="<?php echo ($productId) ? $productId : '';?>">
+                                            <input type="hidden" id="hexColorCode" value="<?php echo ($defaultProductHexColorCode) ? $defaultProductHexColorCode : '';?>">
+                                            <input type="hidden" id="chooseLense" value="1">
                                             <button type="button" class="btn btn-primary text-uppercase text-white pt-3 pb-3 w-100 gtToCart <?php if(explode(',', $product[0]['sell_price'])[0] == 0){ print 'disabled'; } ?>"><?php if(explode(',', $product[0]['sell_price'])[0] != 0){ print 'Choose Your Lenses'; }else{ print 'Not Available'; }?></button>
                                         </form>
 
