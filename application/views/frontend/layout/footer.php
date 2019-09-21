@@ -45,7 +45,7 @@
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">About Us</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <li class="nav-item"><a class="nav-link" href="our-story.html">Our Story</a></li>
+                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Our Story</a></li>
                             <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Support</a></li>
                             <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Blog</a></li>
                             <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Billing and Shipping</a></li>
@@ -55,25 +55,25 @@
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">Others</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <li class="nav-item"><a class="nav-link" href="testimonial.html">Testimonial</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Site Map</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Testimonial</a></li>
+                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Site Map</a></li>
+                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">FAQ</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mb-5">
-                        <a href="" target="_blank" class="mr-3">
+                        <a href="javascript:void(0);" target="_blank" class="mr-3">
                             <img src="<?=base_url('assets/images/footer_facebook_icon.png')?>" />
                         </a>
-                        <a href="" target="_blank" class="mr-3">
+                        <a href="javascript:void(0);" target="_blank" class="mr-3">
                             <img src="<?=base_url('assets/images/footer_twitter_icon.png')?>" />
                         </a>
-                        <a href="" target="_blank" class="mr-3">
+                        <a href="javascript:void(0);" target="_blank" class="mr-3">
                             <img src="<?=base_url('assets/images/footer_youtube_icon.png')?>" />
                         </a>
-                        <a href="" target="_blank" class="mr-3">
+                        <a href="javascript:void(0);" target="_blank" class="mr-3">
                             <img src="<?=base_url('assets/images/footer_vimeo_icon.png')?>" />
                         </a>
                     </div>
@@ -137,14 +137,14 @@
             <div class="row copyright">
                 <div class="col-12 col-md-6 text-center text-md-left">
                     <ul class="nav w-auto d-flex justify-content-center justify-content-md-start">
-                        <li class="nav-item pr-4"><a class="nav-link active" href="">Terms and conditions</a></li>
-                        <li class="nav-item pr-4"><a class="nav-link" href="">Privacy Policy</a></li>
-                        <li class="nav-item"><a class="nav-link" href="">Customer Service</a></li>
+                        <li class="nav-item pr-4"><a class="nav-link active" href="javascript:void(0);">Terms and conditions</a></li>
+                        <li class="nav-item pr-4"><a class="nav-link" href="javascript:void(0);">Privacy Policy</a></li>
+                        <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Customer Service</a></li>
                     </ul>
                 </div>
                 <div class="col-12 col-md-6 text-center text-md-right">
                     <ul class="list-inline mt-2 mb-0">
-                        <li class="list-inline-item pr-3"><a href="">+ 020 8064 0960</a></li>
+                        <li class="list-inline-item pr-3"><a href="javascript:void(0);">+ 020 8064 0960</a></li>
                         <li class="list-inline-item"><a href="mailto:help@propertyowener.com">help@propertyowener.com</a></li>
                     </ul>
                     <p class="footer-p">Design & Developement by <a href="https://astutemyndz.com" target="_blank">astutemyndz.com</a></p>
@@ -155,7 +155,7 @@
 </footer>
 
 <div class="Search js-search" id="show_search">
-    <a href="javascript:;" class="Search-close Icon Icon--close js-search-close" onclick="return closesearch()"><i class="fa fa-times" aria-hidden="true"></i></a>
+    <a href="javascript:void(0);" class="Search-close Icon Icon--close js-search-close" onclick="return closesearch()"><i class="fa fa-times" aria-hidden="true"></i></a>
     <div class="Search-content">
         <form class="Form" id="searchForm">
             <div class="Form-group Form-group--center">

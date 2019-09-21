@@ -37,9 +37,9 @@ $wishlistId = (!empty($product) && isset($product[0]['wishlistId'])) ? $product[
     <span class="pl-2">5/5</span>
 </p>
 <p class="text-color-7 mb-3" style="font-size:0.75rem">100% of customers recommend this product</p>-->
-                                    <button id="productDetailsWishlistButton" type="button" data-id_products="<?php echo ($productId) ? $productId : '' ;?>" data-id_users="<?php echo userId();?>" data-wishlistId="<?php echo ($wishlistId) ? $wishlistId : '' ;?>" class="text-uppercase btn pt-3 pb-3 <?php echo ($wishlistId) ? 'removeWishlist' : 'wishlist' ;?>" style="background:#dbdbdb;margin-top:5px;">
+                                    <!-- <button id="productDetailsWishlistButton" type="button" data-id_products="<?php echo ($productId) ? $productId : '' ;?>" data-id_users="<?php echo userId();?>" data-wishlistId="<?php echo ($wishlistId) ? $wishlistId : '' ;?>" class="text-uppercase btn pt-3 pb-3 <?php echo ($wishlistId) ? 'removeWishlist' : 'wishlist' ;?>" style="background:#dbdbdb;margin-top:5px;">
                                         <i class="fa fa-heart pr-2" aria-hidden="true"></i> wishlist
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                         </div>

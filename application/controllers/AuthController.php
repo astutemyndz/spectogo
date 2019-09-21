@@ -80,7 +80,7 @@ class AuthController extends Common_Controller {
             $this->condition = array('email' => $this->request['loginEmail'], "login_password" => md5($this->input->post('loginPassword')), "login_type" => 2 );
             $this->user = $this->cm->get_all('users', $this->condition);
             if(!empty($this->user)){
-                $this->setSession('user', $this->user[0]);
+                $this->setSession('user', (array) $this->user[0]);
                 $this->setResponse(new Response(
                     array(
                         'data' => $this->user,
