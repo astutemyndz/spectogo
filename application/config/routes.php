@@ -14,27 +14,27 @@ $route['do-login']                                      = 'AuthController/doLogi
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
 // product-details/frames/frame-1/slug
 // product-details/category/cat-name/slug
-$route['product-details/(:any)/(:any)/(:any)']                        = 'Product/productDetails/$1/$2/$3';
+$route['product-details/(:any)/(:any)/(:any)']          = 'Product/productDetails/$1/$2/$3';
 $route['filterProductImageByColor']                     = 'ApiController/filterProductImageByColor';
-
-
 $route['filterLensDetails']                             = 'ApiController/filterLensDetails';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
 $route['distance']                                      = 'ApiController/distance';
+$route['wishlist/add']                                  = 'WishlistController/save';
+$route['wishlist']                                      = 'WishlistController/index';
+$route['products']                                      = 'ApiController/products';
+$route['product/category/(:any)']                       = 'Product/getProductCategoryWise/$1';
+$route['filterProduct']                                 = 'Product/filterProduct';
+$route['banners']                                       = "ApiController/banners";
+$route['contact-us']                                    = 'Home/contactUs';
+$route['info/(:any)']                                   = 'Home/pageInfo/$1';
+$route['blogs']                                         = 'Home/blogs';
+$route['blog-details/(:any)']                           = 'Home/blogDetails/$1';
+$route['post-comment']                                  = 'Home/postComment';
 
 
-$route['wishlist/add'] = 'WishlistController/save';
-$route['wishlist'] = 'WishlistController/index';
-$route['products'] = 'ApiController/products';
-$route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';
-$route['filterProduct'] = 'Product/filterProduct';
-$route['banners'] = "ApiController/banners";
 
 
-
-
-$route['contact-us']                                    = 'Home/contact-us';
 $route['testimonial']                                   = 'Home/testimonial';
 $route['cart']                                          = 'Home/cart';
 
@@ -89,13 +89,15 @@ $route['admin/edit-lenses-and-tints/(:any)']            = 'Admin/addLensesAndTin
 $route['admin/lenses-and-tints-details']                = 'Admin/lensesAndTintsDetails';
 $route['admin/add-lenses-and-tints-details']            = 'Admin/addLensesAndTintsDetails';
 $route['admin/edit-lenses-and-tints-details/(:any)']    = 'Admin/addLensesAndTintsDetails/$1';
-
-
 $route['admin/reglaze-management']                      = 'Admin/reglazeManagement';
 $route['admin/add-reglaze']                             = 'Admin/addReglaze';
 $route['admin/edit-reglaze/(:any)']                     = 'Admin/addReglaze/$1';
-
 $route['admin/website-management']                      = 'Admin/websiteManagement';
+$route['admin/page-management']                         = 'Admin/pageManagement';
+$route['admin/edit-page/(:any)']                        = 'Admin/editPage/$1';
+$route['admin/blog-management']                         = 'Admin/blogManagement';
+$route['admin/add-blog']                                = 'Admin/addBlog';
+$route['admin/edit-blog/(:any)']                        = 'Admin/addBlog/$1';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

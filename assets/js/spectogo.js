@@ -23,9 +23,8 @@ $(document).ready(function(){
             location.href = API_URL + 'products/categories/' + categoryName;
     
         }, 300);
-    
     });
-    if (page == 'product-details' || page == 'choose-your-lens') {
+    if (page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
@@ -1006,6 +1005,78 @@ $("#loginForm").submit(function (e) {
                 } else {
                     swal_warning(res.message);
                 }
+            }
+        });
+    }
+});
+$("#contactusForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = common_form_checking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "contact-us-email",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(".contactUsBtn").prop("disabled", true);
+            },
+            success: function (data) {
+                $(".contactUsBtn").prop("disabled", false);
+                swal_success("Thank you for caontacting us. We\'ll get back to you soon !!!");
+            }
+        });
+    }
+});
+$("#blogCommentForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = common_form_checking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "post-comment",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(".postCommentBtn").prop("disabled", true);
+            },
+            success: function (data) {
+                $(".postCommentBtn").prop("disabled", false);
+                var res = JSON.parse(data);
+                $('.commentDiv').append('<div class="media">\
+                                            <div class="name-icon">\
+                                                <h3>'+res.name.substring(0, 1)+'</h3>\
+                                            </div>\
+                                            <div class="media-body">\
+                                                <h5 class="mt-0">'+res.name+'</h5>\
+                                                <p>'+res.created_at+'</p>\
+                                                '+res.comment+'\
+                                                <a data-toggle="collapse" href="#collapseExample'+res.commentId+'" aria-expanded="false" aria-controls="collapseExample" class="reply-btn">\
+                                                    <i class="fa fa-reply" aria-hidden="true"></i>\
+                                                </a>\
+                                                <div class="collapse" id="collapseExample'+res.commentId+'">\
+                                                    <div class="media reply-comments">\
+                                                        <div class="name-icon">\
+                                                            <h3>S</h3>\
+                                                        </div>\
+                                                        <div class="media-body">\
+                                                            <div class="reply-form">\
+                                                                <input type="text" class="form-control" placeholder="Reply Comments...">\
+                                                            </div>\
+                                                        </div>\
+                                                    </div>\
+                                                </div>\
+                                            </div>\
+                                        </div>');
+                $('#commentCount').html(parseInt($('#commentCount').html()) + parseInt(1));
             }
         });
     }

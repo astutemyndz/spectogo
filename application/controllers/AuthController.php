@@ -52,8 +52,6 @@ class AuthController extends Common_Controller {
             print 'notok~~Sorry !!! Email already exists !!!';
         }
     }
-   
-    
     public function registerOrNot() {
         $this->setRequest($_REQUEST);
         if(!empty($this->request['loginEmail']) || isset($this->request['loginEmail'])) {
@@ -102,8 +100,6 @@ class AuthController extends Common_Controller {
                 ));
             }
         }
-        
-        
         $this->sendResponse();
     }
     public function logOut(){

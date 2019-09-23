@@ -45,20 +45,20 @@
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">About Us</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Our Story</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Support</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Blog</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Billing and Shipping</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Return Policy</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/our-story')?>">Our Story</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/support')?>">Support</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('blogs')?>">Blog</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/billing-and-shipping')?>">Billing and Shipping</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/return-policy')?>">Return Policy</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">Others</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
                             <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Testimonial</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Contact Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Site Map</a></li>
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('contact-us')?>">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/site-map')?>">Site Map</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/faq')?>">FAQ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -86,23 +86,26 @@
                             <h5 class="text-uppercase text-primary text-center font-weight-bold pb-3">Contact Us</h5>
                             <ul class="nav d-flex justify-content-center row">
                                 <li class="pt-1 pb-3">
-                                    <div class="d-flex justify-content-center align-items-center"><i class="fa fa-phone pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 pr-4 font-weight-bold">03303 801 190</h6>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <i class="fa fa-phone pr-2" aria-hidden="true"></i>
+                                        <h6 class="mb-0 pr-4 font-weight-bold"><?=$webManage['contact_phone']?></h6>
                                     </div>
                                 </li>
                                 <li class="pt-1 pb-3">
-                                    <div class="d-flex justify-content-center align-items-center"><i class="fa fa-clock-o pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 pr-2 font-weight-bold">9am - 5pm</h6>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <i class="fa fa-clock-o pr-2" aria-hidden="true"></i>
+                                        <h6 class="mb-0 pr-2 font-weight-bold"><?=$webManage['contact_timing']?></h6>
                                     </div>
                                 </li>
                                 <li class="col-lg-auto col-md-12 col-sm-auto pt-1 pb-3">
-                                    <div class="d-flex justify-content-center align-items-center"><i class="fa fa-map-marker pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 font-weight-bold">Harrow, Middelsex, Uk</h6>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <i class="fa fa-map-marker pr-2" aria-hidden="true"></i>
+                                        <h6 class="mb-0 font-weight-bold"><?=$webManage['contact_address']?></h6>
                                     </div>
                                 </li>
                             </ul>
                             <div class="d-flex justify-content-center text-center pb-4">
-                                <h6>Mon - Fri: 10.00am - 7.00pm, Sat - Sun: 11.00am - 5.00pm</h6>
+                                <h6><?=$webManage['contact_timing']?><?php if($webManage['contact_timing_alt'] != ''){ print ', '.$webManage['contact_timing_alt']; }?></h6>
                             </div>
                         </div>
                     </div>

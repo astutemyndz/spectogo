@@ -849,5 +849,102 @@ class Admin extends Common_Controller {
         $this->load->view('backend/pages/add-reglaze');
         $this->load->view('backend/layout/footer');
     }
-    
+    public function websiteManagement($id = ''){
+        if($this->input->post()){
+            $updateArray = array(
+                "contact_phone"         => $this->input->post('contactPhone'),
+                "contact_phone_alt"     => $this->input->post('contactPhoneAlt'),
+                "contact_email"         => $this->input->post('contactEmail'),
+                "contact_email_alt"     => $this->input->post('contactEmailAlt'),
+                "contact_timing"        => $this->input->post('contactTiming'),
+                "contact_timing_alt"    => $this->input->post('contactTimingAlt'),
+                "contact_address"       => $this->input->post('contactAddress'),
+                "contact_desc"          => $this->input->post('contactDescription')
+            );
+            $this->cm->update('website_management', array("id" => 1), $updateArray);
+            $this->session->set_flashdata('msg', 'Details Successfully Updated !!!');
+        }
+        $data['webManage'] = $this->cm->select_row('website_management', array("id" => 1));
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/website-management');
+        $this->load->view('backend/layout/footer');
+    }
+    public function pageManagement(){
+        if($this->input->post()){
+            $upArray = array(
+                "description"      => $this->input->post('description')
+            );                    
+            $this->cm->update('page_management', array("slug" => $this->input->post('page_slug')), $upArray);
+            $this->session->set_flashdata('msg', 'Details Successfully Updated !!!');
+        }
+        $data['pages'] = $this->cm->get_all('page_management');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/page-management');
+        $this->load->view('backend/layout/footer');
+    }
+    public function editPage($slug = ''){
+        $data['page'] = $this->cm->select_row('page_management', array("slug" => $slug));
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-page');
+        $this->load->view('backend/layout/footer');
+    }
+    public function blogManagement(){
+        if($this->input->post()){
+            $files = $_FILES;
+            if($this->input->post('blog_id') == ''){
+                if (!empty($files) && $files['blogImage']['name'] != '') {
+                    $image = $this->commonFileUpload('assets/images/blogImage/', $files['blogImage']['name'], 'blogImage');
+                }
+                $slug = str_replace(' ', '_',strtolower($this->input->post('blogTitle')));
+                if(!empty($this->cm->get_specific('blog', array("slug" => $slug)))){
+                    $slug .= '_'.rand(); 
+                }
+                $inArray = array(
+                    "slug"          => $slug,
+                    "title"         => $this->input->post('blogTitle'),
+                    "description"   => $this->input->post('blogDesc'),
+                    "image"         => $image
+                );
+                $this->cm->insert('blog', $inArray);
+                $this->session->set_flashdata('msg', 'Blogs Successfully Added !!!');
+            }else{
+                if (!empty($files) && $files['blogImage']['name'] != '') {
+                    $image = $this->commonFileUpload('assets/images/blogImage/', $files['blogImage']['name'], 'blogImage', $this->input->post('old_blogImage'));
+                }else{
+                    $image = $this->input->post('old_blogImage');
+                }
+                $slug = str_replace(' ', '_',strtolower($this->input->post('blogTitle')));
+                if(!empty($this->cm->get_specific('blog', array("slug" => $slug)))){
+                    $slug .= '_'.rand(); 
+                }
+                $upArray = array(
+                    "slug"          => $slug,
+                    "title"         => $this->input->post('blogTitle'),
+                    "description"   => $this->input->post('blogDesc'),
+                    "image"         => $image,
+                    "updated_at"    => date('Y-m-d H:i:s')
+                );                    
+                $this->cm->update('blog', array("id" => $this->input->post('blog_id')), $upArray);
+                $this->session->set_flashdata('msg', 'Blog Successfully Updated !!!');
+            }
+        }
+        $data['blogs'] = $this->getBlogDetails();
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/blogs');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addBlog($id = ''){
+        $data = array();
+        if($id != ''){
+            $data['blog'] = $this->getBlogDetails(array("id" => $id));
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-blog');
+        $this->load->view('backend/layout/footer');
+    }
 }

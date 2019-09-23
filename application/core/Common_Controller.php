@@ -108,6 +108,9 @@ class Common_Controller extends CI_Controller {
     public function getAdminDetails(){
         return $this->cm->get_specific('users', array("id" => $this->session->userdata('adminUserId'), "login_type" => 1));
     }
+    public function getContactDetails(){
+        return $this->cm->select_row('website_management', ['id' => 1]);
+    }
     public function commonFileUpload($path = '', $imageName = '', $imageInputName = '', $oldImage = ''){
         $pro_image = '';
         $upPath = FCPATH . $path;
@@ -210,6 +213,11 @@ class Common_Controller extends CI_Controller {
             "comment"           => $comment
         );
         $this->cm->insert('product_ledger', $insertArray);
+    }
+    public function getBlogDetails($condition = array(), $limit = '', $offset = 0){
+        //$join[] = ['table' => 'categories c', 'on' => 'c.id = b.cat_id', 'type' => 'left'];
+        $join = array();
+        return $this->cm->select('blog b', $condition, 'b.*', 'b.id', 'DESC', $join, $limit, $offset);
     }
     public function getProductDetails($id = ''){
         if($id != ''){
