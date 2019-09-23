@@ -95,6 +95,7 @@ $route['admin/reglaze-management']                      = 'Admin/reglazeManageme
 $route['admin/add-reglaze']                             = 'Admin/addReglaze';
 $route['admin/edit-reglaze/(:any)']                     = 'Admin/addReglaze/$1';
 
+$route['admin/website-management']                      = 'Admin/websiteManagement';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
