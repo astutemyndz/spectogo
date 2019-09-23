@@ -20,7 +20,7 @@ $(document).ready(function(){
         let categoryId = $(this).attr('data-categoryId');
         let categoryName = $(this).attr('data-categoryName');
         setTimeout(() => {
-            location.href = API_URL + 'products/categories/' + categoryName;
+            location.href = API_URL + 'product/category/' + categoryName;
     
         }, 300);
     
@@ -204,10 +204,6 @@ const CategoryComponent = function(props) {
         categoryName = categoryName.replace(" ", "_");
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
-const ColorComponent = function(props) {
-    console.log(props);
-    return (`<li style="background-color:#3330;"><i class="fa fa-circle" style="color: #` + props.color + `"></i></li>`);
-}
 const ProductComponent = function(props) {
     //console.log(props);
     let sellPrice = props.product.sell_price;
@@ -231,12 +227,6 @@ const ProductComponent = function(props) {
             }
         };
     }
-    let colorsComponent = '';
-    //console.log(colors);
-    $.each(colors, function (index, color) {
-        colorsComponent += (ColorComponent({color: color}));
-    });
-    //console.log(colorsComponent);
     return (
         `
             <div class="col-md-4 col-sm-6 text-center mb-5 product_box position-relative">
@@ -249,17 +239,21 @@ const ProductComponent = function(props) {
                     </div>
                 </a>
                 <ul class="choose-glass-color">
-                   `+colorsComponent+`
-                </ul><div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
+                    ` +
+        $.each(colors, function (index, color) {
+            `<li style="background-color : #` + color + `"></li>`
+        }) +
+        `
+                <div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                     <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
-                        
+                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
                     </div>
                 </div>
             </div>
         `
     );
 }
-//<button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
+
 $('.addPres').click(function(){
     $('.addPresDiv').removeClass('d-none');
     $('.login-from-area').addClass('d-none');

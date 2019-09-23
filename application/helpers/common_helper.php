@@ -108,7 +108,7 @@ if(!function_exists('userId')) {
     $ci = & get_instance();
     $ci->load->library('session');
     if(!empty($ci->session->userdata('user'))) {
-        return $ci->session->userdata('user')->id;
+        return $ci->session->userdata('user')['id'];
     }
     return false;
   }

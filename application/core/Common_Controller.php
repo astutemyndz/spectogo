@@ -318,6 +318,8 @@ class Common_Controller extends CI_Controller {
                     $this->setCategoryName($this->options['categoryName']);
                 } 
             }
+            //echo $this->getCategoryName();
+            //exit;
             if(!empty($this->options['details'])) {
                
                 if(is_array($this->options) && in_array($this->options['details'], $this->options)) {
@@ -340,6 +342,7 @@ class Common_Controller extends CI_Controller {
                     $this->setUser($this->options['user']);
                 }
             } 
+             
             // echo $this->details;
             // exit;
             //Filter data by category
@@ -379,24 +382,29 @@ class Common_Controller extends CI_Controller {
             }
             
             if($this->user) {
+              
                 if(is_array($this->user)) {
+                   
                     $this->setUserId($this->user['id']);
                 } 
             } 
-
+ 
             if($this->userId) {
+              
                if($this->isProductAvailableInWishlist()) {
+                  // echo "1";
                     $this->condition[]  = array('wl.id_users' => $this->userId);
                     $this->joinWishlist = true;
                } else {
+                  // echo "0";
                     $this->condition[]  = array();
                     $this->joinWishlist = false;
                }
             }
             if($this->userId && $this->wishlist) {
-                // echo "ok";
+                //echo "ok";
                  
-                 $this->condition[]  = array('wl.id_users' => $this->userId);
+                 //$this->condition[]  = array('wl.id_users' => $this->userId);
                  $this->joinWishlist = true;
              }
            
@@ -413,9 +421,10 @@ class Common_Controller extends CI_Controller {
             }
             //Wishlists
             if($this->joinWishlist) {
-              
                 $this->join[]       = ['table' => 'wishlists wl', 'on' => 'wl.id_products = p.id', 'type' => 'left'];
-                $this->sql         .= ',wl.id wishlistId';
+                $this->join[]       = ['table' => 'users u', 'on' => 'wl.id_users = u.id', 'type' => 'left'];
+                //$this->sql         .= ',wl.id wishlistId';
+                $this->sql .= ",(select ws.id from wishlists ws  where ws.id_users = u.id AND u.id = '".$this->userId."') wishlistId";
             }
         /** ########## Join tables end of code ########## */
            
@@ -427,7 +436,7 @@ class Common_Controller extends CI_Controller {
             $this->sql   .= ',f.name frame_name';
         } 
         
-        
+       // echo $this->sql;
         if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
             for($i = 0; $i < count($this->condition); $i++) {
                 foreach($this->condition[$i] as $k => $v) {
@@ -437,7 +446,7 @@ class Common_Controller extends CI_Controller {
         }
        
         $this->condition = $condition;
-    
+       
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
@@ -452,8 +461,12 @@ class Common_Controller extends CI_Controller {
         $this->sql .= ',(select GROUP_CONCAT(pa.discount) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) discount';
         $this->sql .= ',(select GROUP_CONCAT(pa.stock) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) stock';
         $this->sql .= ',(select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = p.id order by pi.id ASC) product_images';
+
        
+        
         $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit='', $offset=0, $group_by = '', $row = true);
+        //echo $this->db->last_query();
+       
         return $productList;
     }
 

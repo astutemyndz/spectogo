@@ -45,12 +45,12 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-0 text-uppercase text-spacing HeaderCategoryComponent">
                                
-                                <li class="nav-item"> <a class="nav-link" href="reglaze.html">Reglaze</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="javascript:void(0);">Reglaze</a></li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>
+                                    <a class="nav-link" href="javascript:void(0);">Contact</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?=base_url('testimonial')?>">Testimonial</a>
+                                    <a class="nav-link" href="javascript:void(0);">Testimonial</a>
                                 </li>
                             </ul>
                         </div>

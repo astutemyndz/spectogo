@@ -325,7 +325,7 @@
           </div>
         </div>
       </div>
-      <div class="container border-bottom pt-4 pb-4">
+      <div class="container border-bottom pt-4 pb-4" style="display:none;">
         <div class="row pt-4 pb-4 d-flex justify-content-md-center">
           <div class="col-lg-9 col-md-12 col-sm-12 col-12 text-center">
           <h4 class="font-weight-bold">Add your prescription</h4>
@@ -462,12 +462,148 @@
             </div>
           </form>
         </div>
+      	</div>
       </div>
-    </div>
+      <div class="container border-bottom pt-4 pb-4" style="display:none;">
+      	<div class="row">
+      		<div class="col-sm-12 login-from-area">
+            	<h4 class="font-weight-bold">Your saved prescription</h4>
+                <p class="text-center text-color-1">Sign in to retrieve a previously used prescription.</p>
+                <div class="row justify-content-center">
+                	<div class="col-sm-5">
+                    	<form class="bg-secondary">
+                            <div class="form-group">
+                                <label>Your email address</label>
+                                <input type="email" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control"/>
+                            </div>
+                            <button type="submit" class="btn my-btn">Sign In</button>
+                            <a href="#" class="forgot-pass">Forgotten your password?</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <!--prescription area-->
+      
+      <div class="container border-bottom pt-4 pb-4">
+      	<div class="row">
+        	<div class="col-12 border-bottom">
+            	 <h4 class="text-center font-weight-bold mt-0">Your saved prescription</h4>
+          		 <p class="text-center mb-5">Select an existing prescription then click <b>'Continue with selected prescription'</b> to continue. You can edit a prescription if you wish to update it.</p>
+            </div>
+        </div>
+        <form>
+        <div class="row">
+        	<div class="col-sm-4">
+            	<div class="select-prescription">
+                	<div class="form-inline justify-content-between">
+                      <div class="custom-control custom-radio">
+                          <input type="radio" id="prescription1" name="customRadio" class="custom-control-input">
+                          <label class="custom-control-label" for="prescription1">Prescription 1</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                          <input type="radio" id="prescription2" name="customRadio" class="custom-control-input">
+                          <label class="custom-control-label" for="prescription2">Prescription 1</label>
+                      </div>
+                      <button type="submit" class="btn btn-primary my-btn mb-2">Select</button>
+                    </div>
+                    <ul class="edit-prescription-area">
+                    	<li><a href="#">Edit prescription</a></li>
+                        <li><a href="#">Delete prescription</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-8">
+            	<div class="prescription-view your-presciption">
+                	<table class="table table-sm text-center scriptForm unstriped table-borderless">
+					<thead>
+					   <tr>
+							<th></th>
+							<th class="eye"><b>SPH</b><br /><em>(Sphere)</em></th>
+							<th class="eye"><b>CYL</b><br /><em>(Cylinder)</em></th>
+							<th class="eye"><b>AXIS</b><br /><em>(Axis)</em></th>
+							<th class="eye"><b>ADD</b><br /><em>(Addition)</em></th>
+					   </tr>
+					 </thead>
+					 <tbody>
+						<tr class="rightEye">
+							<td class="eye">
+								<strong>OD</strong>
+								<br>
+								<em>(Right Eye)</em>
+							</td>
+							<td class="grey-cell">
+								- 4.00
+							</td>
+							<td class="grey-cell">
+								- 3.50
+							</td>
+							<td class="grey-cell">
+								6
+							</td>
+							<td class="grey-cell">
+								+ 0.75
+							</td>
+						</tr>
+						<tr class="leftEye">
+							<td class="eye">
+								<strong>OS</strong>
+								<br>
+								<em>(Left Eye)</em>
+							</td>
+							<td class="grey-cell">
+								- 3.50
+							</td>
+							<td class="grey-cell">
+								- 3.75
+							</td>
+							<td class="grey-cell">
+								4
+							</td>
+							<td class="grey-cell">
+								+ 0.75
+							</td>
+						</tr>
+						<tr>
+							<td class="eye">
+								<strong>PD</strong>
+                                <br>
+								<em>(Pupillary Distance)</em>
+							</td>
+							<td class="grey-cell">
+								<strong>Average</strong>
+							</td>
+						</tr>
+					 </tbody>
+				 </table>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row mt-4">
+        	<div class="col-12">
+            	<div class="custom-control custom-checkbox checkbox-check">
+                  <input type="checkbox" class="custom-control-input" id="customCheck1">
+                  <label class="custom-control-label" for="customCheck1">I confirm that my selected prescription is correct with the correct '<strong>+</strong>' and '<strong>-</strong>' <strong>SPH</strong> and <strong>CYL</strong> values selected; my prescription is not over 2 years old, I am over 16 years old; and that I'm neither registered blind or partially blind. I have read and agree to the <a href="#">Terms of Sale</a>.</label>
+                </div>
+                <div class="text-center mt-4">
+                	<button type="submit" class="btn btn-primary my-btn mb-2">Confirm Prescription</button>
+                </div>
+            </div>
+        </div>
+        </form>
+      </div>
+      
+      <!--prescription area-->
   </div>
-<div class="tab-pane" id="lenses" role="tabpanel" aria-labelledby="nav-lenses-tab"></div>
-</div>
-</div>
+	<div class="tab-pane" id="lenses" role="tabpanel" aria-labelledby="nav-lenses-tab"></div>
+  </div>
 </div>
 <footer>
   <div class="container-fluid bg-white">

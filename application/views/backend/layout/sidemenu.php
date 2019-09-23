@@ -78,7 +78,6 @@
                             <li <?php if($this->uri->segment(2) == 'pupillary-distance'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/pupillary-distance')?>">Pupillary Distance List</a></li>
                         </ul>
                     </li>
-
                     <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'lenses-and-tints' || $this->uri->segment(2) == 'add-lenses-and-tints' || $this->uri->segment(2) == 'edit-lenses-and-tints'){ ?> active-item <?php } ?>">
                         <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Lenses & Tints</span> </a>
                         <ul class="nav child-nav level-1">
@@ -100,7 +99,12 @@
                             <li <?php if($this->uri->segment(2) == 'reglaze-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/reglaze-management')?>">Reglaze Details List</a></li>
                         </ul>
                     </li>
-
+                    <li <?php if($this->uri->segment(2) == 'website-management'){ ?> class="active-item" <?php } ?>>
+                        <a href="<?=base_url('admin/website-management')?>">
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            <span>Website Management</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

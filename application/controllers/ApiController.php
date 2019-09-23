@@ -95,10 +95,10 @@ class ApiController extends Common_Controller {
      */
     public function products() {
         
-      
+        
         if(isLoggedIn()) {
             $this->setUser((array)$this->sessionVar['user']);
-        }
+        } 
         $this->setRequest($_REQUEST);
 
         if(isset($this->request['category']) || !empty($this->request['category'])) {
@@ -119,9 +119,9 @@ class ApiController extends Common_Controller {
             $this->setWishlist(false);
         }
 
-        if(isset($this->request['user']) || !empty($this->request['user'])) {
-           $this->setUser($this->request['user']);
-        } 
+        // if(isset($this->request['user']) || !empty($this->request['user'])) {
+        //    $this->setUser($this->request['user']);
+        // } 
 
         if($this->category) {
             $this->options[] = array(
@@ -165,14 +165,13 @@ class ApiController extends Common_Controller {
         }
         $this->options = $options;
 
-        // echo "<pre>";
-        // print_r($this->options);
-        if(isset($this->options) || !empty($this->options)) {
+       
+        if(!empty($this->options)) {
             $this->listOfProduct = $this->getProductListDetails($this->options);
         } else {
             $this->listOfProduct = $this->getProductListDetails();
         }
-
+       
         if($this->listOfProduct) {
             $this->response = new Response(
                 array(
