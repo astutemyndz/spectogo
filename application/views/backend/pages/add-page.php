@@ -8,10 +8,26 @@
                         <form class="form-horizontal" method="post" action="<?=base_url('admin/page-management')?>">
                             <input type="hidden" name="page_slug" value="<?=$page['slug']?>">
                             <div class="form-group">
-                                <label for="lefticon" class="col-sm-2 control-label">Description</label>
+                                <label for="lefticon" class="col-sm-2 control-label">Page Name *</label>
                                 <div class="col-sm-10">
                                     <span class="input-with-icon">
-                                        <textarea class="form-control ckeditor" name="description" required aria-required="true"><?=$page['description']?></textarea>
+                                        <input type="text" class="form-control" name="pageName" required aria-required="true" value="<?=$page['name']?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Page Title *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <input type="text" class="form-control" name="pageTitle" required aria-required="true" value="<?=$page['title']?>">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lefticon" class="col-sm-2 control-label">Page Description *</label>
+                                <div class="col-sm-10">
+                                    <span class="input-with-icon">
+                                        <textarea class="form-control ckeditor" name="pageDescription" required aria-required="true"><?=$page['description']?></textarea>
                                     </span>
                                 </div>
                             </div>

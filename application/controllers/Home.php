@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//require_once APPPATH . 'core/CommonController.php';
 class Home extends Common_Controller {
     public function __construct() {
         parent::__construct();
@@ -46,6 +45,7 @@ class Home extends Common_Controller {
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
+        $data['webManage'] = $this->getContactDetails();
         $data['blogs'] = $this->getBlogDetails(array("b.status" => 1));
         $this->load->view('frontend/layout/header', $data);
         $this->load->view('frontend/pages/blogs');
@@ -61,12 +61,14 @@ class Home extends Common_Controller {
         $data['webManage'] = $this->getContactDetails();
         $data['blog'] = $this->getBlogDetails(array("b.status" => 1, "b.slug" => $slug));
         $data['relatedBlogs'] = $this->getBlogDetails(array("b.status" => 1), '10', '0');
-
         $data['comments'] = $this->cm->get_all('blog_comment', array("status" => 1, "blog_id" => $data['blog'][0]['id']));
         $this->load->view('frontend/layout/header', $data);
         $this->load->view('frontend/pages/blog-details');
         $this->load->view('frontend/layout/footer');
     }
+    /*
+        Post Comment for Blog
+    */
     public function postComment(){
         if($this->input->post()){
             $inArray = array(
@@ -76,76 +78,44 @@ class Home extends Common_Controller {
                 "comment"       => $this->input->post('commentDesc')
             );
             $commentId = $this->cm->insert('blog_comment', $inArray);
-            $inArray['commentId'] = $commentId;
             $inArray['created_at'] = date_format(date_create(date('Y-m-d')), 'j F, Y');
             print json_encode($inArray);
         }
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-        About us
-    */
-    public function about_us(){
-        $data = array();
-        $data['cms_data'] = $this->cm->select_row('static_pages', ['id' => 1], '');
-        $data['title'] = $data['cms_data']['page_title'].' | shorolafashion.com';
-        $data['meta_data'] = ['description'=> $data['cms_data']['page_meta_content']];
-        $this->load->view('frontend/cms/about', $data);
+    public function newsletterSubscribe(){
+        if($this->input->post()){
+            if(!empty($this->cm->get_specific('newsletter', array("email" => $this->input->post('newsletter_email'))))){
+                $commentId = $this->cm->insert('newsletter', array("email" => $this->input->post('newsletter_email')));
+                print "ok";
+            }else{
+                print "notok";
+            }
+        }
     }
     /*
-        Privacy Policy
+        Testimonial
     */
-    public function privacy_policy(){
-        $data = array();
-        $data['cms_data'] = $this->cm->select_row('static_pages', ['id' => 9], '');
-        $data['title'] = $data['cms_data']['page_title'].' | shorolafashion.com';
-        $data['meta_data'] = ['description'=> $data['cms_data']['page_meta_content']];
-        $this->load->view('frontend/cms/privacy_policy', $data);
+    public function testimonial(){
+        $data['banners'] = $this->getBannerDetails();
+        $data['partner'] = $this->getBrandDetails();
+        $data['frames'] = $this->getFrameDetails();
+        $data['webManage'] = $this->getContactDetails();
+        $data['testimonials'] = $this->cm->get_all('testimonial', array("status" => 1));
+        $this->load->view('frontend/layout/header', $data);
+        $this->load->view('frontend/pages/testimonial');
+        $this->load->view('frontend/layout/footer');
     }
     /*
-        Terms and Conditions
+        Search Product
     */
-    public function terms_conditions(){
-        $data = array();
-        $data['cms_data'] = $this->cm->select_row('static_pages', ['id' => 7], '');
-        $data['title'] = $data['cms_data']['page_title'].' | shorolafashion.com';
-        $data['meta_data'] = ['description'=> $data['cms_data']['page_meta_content']];
-        $this->load->view('frontend/cms/terms_conditions', $data);
+    public function searchProduct(){
+        if($this->input->post()){
+            $option = array();
+            $option['productName'] = $this->input->post('search_product');
+            $product = $this->getProductListDetails($option);
+            print json_encode($product);
+        }
     }
-    /*
-        Return Policy
-    */
-    public function return_policy(){
-        $data = array();
-        $data['cms_data'] = $this->cm->select_row('static_pages', ['id' => 15], '');
-        $data['title'] = $data['cms_data']['page_title'].' | shorolafashion.com';
-        $data['meta_data'] = ['description'=> $data['cms_data']['page_meta_content']];
-        $this->load->view('frontend/cms/return_policy', $data);
-    }
-    
     /*
         donot touch or run this function
     */

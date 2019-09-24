@@ -24,10 +24,35 @@ $(document).ready(function(){
     
         }, 300);
     });
-    if (page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details') {
+    if (page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
+            if (page == 'testimonial'){
+                $(document).ready(function() {
+                //var owl = $('.owl-carousel');
+                    owl.owlCarousel({
+                        autoplay:false,
+                        autoplayTimeout:3000,
+                        margin: 10,
+                        nav: true,
+                        loop: false,
+                        dots: false,
+                        navText:["<a href='javascript:void(0)'>Prev</a>","<a href='javascript:void(0)'>Next</a>"],
+                        responsive: {
+                            0: {
+                                items: 1
+                            },
+                            600: {
+                            items: 1
+                            },
+                            1000: {
+                            items: 1
+                            }
+                        }
+                    });
+                });
+            }
             var bigimage = $("#big");
             var thumbs = $("#thumbs");
             //var totalslides = 10;
@@ -204,7 +229,6 @@ const CategoryComponent = function(props) {
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
 const ColorComponent = function(props) {
-    console.log(props);
     return (`<li style="background-color:#3330;"><i class="fa fa-circle" style="color: #` + props.color + `"></i></li>`);
 }
 const ProductComponent = function(props) {
@@ -214,7 +238,6 @@ const ProductComponent = function(props) {
     sellPrice = sellPrice.toString().split(",");
     // sellPrice is a string
     sellPrice = sellPrice[0].toString();
-
     let colors = props.product.color;
     // colurs is an Array
     colors = colors.split(',');
@@ -289,11 +312,9 @@ const LensSubCategoryComponent = function(options) {
         <h5 class="text-uppercase font-weight-bold mb-0">`+options.lensSubCategory.lensSubCatName+`</h5>
         <h6 class="text-color-3 font-italic mt-1" style="font-size:12px;">Single Vision</h6>
         <p class="text-color-5">`+options.lensSubCategory.description+`</p>
-        
-            <span class="bg-primary badge rounded-circle p-0">
-                <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
-            </span>
-        
+        <span class="bg-primary badge rounded-circle p-0">
+            <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
+        </span>
     </div>
     </a>
     `)
@@ -405,16 +426,20 @@ const onLoadProductEventHandler = function (options) {
         .then(function (myJson) {
             let res = myJson;
             let products = myJson.data;
-            $.each(products, function (index, product) {
-                productArr.push(ProductComponent({
-                    index: index,
-                    product: product,
-                    productImageUrl: res.productImageUrl,
-                    user: options.user
-                }));
-            });
-            $productListFragment.html(productArr.join(''));
-
+            if(Object.keys(products).length > 0){
+                $.each(products, function (index, product) {
+                    productArr.push(ProductComponent({
+                        index: index,
+                        product: product,
+                        productImageUrl: res.productImageUrl,
+                        user: options.user
+                    }));
+                });
+                $productListFragment.html(productArr.join(''));
+            }else{
+                $productListFragment.html('<div class="col-md-12 text-center"><h3>No Product Found !!!</h3></div>');
+            }
+            $('#prodListCount').text(Object.keys(products).length);
         });
 }
 
@@ -446,8 +471,6 @@ const addToWishlistProduct = function (callback) {
                 }, 300);
             }
             if (res.statusCode === 201) {
-               
-
             }
         });
         callback();
@@ -588,6 +611,8 @@ $(document).ready(function () {
 let userId = $('#userId').attr('data-userId');
 const options = {
     categoryName: getCategoryNameFromUrl(),
+    brandId: '1',
+    productName: 'sadsa',
     user: {
         id: userId,
     }
@@ -633,15 +658,10 @@ $(document).ready(function () {
 
 }).on("click", ".removeWishlist", function (e) {
     // Init variable
-
     const wishlistId = $(this).attr("data-wishlistId");
-
     const data = {
         wishlistId: wishlistId
     };
-
-
-
     fetch(API_URL + 'wishlist/remove', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
@@ -661,7 +681,6 @@ $(document).ready(function () {
             loadProduct(opt);
         }
     });
-
 });
 function setLensSubCatId(subCatId){
     $.ajax({
@@ -1059,25 +1078,106 @@ $("#blogCommentForm").submit(function (e) {
                                                 <h5 class="mt-0">'+res.name+'</h5>\
                                                 <p>'+res.created_at+'</p>\
                                                 '+res.comment+'\
-                                                <a data-toggle="collapse" href="#collapseExample'+res.commentId+'" aria-expanded="false" aria-controls="collapseExample" class="reply-btn">\
-                                                    <i class="fa fa-reply" aria-hidden="true"></i>\
-                                                </a>\
-                                                <div class="collapse" id="collapseExample'+res.commentId+'">\
-                                                    <div class="media reply-comments">\
-                                                        <div class="name-icon">\
-                                                            <h3>S</h3>\
-                                                        </div>\
-                                                        <div class="media-body">\
-                                                            <div class="reply-form">\
-                                                                <input type="text" class="form-control" placeholder="Reply Comments...">\
-                                                            </div>\
-                                                        </div>\
-                                                    </div>\
-                                                </div>\
                                             </div>\
                                         </div>');
-                $('#commentCount').html(parseInt($('#commentCount').html()) + parseInt(1));
+                $('.commentCount').html(parseInt($('.commentCount').html()) + parseInt(1));
+                $('#commentDesc').val('');
             }
         });
     }
 });
+$("#newsletterPost").click(function (e) {
+    if($("#newsletterEmail").val() != ''){
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if (reg.test($.trim($("#newsletterEmail").val())) == false) {
+            swal_warning("Enter valid Email !!!");
+        }else{
+            $.ajax({
+                type: "POST",
+                url: base_url + "newsletter-subscribe",
+                data: {
+                    newsletter_email : $("#newsletterEmail").val()
+                },
+                cache: false,
+                beforeSend: function () {
+                    $("#newsletterPost").prop("disabled", true);
+                    $(".postCommentBtn").prop("disabled", true);
+                },
+                success: function (res) {
+                    $("#newsletterPost").prop("disabled", false);
+                    $(".postCommentBtn").prop("disabled", false);
+                    if(res == 'ok'){
+                        swal_success("Newsletter Subscription Successful !!!");
+                    }else{
+                        swal_warning("You're already subscribed !!!");
+                    }
+                }
+            });
+        } 
+    }else{
+        swal_warning("Email is mandatory for newsletter subscription !!!");
+        $("#newsletterEmail").focus();
+    }
+});
+$("#searchProduct").keyup(function (e) {
+    if($("#searchProduct").val().length > 2){
+        $.ajax({
+            type: "POST",
+            url: base_url + "search-product",
+            data: {
+                search_product : $("#searchProduct").val()
+            },
+            cache: false,
+            beforeSend: function () {
+                $("#searchProduct").prop("disabled", true);
+                $('.search-ul').loading();
+            },
+            success: function (data) {
+                $("#searchProduct").prop("disabled", false);
+                var html = '';
+                var res = JSON.parse(data);
+                if(Object.keys(res).length > 0){
+                    $.each(res, function (key, product) {
+                        html += '<li>\
+                                    <a href="'+base_url+'product-details/categories/'+product.cat_name+'/'+product.slug+'">\
+                                        <div class="media">\
+                                            <img src="'+base_url+'assets/images/productImage/'+product.primary_image+'" class="img-fluid" alt="'+product.productName+'">\
+                                            <div class="media-body">\
+                                                <h5 class="mt-0">'+product.productName+'</h5>\
+                                            </div>\
+                                        </div>\
+                                    </a>\
+                                </li>';
+                    });
+                }else{
+                    html = '<li>\
+                                <a href="javascript:void(0);">\
+                                    <div class="media">\
+                                        <div class="media-body">\
+                                            <h5 class="mt-0">No Product Found !!!</h5>\
+                                        </div>\
+                                    </div>\
+                                </a>\
+                            </li>';
+                }
+                $('.search-ul').loading('stop');
+                $('.search-ul').loading('stop');
+                $('.search-ul').html(html);
+                $("#searchProduct").focus();
+            }
+        });
+    }else{
+        $('.search-ul').html('');
+    }
+});
+function filterProductByBrandAndName(){
+    if($('#filterBrand').val() == '' && $('#filterFrame').val() == ''){
+        swal_warning("Please select barnd or frame !!!");
+    }else{
+        const options = {
+            brandId: $('#filterBrand').val(),
+            frameName: $('#filterFrame').val()
+        };
+        loadProduct(options);
+    }    
+}

@@ -122,6 +122,13 @@
                             <li <?php if($this->uri->segment(2) == 'blog-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/blog-management')?>">Blog List</a></li>
                         </ul>
                     </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'testimonial-management' || $this->uri->segment(2) == 'add-testimonial' || $this->uri->segment(2) == 'edit-testimonial'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Testimonial</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-testimonial'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-testimonial')?>">Add Testimonial</a></li>
+                            <li <?php if($this->uri->segment(2) == 'testimonial-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/testimonial-management')?>">Testimonial List</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>

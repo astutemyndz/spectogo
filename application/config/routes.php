@@ -1,11 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$route['default_controller'] = 'Home/index';
+$route['default_controller']                            = 'Home/index';
 /*
     This route for frontend
 */
 $route['home']                                          = 'Home';
-
 $route['sign-in']                                       = 'AuthController';
 $route['sign-up']                                       = 'AuthController/signUp';
 $route['sign-out']                                      = 'AuthController/logOut';
@@ -21,6 +20,7 @@ $route['choose-your-lens']                              = 'Product/chooseYourLen
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
 $route['distance']                                      = 'ApiController/distance';
 $route['wishlist/add']                                  = 'WishlistController/save';
+$route['wishlist/remove']                               = 'WishlistController/remove';
 $route['wishlist']                                      = 'WishlistController/index';
 $route['products']                                      = 'ApiController/products';
 $route['product/category/(:any)']                       = 'Product/getProductCategoryWise/$1';
@@ -31,18 +31,10 @@ $route['info/(:any)']                                   = 'Home/pageInfo/$1';
 $route['blogs']                                         = 'Home/blogs';
 $route['blog-details/(:any)']                           = 'Home/blogDetails/$1';
 $route['post-comment']                                  = 'Home/postComment';
-
-
-
-
+$route['newsletter-subscribe']                          = 'Home/newsletterSubscribe';
 $route['testimonial']                                   = 'Home/testimonial';
+$route['search-product']                                = 'Home/searchProduct';
 $route['cart']                                          = 'Home/cart';
-
-
-
-
-
-
 /*
     This route for admin
 */
@@ -98,19 +90,8 @@ $route['admin/edit-page/(:any)']                        = 'Admin/editPage/$1';
 $route['admin/blog-management']                         = 'Admin/blogManagement';
 $route['admin/add-blog']                                = 'Admin/addBlog';
 $route['admin/edit-blog/(:any)']                        = 'Admin/addBlog/$1';
-
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
-
-
-/**
- * Wishlist 
- */
-
-$route['wishlist/add'] = 'WishlistController/save';
-$route['wishlist/remove'] = 'WishlistController/remove';
-$route['wishlist'] = 'WishlistController/index';
-$route['products'] = 'ApiController/products';
-$route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';
-$route['filterProduct'] = 'Product/filterProduct';
-$route['banners'] = "ApiController/banners";
+$route['admin/testimonial-management']                  = 'Admin/testimonialManagement';
+$route['admin/add-testimonial']                         = 'Admin/addTestimonial';
+$route['admin/edit-testimonial/(:any)']                 = 'Admin/addTestimonial/$1';
+$route['404_override']                                  = '';
+$route['translate_uri_dashes']                          = FALSE;

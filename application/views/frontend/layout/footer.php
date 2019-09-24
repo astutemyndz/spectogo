@@ -45,20 +45,38 @@
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">About Us</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/our-story')?>">Our Story</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/support')?>">Support</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('blogs')?>">Blog</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/billing-and-shipping')?>">Billing and Shipping</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/return-policy')?>">Return Policy</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/our-story')?>">Our Story</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/support')?>">Support</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('blogs')?>">Blog</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/billing-and-shipping')?>">Billing and Shipping</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/return-policy')?>">Return Policy</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">Others</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Testimonial</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('contact-us')?>">Contact Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/site-map')?>">Site Map</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?=base_url('info/faq')?>">FAQ</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('testimonial')?>">Testimonial</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('contact-us')?>">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/site-map')?>">Site Map</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?=base_url('info/faq')?>">FAQ</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -140,15 +158,15 @@
             <div class="row copyright">
                 <div class="col-12 col-md-6 text-center text-md-left">
                     <ul class="nav w-auto d-flex justify-content-center justify-content-md-start">
-                        <li class="nav-item pr-4"><a class="nav-link active" href="javascript:void(0);">Terms and conditions</a></li>
-                        <li class="nav-item pr-4"><a class="nav-link" href="javascript:void(0);">Privacy Policy</a></li>
-                        <li class="nav-item"><a class="nav-link" href="javascript:void(0);">Customer Service</a></li>
+                        <li class="nav-item pr-4"><a class="nav-link active" href="<?=base_url('info/terms-and-conditions')?>">Terms and conditions</a></li>
+                        <li class="nav-item pr-4"><a class="nav-link" href="<?=base_url('info/privacy-policy')?>">Privacy Policy</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?=base_url('info/customer-service')?>">Customer Service</a></li>
                     </ul>
                 </div>
                 <div class="col-12 col-md-6 text-center text-md-right">
                     <ul class="list-inline mt-2 mb-0">
-                        <li class="list-inline-item pr-3"><a href="javascript:void(0);">+ 020 8064 0960</a></li>
-                        <li class="list-inline-item"><a href="mailto:help@propertyowener.com">help@propertyowener.com</a></li>
+                        <li class="list-inline-item pr-3"><a href="javascript:void(0);"><?=$webManage['contact_phone']?></a></li>
+                        <li class="list-inline-item"><a href="mailto:<?=$webManage['contact_email']?>"><?=$webManage['contact_email']?></a></li>
                     </ul>
                     <p class="footer-p">Design & Developement by <a href="https://astutemyndz.com" target="_blank">astutemyndz.com</a></p>
                 </div>
@@ -156,22 +174,20 @@
         </div>
     </div>
 </footer>
-
+<!-- Search Product -->
 <div class="Search js-search" id="show_search">
-    <a href="javascript:void(0);" class="Search-close Icon Icon--close js-search-close" onclick="return closesearch()"><i class="fa fa-times" aria-hidden="true"></i></a>
+    <a href="javascript:void(0);" class="Search-close Icon Icon--close js-search-close" onclick="return closesearch()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
     <div class="Search-content">
-        <form class="Form" id="searchForm">
-            <div class="Form-group Form-group--center">
-                <label for="search" class="Form-label">What are you looking for?</label>
-                <input id="search" name="q" class="Form-input" type="text" required>
-            </div>
-            <div class="Form-footer text-center">
-                <button type="submit" class="Btn Btn--ib">Search</button>
-            </div>
-        </form>
+        <div class="Form-group Form-group--center">
+            <label for="search" class="Form-label">What are you looking for?</label>
+            <input type="text" id="searchProduct" class="Form-input">
+            <ul class="search-ul"></ul>
+        </div>
     </div>
 </div>
-
+<!-- Search Product -->
 <!--<div id="footer"></div>-->
 <script src="<?=base_url('assets/js/vendor/modernizr-3.7.1.min.js')?>"></script>
 <script src="<?=base_url('assets/js/jquery-3.4.1.min.js')?>"></script>
@@ -203,9 +219,6 @@
     var UserId = '<?=userId()?>';
 
 </script>
-
 <script src="<?=base_url('assets/js/spectogo.js')?>"></script>
-<!-- <script src="<?=base_url('dist/index.js')?>"></script> -->
 </body>
-
 </html>

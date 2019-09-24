@@ -3,8 +3,8 @@
    	    <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="text-center font-weight-bold mt-0">Blog Post</h4>
-                    <p class="text-center mb-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    <h4 class="text-center font-weight-bold mt-0 mb-5">Blog Post</h4>
+                    <!-- <p class="text-center mb-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
                 </div>
             </div>
             <?php if(!empty($blogs)){ ?>
@@ -15,14 +15,14 @@
                                 <img src="<?=base_url('assets/images/blogImage/'.$blog['image'])?>" class="card-img-top" alt="<?=$blog['title']?>">
                             </a>
                             <div class="card-body">
-                                <!-- <h6>lifestyle</h6> -->
                                 <ul>
                                     <li>
                                         <i class="fa fa-calendar" aria-hidden="true"></i>
                                         <?=date_format(date_create($blog['created_at']), 'j F, Y')?>
                                     </li>
                                     <li>
-                                        <i class="fa fa-comments-o" aria-hidden="true"></i> 111
+                                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                                        <?=$blog['no_of_comments']?>
                                     </li>
                                 </ul>
                                 <h5 class="card-title">

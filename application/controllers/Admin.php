@@ -873,7 +873,9 @@ class Admin extends Common_Controller {
     public function pageManagement(){
         if($this->input->post()){
             $upArray = array(
-                "description"      => $this->input->post('description')
+                "name"          => $this->input->post('pageName'),
+                "title"         => $this->input->post('pageTitle'),
+                "description"   => $this->input->post('pageDescription')
             );                    
             $this->cm->update('page_management', array("slug" => $this->input->post('page_slug')), $upArray);
             $this->session->set_flashdata('msg', 'Details Successfully Updated !!!');
@@ -945,6 +947,45 @@ class Admin extends Common_Controller {
         $this->load->view('backend/layout/header', $data);
         $this->load->view('backend/layout/sidemenu');
         $this->load->view('backend/pages/add-blog');
+        $this->load->view('backend/layout/footer');
+    }
+    public function testimonialManagement(){
+        if($this->input->post()){
+            if($this->input->post('testimonial_id') == ''){
+                $inArray = array(
+                    "name"          => $this->input->post('testiName'),
+                    "city"          => $this->input->post('testiCity'),
+                    "description"   => $this->input->post('testiDesc'),
+                    "for_spectogo"  => $this->input->post('testiThanksGiving')
+                );
+                $this->cm->insert('testimonial', $inArray);
+                $this->session->set_flashdata('msg', 'Testimonial Successfully Added !!!');
+            }else{
+                $upArray = array(
+                    "name"          => $this->input->post('testiName'),
+                    "city"          => $this->input->post('testiCity'),
+                    "description"   => $this->input->post('testiDesc'),
+                    "for_spectogo"  => $this->input->post('testiThanksGiving')
+                );
+                $this->cm->update('testimonial', array("id" => $this->input->post('testimonial_id')), $upArray);
+                $this->session->set_flashdata('msg', 'Testimonial Successfully Updated !!!');
+            }
+        }
+        $data['testimonials'] = $this->cm->get_all('testimonial');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/testimonial');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addTestimonial($id = ''){
+        if($id != ''){
+            $data['testimonial'] = $this->cm->get_specific('testimonial', array("id" => $id))[0];
+        }else{
+            $data = array();
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-testimonial');
         $this->load->view('backend/layout/footer');
     }
 }

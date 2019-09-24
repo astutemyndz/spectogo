@@ -5,10 +5,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Common_Controller extends CI_Controller {
 
     protected $data         = array();
-    protected $product         = array();
+    protected $product      = array();
     protected $request      = array();
-    protected $response      = array();
+    protected $response     = array();
     protected $category     = '';
+    protected $productName  = '';
+    protected $brandId      = '';
+    protected $frameName    = '';
     protected $details      = '';
     protected $options      = array();
     protected $condition    = array();
@@ -215,9 +218,8 @@ class Common_Controller extends CI_Controller {
         $this->cm->insert('product_ledger', $insertArray);
     }
     public function getBlogDetails($condition = array(), $limit = '', $offset = 0){
-        //$join[] = ['table' => 'categories c', 'on' => 'c.id = b.cat_id', 'type' => 'left'];
         $join = array();
-        return $this->cm->select('blog b', $condition, 'b.*', 'b.id', 'DESC', $join, $limit, $offset);
+        return $this->cm->select('blog b', $condition, 'b.*, (SELECT count(bc.id) from blog_comment bc where b.id = bc.blog_id ORDER BY bc.id ASC) no_of_comments', 'b.id', 'DESC', $join, $limit, $offset);
     }
     public function getProductDetails($id = ''){
         if($id != ''){
@@ -234,6 +236,30 @@ class Common_Controller extends CI_Controller {
         $temp = $this->cm->select('products p', $condition, 'p.*, b.name brand_name, c.name cat_name, f.name frame_name, s.name spec_name, (select GROUP_CONCAT(pi.id) from product_images pi where pi.product_id = p.id) images_id, (select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = p.id) images', 'p.id', 'desc', $join); 
         return $temp;
     }
+    public function setProductName($product) {
+        $this->productName = $product;
+        return $this;
+    }
+    public function getProductName() {
+        return $this->productName;
+    }
+    public function setBrandId($brandId) {
+        $this->brandId = $brandId;
+        return $this;
+    }
+    public function getBrandId() {
+        return $this->brandId;
+    }
+    public function setFrameName($frameName) {
+        $this->frameName = $frameName;
+        return $this;
+    }
+    public function getFrameName() {
+        return $this->frameName;
+    }
+
+
+
 
     public function setCategory($category) {
         $this->category = $category;
@@ -302,15 +328,29 @@ class Common_Controller extends CI_Controller {
         $this->sql   .= ",t2.id as categoryId, t2.name as categoryName";
         return $this->cm->select($this->primaryTable, $this->condition, $this->sql, "t1.id", "DESC", $this->join, $limit = "", $offset = 0, $group_by = "", $row = true);
     }
-    public function getProductListDetails($options = null) {
+    public function getProductListDetails($options = null, $limit = '', $offset = 0) {
        // $flag = false;
         $this->setOptions($options);
         $this->sql = '';
         $this->primaryTable = 'products p';
         $this->condition[] = array("p.status" => 1);
-
         if(!empty($this->options) || $this->options != null) {
-          
+
+            if(!empty($this->options['brandId'])) {
+                if(is_array($this->options) && in_array($this->options['brandId'], $this->options)) {
+                    $this->setBrandId($this->options['brandId']);
+                } 
+            }
+            if(!empty($this->options['frameName'])) {
+                if(is_array($this->options) && in_array($this->options['frameName'], $this->options)) {
+                    $this->setFrameName($this->options['frameName']);
+                } 
+            }
+            if(!empty($this->options['productName'])) {
+                if(is_array($this->options) && in_array($this->options['productName'], $this->options)) {
+                    $this->setProductName($this->options['productName']);
+                } 
+            }
             if(!empty($this->options['category'])) {
                 if(is_array($this->options) && in_array($this->options['category'], $this->options)) {
                     $this->setCategory($this->options['category']);
@@ -326,8 +366,6 @@ class Common_Controller extends CI_Controller {
                     $this->setCategoryName($this->options['categoryName']);
                 } 
             }
-            //echo $this->getCategoryName();
-            //exit;
             if(!empty($this->options['details'])) {
                
                 if(is_array($this->options) && in_array($this->options['details'], $this->options)) {
@@ -349,12 +387,8 @@ class Common_Controller extends CI_Controller {
                 if(is_array($this->options) && in_array($this->options['user'], $this->options)) {
                     $this->setUser($this->options['user']);
                 }
-            } 
-             
-            // echo $this->details;
-            // exit;
+            }
             //Filter data by category
-         
             if($this->category) {
                 switch($this->category) {
                     case 'categories':
@@ -371,34 +405,39 @@ class Common_Controller extends CI_Controller {
                         break;
                 }
             }
-           
+            /*** This is for search product***/
+            if($this->productName) {
+                $this->condition[]  = array("p.name LIKE " => '%'.$this->productName.'%');
+                $limit = '20';
+            }
+            /*** This is for search product***/
+            /*** This is for Filter product***/
+            if($this->brandId) {
+                $this->condition[]  = array("p.brand_id" => $this->brandId);
+            }
+            if($this->frameName) {
+                $this->condition[]  = array("p.name LIKE " => '%'.$this->frameName.'%');
+            }
+            /*** This is for Filter product***/
+
             if($this->categoryId) {
                 $this->joinCategory = true;
                 $this->condition[]  = array("c.id" => $this->categoryId);
             }
-
             if($this->categoryName) {
-               // echo $this->categoryName;
                 $this->joinCategory = true;
                 $this->condition[]  = array("c.name LIKE" => "$this->categoryName%");
             }
-           
              //Filter data by slug
-          
             if($this->slug) {
                 $this->condition[] = array("p.slug" => $this->options['slug']);
             }
-            
             if($this->user) {
-              
                 if(is_array($this->user)) {
-                   
                     $this->setUserId($this->user['id']);
                 } 
-            } 
- 
+            }
             if($this->userId) {
-              
                if($this->isProductAvailableInWishlist()) {
                   // echo "1";
                     $this->condition[]  = array('wl.id_users' => $this->userId);
@@ -410,12 +449,9 @@ class Common_Controller extends CI_Controller {
                }
             }
             if($this->userId && $this->wishlist) {
-                //echo "ok";
-                 
                  //$this->condition[]  = array('wl.id_users' => $this->userId);
                  $this->joinWishlist = true;
-             }
-           
+            }
         /** ########## Join tables start of code ########## */
             // Categories
             if($this->joinCategory) {
@@ -435,15 +471,13 @@ class Common_Controller extends CI_Controller {
                 $this->sql .= ",(select ws.id from wishlists ws  where ws.id_users = u.id AND u.id = '".$this->userId."') wishlistId";
             }
         /** ########## Join tables end of code ########## */
-           
         } else {
             $this->join[] = ['table' => 'categories c', 'on' => 'c.id = p.cat_id', 'type' => 'left'];
             $this->sql   .= ',c.name cat_name';
 
             $this->join[] = ['table' => 'frames f', 'on' => 'f.id = p.frame_id', 'type' => 'left'];
             $this->sql   .= ',f.name frame_name';
-        } 
-        
+        }
        // echo $this->sql;
         if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
             for($i = 0; $i < count($this->condition); $i++) {
@@ -452,9 +486,7 @@ class Common_Controller extends CI_Controller {
                 }
             }
         }
-       
         $this->condition = $condition;
-       
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
@@ -469,10 +501,7 @@ class Common_Controller extends CI_Controller {
         $this->sql .= ',(select GROUP_CONCAT(pa.discount) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) discount';
         $this->sql .= ',(select GROUP_CONCAT(pa.stock) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) stock';
         $this->sql .= ',(select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = p.id order by pi.id ASC) product_images';
-
-       
-        
-        $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit='', $offset=0, $group_by = '', $row = true);
+        $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit, $offset, $group_by = '', $row = true);
         //echo $this->db->last_query();
        
         return $productList;
