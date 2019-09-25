@@ -34,7 +34,8 @@ class Common_Controller extends CI_Controller {
 
     protected $lensCatId;
     protected $lensSubCatId;
-
+    protected $lensId;
+    protected $lensTintDetailsId;
     public $sessionVar;
 
 	function __construct() {
@@ -91,7 +92,10 @@ class Common_Controller extends CI_Controller {
     public function getLensSubCatId() {
         return $this->lensSubCatId;
     }
-    
+    public function setLensId($lensId) {
+        $this->lensId = $lensId;
+        return $this;
+    }
     
     
     
@@ -532,7 +536,8 @@ class Common_Controller extends CI_Controller {
         // echo "<pre>";
         // print_r($this->condition);
         // exit;
-        $this->sql .= 'pa.price, pa.sell_price, pa.discount, pa.stock, (select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = pa.product_id AND pi.color = pa.color order by pi.id ASC) images';
+        $this->sql .= 'p.name as productName, p.description as productDescription,p.main_color as productHexColorCode, p.main_color_name as productColor,p.arm as productArm, p.bridge as productBridge, p.lens as productLens, p.height as productHeight, p.sku as productSku, p.warranty as productWarranty, p.progressives as productProgressive,p.includes as productIncludes, p.single_vision as productSingleVision, p.spring_hinge as productSpringHinge, p.suitable_for_tints as productSuitableForTints';
+        $this->sql .= ',pa.color as productAttributeColorCode, pa.color_name as productAttributeColorName, pa.price as productAttributePrice, pa.sell_price as productAttributeSellPrice, pa.discount as productAttributeDiscount, pa.stock as productAttributeStock, (select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = pa.product_id AND pi.color = pa.color order by pi.id ASC) images';
         
         // Join with product table
         if($this->joinProduct) {
@@ -548,6 +553,17 @@ class Common_Controller extends CI_Controller {
         }
         return $this->filterArray;
     }
+    public function hasSession($key) {
+        return ($this->session->has_userdata($key)) ? $this->session->has_userdata($key) : '';
+    }
+    public function unsetSession($key) {
+        if($this->hasSession($key)) {
+            $this->session->unset_userdata($key);
+            return true;
+        } 
+        return false;
+    }
+    
     public function setSession($key, $value) {
         (isset($key)) ? $this->session->set_userdata($key, $value) : $this->session->set_userdata('default', array());
     }
@@ -657,6 +673,72 @@ class Common_Controller extends CI_Controller {
         } else {
             $this->filterArray = array();
         }
+        return $this->filterArray;
+    }
+
+
+    public function getLensTints() {
+       return $this->db->get('lenses_and_tints')
+                    ->result_array();
+    }
+    public function setLensTintDetailsId($id) {
+        $this->lensTintDetailsId = $id;
+        return $this;
+    }
+
+    public function getLensTintsDetails($options = null) {
+        $this->sql = '';
+        $this->primaryTable = 'lenses_and_tints_details ld';
+        $this->condition = array();
+        $this->setOptions($options);
+        if(isset($this->options) || !empty($this->options) || $this->options != null) {
+            if(isset($this->options['lensId']) || !empty($this->options['lensId'])) {
+                if(is_array($this->options) && in_array($this->options['lensId'], $this->options)) {
+                    $this->setLensId($this->options['lensId']);
+                } 
+            }
+            if(isset($this->options['id']) || !empty($this->options['id'])) {
+                if(is_array($this->options) && in_array($this->options['id'], $this->options)) {
+                    $this->setLensTintDetailsId($this->options['id']);
+                } 
+            }
+        }
+        $this->condition[]  = array("ld.status" => 1);
+
+        $this->joinLens = true;
+        if($this->lensId) {
+            $this->condition[]  = array("lens.id" => $this->lensId);
+            $this->condition[]  = array("lens.status" => 1);
+        }
+        if($this->lensTintDetailsId) {
+            $this->condition[]  = array("ld.id" => $this->lensTintDetailsId);
+            $this->condition[]  = array("ld.status" => 1);
+        }
+       
+       // $this->condition[]  = array("l.status" => 1);
+        $condition = array();
+        if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
+            for($i = 0; $i < count($this->condition); $i++) {
+                foreach($this->condition[$i] as $k => $v) {
+                    $condition[$k] = $v;
+                }
+            }
+        }
+        $this->condition = $condition;
+        $this->sql .= 'ld.id lensDetailsId, ld.name as lensDetailsName, ld.description as lensDetailsDescription, ld.includes as lensDetailsInclude, ld.price as lensDetailsPrice, ld.image as lensDetailsImage, ld.status as lensDetailsStatus';
+        // Join with product table
+        if($this->joinLens) {
+            $this->join[] = ['table' => 'lenses_and_tints as lens', 'on' => 'lens.id = ld.lenses_and_tints_id', 'type' => 'left'];
+            $this->sql   .= ',lens.id as lensId, lens.name as lensName';
+        }
+        $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'ld.id', 'asc', $this->join);
+        if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
+            $this->filterArray = $this->resultArray;
+        } else {
+            $this->filterArray = array();
+        }
+        // echo "<pre>";
+        // print_r($this->filterArray);
         return $this->filterArray;
     }
     

@@ -200,7 +200,9 @@
     var UserId = '<?=userId()?>';
 
 </script>
-
+<script src="<?=base_url('assets/js/vendor/jquery.ui.widget.js');?>"></script>
+<script src="<?=base_url('assets/js/jquery.iframe-transport.js');?>"></script>
+<script src="<?=base_url('assets/js/jquery.fileupload.js');?>"></script>
 <script src="<?=base_url('assets/js/spectogo.js')?>"></script>
 <!-- <script src="<?=base_url('dist/index.js')?>"></script> -->
 </body>

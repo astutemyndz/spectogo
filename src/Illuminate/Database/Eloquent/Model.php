@@ -405,7 +405,7 @@ abstract class Model implements ModelInterface
         // TODO: Implement all() method.
         return $this->db->order_by('id', 'ASC')->get($this->table)->result();
     }
-    public function save(array $data)
+    public function save($data)
     {
         // TODO: Implement save() method.
         $this->db->insert($this->table, $data);
@@ -419,16 +419,26 @@ abstract class Model implements ModelInterface
         return $this->lastInsertId;
     }
 
+    /**
+     * @return result of array
+     */
     public function find($params, $limit = null, $offset = null)
     {
         // TODO: Implement lastInsertId() method.
-        return $this->db->get_where($this->table, $params, ($limit) ? $limit : null, ($offset) ? $offset : null);
+        return $this->db->get_where($this->table, $params, ($limit) ? $limit : null, ($offset) ? $offset : null)->row_array();
     }
-    public function update(array $data)
+    /**
+     * @return boolean true
+     */
+    public function update($params, $attributes)
     {
         // TODO: Implement lastInsertId() method.
+        return $this->db->where($params)
+                        ->update($attributes);
         
     }
+
+    
 
     public function remove($params)
     {

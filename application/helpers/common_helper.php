@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     
-    
+    /*
     if ( ! function_exists('slugfy')){
 
 		function slugfy($name){
@@ -92,7 +92,7 @@
             return $fatch_data ? $fatch_data:array();
     }
   }
-
+*/
 if(!function_exists('isLoggedIn')) {        
     function isLoggedIn() {
       $ci = & get_instance();
@@ -107,8 +107,9 @@ if(!function_exists('userId')) {
   function userId() {
     $ci = & get_instance();
     $ci->load->library('session');
-    if(!empty($ci->session->userdata('user'))) {
-        return $ci->session->userdata('user')['id'];
+    $userArray = (array) $ci->session->userdata('user');
+    if(!empty($userArray)) {
+        return (isset($userArray['id'])) ? $userArray['id'] : '';
     }
     return false;
   }

@@ -1641,3 +1641,170 @@ ul.cart-add li a:hover{
   padding: 15px;
     min-height: 325px;
 }
+
+
+
+/*20.09.2019*/
+.select-prescription{
+	margin:30px 0;
+}
+.select-prescription .custom-control .custom-control-label{
+	font-weight:600;
+}
+.select-prescription .my-btn{
+	margin-top:10px;
+}
+ul.edit-prescription-area{
+	text-align:right;
+}
+ul.edit-prescription-area li{
+	display:inline-block;
+	padding: 10px;
+}
+ul.edit-prescription-area li a{
+	text-decoration:underline;
+	font-weight:500;
+}
+.prescription-view.your-presciption{
+	border:none;
+	margin-top:30px;
+	min-height:100%;
+}
+.checkbox-check{
+	background: #f7f7f7;
+    padding: 20px 20px 20px 40px;
+}
+.cart-area .table td h3{
+	font-weight:bold;
+	color:#1e99b2;
+}
+.cart-area .table td p{
+	margin-bottom:5px;
+}
+.cart-area .table td p span{
+	color:#1e99b2;
+}
+.cart-area .table p.cart-ditels-more{
+	background: #f1f1f1;
+    padding: 8px 15px;
+    margin-top: 20px;
+    font-size: 13px;
+	color:#777777;
+}
+.cart-area .table h4.cart-table-price{
+	font-size:21px;
+	font-weight:bolder;
+	color:#212529;
+	margin-bottom:20px;
+}
+.add-remove-cart{
+	display:flex;
+	flex: 1;
+	margin-bottom:20px;
+	align-items: center;
+}
+.cart-total .table{
+	background:#fff;
+}
+.cart-total .table thead{
+	text-align:center;
+	font-size:18px;
+	font-weight:600;
+	border-bottom:1px solid rgba(240,240,240,1);
+}
+.apply-coupon, .accept-card-view{
+	background:#fff;
+}
+.apply-coupon .form-control{
+	border-radius:0;
+	background:#f1f1f1;
+	height:40px;
+}
+.apply-coupon .my-btn{
+	border-radius: 0;
+    font-size: 14px;
+    height: 40px;
+    padding: 0 25px;
+    margin-right: 0;
+}
+.apply-coupon p, .accept-card-view p{
+	font-weight:600;
+	margin-bottom: 8px;
+}
+.shoping-continue{
+	margin:10px 0 30px;
+}
+.shoping-continue a{
+	font-weight:600;
+	color:#1e99b2;
+	text-decoration:underline;
+}
+.accept-card-view{
+	padding:15px;
+	text-align:left;
+}
+.accept-card-view img{
+	max-width:300px;
+}
+.checkout-details{
+	background:#fff;
+	padding:20px 15px;
+	margin-bottom:15px;
+}
+.checkout-details h3{
+	font-size:18px;
+	font-weight:bold;
+	border-bottom:1px solid rgba(0,0,0,.05);
+	margin-bottom:0;
+	padding-bottom:15px;
+}
+.checkout-details h3 .badge.badge-secondary{
+	float:right;
+}
+.checkout-details h3 .badge.badge-secondary a{
+	background: #1e99b2;
+    color: #fff;
+    font-weight: 400;
+    padding: 5px 15px;
+}
+.checkout-first table{
+	margin-top:15px;
+}
+.checkout-first p{
+	font-size:14px;
+}
+.checkout-first p a{
+	text-decoration:underline;
+}
+.checkout-third .table thead tr{
+	background:#f1f1f1;
+	padding:5px;
+}
+.checkout-third .table thead tr th{
+	color:#333;
+	font-size:13px;
+	font-weight:400;
+	border-bottom: 1px solid #dee2e6;
+} 
+.checkout-third h4{
+	font-size:14px;
+}
+.payment-option-image{
+	max-width: 150px;
+	margin-top:-3px;
+}
+.checkout-third .table tr td{
+	vertical-align:middle;
+}
+.payment-option{
+	margin-top:10px;
+}
+.payple-image{
+	margin-top:-10px;
+}
+.card-form-area .card-image-view{
+	max-width:200px;
+}
+.card-image-view .form-control{
+	height:42px;
+}

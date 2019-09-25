@@ -176,9 +176,16 @@ class Product extends Common_Controller {
         $this->session->set_userdata('choosenColor', $this->input->post('color_hex'));
         print json_encode($res);
     }
-    public function chooseYourLens(){
+    public function chooseYourLens() {
+        $this->data['style'] = array();
+        if(isLoggedIn()) {
+            $this->data['style']['class'] = 'd-none';
+        } else {
+            $this->data['style']['class'] = '';
+        }
+        $this->data['hasPrescription'] = true;
         $this->load->view('frontend/layout/header');
-        $this->load->view('frontend/pages/choose-your-lens');
+        $this->load->view('frontend/pages/choose-your-lens', $this->data);
         $this->load->view('frontend/layout/footer');
         
     }
@@ -242,6 +249,12 @@ class Product extends Common_Controller {
         }
 
         $this->response->send();
+    }
+
+    public function preview() {
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/preview');
+        $this->load->view('frontend/layout/footer');
     }
     
     

@@ -550,3 +550,8 @@ require_once FCPATH.'bootstrap/autoload.php';
 // $response->send();
 
 // $kernel->terminate($request, $response);
+$config['attachment']['upload_path'] = './uploads/';
+$config['attachment']['allowed_types'] = 'gif|jpg|png|jpeg|pdf';
+$config['attachment']['max_size'] = '2048000';
+$config['attachment']['max_width'] = '1024';
+$config['attachment']['max_height'] = '768';

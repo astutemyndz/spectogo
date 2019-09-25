@@ -4,7 +4,14 @@ const currentUrl = function() {
 const back = function() {
     currentUrl();
 }
+
+const backToChooseLens = function() {
+    $(document).on('click', '.backToChooseLens', function(e) {
+        location.href = API_URL + 'choose-your-lens';
+    })
+}
 $(document).ready(function(){
+    backToChooseLens();
     // var URI = $(location).attr('href');
     // console.log(URI);
     // let $bannerUL = $('#bannerUL');
@@ -25,7 +32,8 @@ $(document).ready(function(){
         }, 300);
     
     });
-    if (page == 'product-details' || page == 'choose-your-lens') {
+    if (page == 'product-details' || page == 'choose-your-lens' || page == 'preview') {
+        console.log(page);
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
@@ -205,7 +213,7 @@ const CategoryComponent = function(props) {
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
 const ColorComponent = function(props) {
-    console.log(props);
+   // console.log(props);
     return (`<li style="background-color:#3330;"><i class="fa fa-circle" style="color: #` + props.color + `"></i></li>`);
 }
 const ProductComponent = function(props) {
@@ -262,12 +270,13 @@ const ProductComponent = function(props) {
 //<button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
 $('.addPres').click(function(){
     $('.addPresDiv').removeClass('d-none');
-    $('.login-from-area').addClass('d-none');
+    $('#saveYourPrescription').addClass('d-none');
 });
 $('.useOldPres').click(function(){
     $('.addPresDiv').addClass('d-none');
-    $('.login-from-area').removeClass('d-none');
+    $('#saveYourPrescription').removeClass('d-none');
 });
+
 
 const LensCategoryComponent = function(options) {
     return(`
@@ -300,6 +309,7 @@ const LensSubCategoryComponent = function(options) {
     `)
 }
 // Load lens start of code
+
 const onLoadLensEventHandler = function (options) {
     let lensCategoryArr = [];
     let $lensCategoryListFragment = $('#vertical_tab');
@@ -354,11 +364,116 @@ const loadLensCategory = function (options) {
         onLoadLensEventHandler(options);
     }, 1001);
 }
+// lens and tints
+const LensComponent = function(options) {
+    return(`
+    <li class="nav-item">
+        <a class="lens nav-link d-inline-block pl-3 pr-3 text-color-6 font-weight-bold mb-2" data-toggle="tab" href="#single-vision" role="tab" aria-controls="single-vision" data-lensId="`+options.lens.id+`" id="lens_`+options.index+`">
+        `+options.lens.name+`
+        </a>
+        <span class="arrow_box"></span>
+    </li>
+    `)
+}
+const LensTintDetailsComponent = function(options) {
+    return(`
+    <a class="col-md-4 col-sm-4 " href="javascript:void(0)" class="d-block nextBtn">
+    <input type="hidden" value="">
+    <div class="text-center col-12 mb-sm-0 mb-4 subCategoryBox" onclick="setLensTintToProduct('`+options.lensTintDetails.lensDetailsId+`')">
+        <div class="rounded-circle mx-auto mb-3 bg-dark" style="height:100px;width:100px;line-height:100px;">
+            <img src="`+options.imageUrl+options.lensTintDetails.lensDetailsImage+`" class="w-50" />
+        </div>
+        <h5 class="text-uppercase font-weight-bold mb-0">`+options.lensTintDetails.lensDetailsName+`</h5>
+        <h6 class="text-color-3 font-italic mt-1" style="font-size:12px;">Single Vision</h6>
+        <p class="text-color-5">`+options.lensTintDetails.lensDetailsDescription+`</p>
+        <p class="text-color-5">`+options.lensTintDetails.lensDetailsInclude+`</p>
+        <p class="text-color-5">`+options.lensTintDetails.lensDetailsPrice+`</p>
+            <span class="bg-primary badge rounded-circle p-0">
+                <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
+            </span>
+    </div>
+    </a>
+    `)
+}
+const onLoadLensTintsEventHandler = function (options) {
+    let arr = [];
+    let $tintsTabFragment = $('#tintsTab');
+    fetch(API_URL + 'lens/tints', {
+        headers: {
+            "Content-Type": 'application/x-www-form-urlencoded'
+        },
+        method: 'post',
+        body: $.param(options)
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (myJson) {
+        let res = myJson;
+        let data = res.data;
+        //console.log(data);
+        $.each(data, function (index, lens) {
+            arr.push(LensComponent({
+                index: index,
+                lens: lens
+            }));
+        });
+        $tintsTabFragment.html(arr.join(''));
+        $("#lens_0").trigger('click');
+    });
+}
+const onLoadLensTintsDetailsEventHandler = function (options, callback) {
+    fetch(API_URL + 'lens/tints/details', {
+        headers: {
+            "Content-Type": 'application/x-www-form-urlencoded'
+        },
+        method: 'post',
+        body: $.param(options)
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (myJson) {
+        let res = myJson;
+        callback(res);
+    });
+}
 $(document).ready(function () {
     const options = {
         lensCatId: ''
     }
     loadLensCategory(options);
+    onLoadLensTintsEventHandler();
+}).on('click', '.lens', function(e){
+    let lensId = $(this).attr('data-lensId');
+    let arr = []; 
+    const options = {
+        lensId: lensId
+    }
+    let $tintsVisionFragment = $('#tintsVision');
+    $tintsVisionFragment.loading();
+
+    setTimeout(function () {
+        $tintsVisionFragment.loading('stop');
+    }, 1000);
+    setTimeout(function () {
+        onLoadLensTintsDetailsEventHandler(options, function(res) {
+            let data = res.data;
+            let STATUS_CODE = res.statusCode;
+            if(STATUS_CODE === 200) {
+                $.each(data, function (index, lensTintDetails) {
+                    arr.push(LensTintDetailsComponent({
+                        index: index,
+                        lensTintDetails: lensTintDetails,
+                        imageUrl: (res.imageUrl) ? res.imageUrl : ''
+                    }));
+                    
+                });
+            }
+            //console.log(arr);
+            $tintsVisionFragment.html(arr.join(''));
+        });
+    }, 1001);
 }).on("click", ".getLensSubCategory", function (e) {
     let subCategoryArr = []; 
     const options = {
@@ -440,7 +555,7 @@ const addToWishlistProduct = function (callback) {
             return response.json();
         }).then(function (myJson) {
             let res = myJson;
-            console.log(res);
+            //console.log(res);
             if (res.statusCode === 401) {
                 setTimeout(() => {
                     location.href = API_URL + '/sign-in';
@@ -595,6 +710,9 @@ const options = {
 };
 $(document).ready(function () {
     loadProduct(options);
+    loadPupillaryDistanceDropDown();
+    addYourPrescription();
+    onLoadPreviewEventHandler();
 }).on("click", ".wishlist", function (e) {
     // Init variable
 
@@ -682,6 +800,83 @@ function setLensSubCatId(subCatId){
             }
         }
     });
+}
+function setLensTintToProduct(id){
+    // setTimeout(() => {
+        
+    // }, 1000);
+    let data = {
+        id: id
+    };
+    fetch(API_URL + 'setLensTintToProduct', {
+        headers: {
+            "Content-Type": 'application/x-www-form-urlencoded'
+        },
+        method: 'post',
+        body: $.param(data)
+    }).then(function (response) {
+        return response.json();
+    }).then(function (myJson) {
+        let res = myJson;
+        if (res.statusCode === 200) {
+            console.log(res);
+            setTimeout(() => {
+                location.href = API_URL + 'preview';
+            }, 1000);
+        }
+    });
+}
+ // Upload attachment file
+  $(function () {
+    $fileUploadFragment = $('.upload-btn-wrapper');
+    $attachmentPrescription = $('#attachmentPrescription');
+    $fileUploadFragment.loading();
+    setTimeout(() => {
+        $('#attachment').fileupload({
+            dataType: 'json',
+            add: function (e, data) {
+                data.context = $('.loader').text('Uploading...');
+                data.submit();
+            },
+            done: function (e, data) {
+                let fileName;
+                $.each(data.result.files, function (index, file) {
+                    console.log(file);
+                    fileName = file.name;
+                });
+                data.context.text(fileName);
+                $attachmentPrescription.val(fileName);
+            }
+        });
+        $fileUploadFragment.loading('stop');
+    }, 1001);
+   
+});
+const addYourPrescription = function() {
+    $PrescriptionButton = $('.PrescriptionButton');
+    $PrescriptionButton.on('click', function(e) {
+        //e.preventDefault();
+        console.log('click');
+        $addPresDiv = $('#addPresDiv');
+        $addPresDiv.loading();
+        const data = $(".prescription_form").serialize();
+        fetch(API_URL + 'setPrescription', {
+            headers: {
+                "Content-Type": 'application/x-www-form-urlencoded'
+            },
+            method: 'post',
+            body: data
+        }).then(function (response) {
+            return response.json();
+        }).then(function (myJson) {
+            let res = myJson;
+            if (res.statusCode === 200) {
+                console.log(res);
+                $addPresDiv.loading('stop');
+                $('.lenses').trigger('click');
+            }
+        });
+    })
 }
 
 /**
@@ -1010,3 +1205,285 @@ $("#loginForm").submit(function (e) {
         });
     }
 });
+
+
+/**
+ * @desc Choose your lens page
+ */
+
+ // load pupillaryDistance
+
+ const PupillaryDistanceComponent = function(props) {
+     return(`<option value="${props.pupillaryDistance.id}">${props.pupillaryDistance.name}</option>`)
+ }
+
+ const loadPupillaryDistanceDropDown = function() {
+    var pupillaryDistanceArr = [];
+    $pupillaryDistance = $('#pupillaryDistance');
+    fetch(API_URL + 'distance')
+      .then(function(response) {
+        return response.json();
+    })
+      .then(function(myJson) {
+        let res = myJson;
+        if(res) {
+            let data = res.data;
+            let STATUS_CODE = res.statusCode;
+            //STATUS_CODE = 201;
+            if (STATUS_CODE === 200) {
+                $.each(data, function(index, pupillaryDistance) {
+                    pupillaryDistanceArr.push(PupillaryDistanceComponent({pupillaryDistance: pupillaryDistance}));
+                });
+                
+                setTimeout(function(){
+                    $pupillaryDistance.append(pupillaryDistanceArr.join(''));
+                },1001);
+            } else {
+                $("#pupillaryDistance").prop("disabled", true);
+                $("#pupillaryDistanceNotFound").html(res.message);
+            }
+        }
+    }).catch(function(err) {
+        console.log(err);
+    });
+ }
+
+ $(document).ready(function() {
+    //set initial state.
+    $('.addPrism').val(this.checked);
+    $('.addPrism').change(function() {
+        if(this.checked) {
+          $('.copyPrescriptionForm').removeClass('d-none');
+        } else {
+            $('.copyPrescriptionForm').addClass('d-none');
+        }
+        $('.addPrism').val(this.checked);  
+          
+    });
+
+    $('.addAdditionalInfoCheckBox').val(this.checked);
+    $('.addAdditionalInfoCheckBox').change(function() {
+        if(this.checked) {
+          $('.addAdditionalInfoTextArea').removeClass('d-none');
+        } else {
+            $('.addAdditionalInfoTextArea').addClass('d-none');
+        }
+        $('.addAdditionalInfoCheckBox').val(this.checked);  
+          
+    });
+   
+});
+
+
+const onLoadPreviewEventHandler = function () {
+    let $previewFragment = $('#preview');
+    $previewFragment.loading();
+
+    let url = API_URL + 'onLoadPreviewEventHandler';
+    setTimeout(() => {
+        $previewFragment.loading('stop');
+        fetch(url)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (myJson) {
+        let res = myJson;
+        let data = res.data;
+        
+        let options = {
+            product: {
+                id: data.productId,
+                name: data.productName,
+                image: res.productImagePath + data.productPrimaryImage,
+                imagePath: res.productImagePath,
+                description: data.productDescription,
+                description: data.productDescription,
+                lensSubCatId: data.lensSubCatId,
+                arm:data.productArm,
+                bridge:data.productBridge,
+                lens:data.productLens,
+                height:data.productHeight,
+                warranty: data.productWarranty,
+                progressive: data.productProgressive,
+                includes:data.productIncludes,
+                singleVision:data.productSingleVision,
+                springHinge:data.productSpringHinge,
+                suitableForTints:data.productSuitableForTints,
+                color:{
+                    code: data.productDescription,
+                    name: data.productColor,
+                },
+                attributes: {
+                    color: {
+                        name: data.productAttributeColorName,
+                        code: data.productAttributeColorCode,
+                    },
+                    price: data.productAttributePrice,
+                    sellPrice: data.productAttributeSellPrice,
+                    discount: data.productAttributeDiscount,
+                    stock: data.productAttributeStock
+                },
+               
+            },
+            prescription: data.prescription,
+            lensTint: data.lensTint
+        };
+        console.log(options);
+        $previewFragment.html(PreviewMainComponent(options));
+     });
+    }, 1000);
+    
+}
+
+
+const PreviewHeaderComponent = function(props) {
+    return(`
+        <div class="col-12">
+            <div class="add-to-cart-area">
+            <h4 class="text-center font-weight-bold mt-0">Your new glasses</h4>
+            <p class="text-center mb-4">Confirm they're correct then add to your basket.</p>
+            </div>
+        </div>
+    `);
+}
+
+const PreviewFrameComponent = function(props) {
+    return(`
+    <div class="col-sm-4">
+	  	<div class="selected-frame text-center">
+	  		<h3>Your frame</h3>
+	  		<img src="`+props.product.image+`" class="img-fluid"/>
+	  		<h4>`+props.product.name+`</h4>
+	  		<p>`+props.product.attributes.color.name+`</p>
+	  		<p><strong>Size</strong>: `+props.product.arm + `-` +props.product.bridge+`-`+props.product.lens+`-`+props.product.height+`</p>
+	  		<p>$`+props.product.attributes.sellPrice+`.00 (frame price) <br>`+props.product.includes+`</p>
+	  	</div>
+	  </div>
+    `);
+}
+const PreviewPrescriptionComponent = function(props) {
+    //console.log(props.prescription);
+    return(`
+            <div class="col-sm-4">
+                <div class="your-presciption">
+                    <div class="pd-15">
+                    <h3>Your prescription</h3>
+                    <p class="text-center">Single Vision - Reading</p>
+                    <table class="table table-sm text-center scriptForm unstriped table-borderless">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sphere</th>
+                                <th>Cylinder</th>
+                                <th>Axis</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rightEye">
+                                <td class="eye">
+                                    <strong>OD</strong>
+                                    <br>
+                                    <em>(Right Eye)</em>
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[0].sphere+`
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[0].cylinder+`
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[0].axis+`
+                                </td>
+                            </tr>
+                            <tr class="leftEye">
+                                <td class="eye">
+                                    <strong>OS</strong>
+                                    <br>
+                                    <em>(Left Eye)</em>
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[1].sphere+`
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[1].cylinder+`
+                                </td>
+                                <td class="grey-cell">
+                                    `+props.prescription.details[1].axis+`
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>PD</strong>
+                                </td>
+                                <td class="grey-cell" colspan="4">
+                                    <strong>`+props.prescription.id_pupillary_distance+`</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        </div>
+                </div>
+            </div>
+    `);
+}
+
+const PreviewLensComponent = function(props) {
+    let lensDetailsPrice = (parseFloat(props.lensTint.lensDetailsPrice).toFixed(2));
+    if(lensDetailsPrice) {
+        lensDetailsPrice = lensDetailsPrice;
+    } else {
+        lensDetailsPrice = '0.00'
+    }
+  
+    return(`
+            <div class="col-sm-4">
+                <div class="my-lenses">
+                    <h3>Your lenses</h3>
+                    <table class="table scriptForm unstriped lensesConfirm table-borderless">
+                    <tbody>
+                        <tr>
+                            <td class="text-left">`+props.lensTint.lensName+`</td>
+                            <td class="text-center"><strong></strong></td>
+                            <td class="text-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">`+props.lensTint.lensDetailsName+`</td>
+                            <td class="text-center"><strong>$`+lensDetailsPrice+`</strong></td>
+                            <td class="text-right"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `);
+}
+const PreviewTotalComponent = function(props) {
+    let sellPrice = parseFloat(props.product.attributes.sellPrice);
+    let lensDetailsPrice = parseFloat(props.lensTint.lensDetailsPrice);
+    let totalSellPrice = 0;
+    totalSellPrice = (sellPrice + lensDetailsPrice).toFixed(2);
+    return(`
+    <div class="col-12">
+        <ul class="cart-add">
+            <li class="add-cart-total">Eyewear Total: <span>$`+totalSellPrice+`</span></li>
+            <li><a href="javascript:void(0);" class="addToCart">Add To Cart</a></li>
+            <li><a href="javascript:void(0);" class="backToChooseLens">Back</a></li>
+        </ul>
+    </div>
+    `);
+}
+
+const PreviewMainComponent = function(props) {
+    return(`
+        <div class="container">
+            <div class="row">
+            `+PreviewHeaderComponent(props)+`
+            `+PreviewFrameComponent(props)+`
+            `+PreviewPrescriptionComponent(props)+`
+            `+PreviewLensComponent(props)+`
+            `+PreviewTotalComponent(props)+`
+            </div>
+        </div>
+    `);
+}

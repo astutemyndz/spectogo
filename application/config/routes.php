@@ -22,6 +22,11 @@ $route['filterLensDetails']                             = 'ApiController/filterL
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
 $route['distance']                                      = 'ApiController/distance';
+$route['lens/tints']                                      = 'ApiController/lens';
+$route['lens/tints/details']                                      = 'ApiController/onLoadLensTintsDetailsEventHandler';
+$route['setLensTintToProduct']                                      = 'ApiController/setLensTintToProduct';
+$route['setPrescription']                                      = 'ApiController/setPrescription';
+$route['attachmentUploadHandler']                                      = 'ApiController/attachmentUploadHandler';
 
 
 $route['wishlist/add'] = 'WishlistController/save';
@@ -37,6 +42,8 @@ $route['banners'] = "ApiController/banners";
 $route['contact-us']                                    = 'Home/contact-us';
 $route['testimonial']                                   = 'Home/testimonial';
 $route['cart']                                          = 'Home/cart';
+$route['preview']                                          = 'Product/preview';
+$route['onLoadPreviewEventHandler']                                          = 'ApiController/onLoadPreviewEventHandler';
 
 
 

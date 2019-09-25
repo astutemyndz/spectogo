@@ -325,7 +325,7 @@
           </div>
         </div>
       </div>
-      <div class="container border-bottom pt-4 pb-4" style="display:none;">
+      <div class="container border-bottom pt-4 pb-4" style="display:block;">
         <div class="row pt-4 pb-4 d-flex justify-content-md-center">
           <div class="col-lg-9 col-md-12 col-sm-12 col-12 text-center">
           <h4 class="font-weight-bold">Add your prescription</h4>
@@ -403,11 +403,78 @@
                 <div class="form-row">
                   <div class="form-group col-md-2 col-sm-2"></div>
                   <div class="form-group form-check col-md-8 col-sm-8 text-left mb-0 mb-sm-4">
-                  <label class="radio_container"> Add a prism <span class="text-red-1 font-weight-bold">(£17.34)</span>
-                      <input type="radio" name="add_prism">
-                      <span class="checkmark"></span>
-                    </label>                    
+                      <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="customCheck1">
+                          <label class="custom-control-label" for="customCheck1">Add a prism <span class="text-red-1 font-weight-bold">(£17.34)</span></label>
+                      </div>
                     </div>
+                </div>
+                <div class="copy-prescription-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-2 col-sm-2"></div>
+                        <div class="form-group col-md-5 col-sm-5"><span class="font-weight-bold text-color-8">RE </span><span class="text-color-5">(Right Eye)</span></div>
+                        <div class="form-group col-md-5 col-sm-5"><span class="font-weight-bold text-color-8">LE </span><span class="text-color-5">(Left Eye)</span></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2 col-sm-2"><span class="font-weight-bold text-color-8">SPH</span><br>
+                          <span class="text-color-5">(Sphere)</span></div>
+                        <div class="form-group col-md-5 col-sm-5">
+                          <select class="form-control">
+                            <option>NONE</option>
+                            <option>value 1</option>
+                            <option>value 2</option>
+                            <option>value 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-5 col-sm-5">
+                          <select class="form-control">
+                            <option>NONE</option>
+                            <option>value 1</option>
+                            <option>value 2</option>
+                            <option>value 3</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-2 col-sm-2"> <span class="font-weight-bold text-color-8">CYL</span><br>
+                            <span class="text-color-5">(Cylinder)</span></div>
+                          <div class="form-group col-md-5 col-sm-5">
+                            <select class="form-control">
+                              <option>NONE</option>
+                              <option>value 1</option>
+                              <option>value 2</option>
+                              <option>value 3</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-5 col-sm-5">
+                            <select class="form-control">
+                              <option>NONE</option>
+                              <option>value 1</option>
+                              <option>value 2</option>
+                              <option>value 3</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-2 col-sm-2"><span class="font-weight-bold text-color-8">Axis</span><br>
+                            <span class="text-color-5">(Axis)</span></div>
+                          <div class="form-group col-md-5 col-sm-5">
+                            <select class="form-control">
+                              <option>NONE</option>
+                              <option>value 1</option>
+                              <option>value 2</option>
+                              <option>value 3</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-5 col-sm-5">
+                            <select class="form-control">
+                              <option>NONE</option>
+                              <option>value 1</option>
+                              <option>value 2</option>
+                              <option>value 3</option>
+                            </select>
+                          </div>
+                        </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-2 col-sm-2"></div>
@@ -440,12 +507,18 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group form-check col-md-12 text-left mb-4 mb-md-0">
-                  <label class="radio_container">  Add Additional Information
-                      <input type="radio" name="add_additional">
-                      <span class="checkmark"></span>
-                    </label>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck2">
+                        <label class="custom-control-label" for="customCheck2">Add Additional Information</label>
+                      </div>
                   </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 text-left"> 
+                      <input type="text" class="form-control mt-3 mb-2">
+                    </div>
+                  </div>
+
               </div>
             </div>
             <div class="form-row border pt-3 margin_border mt-4" style="margin-left:11%;">
