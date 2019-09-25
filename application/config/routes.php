@@ -59,7 +59,7 @@ $route['onLoadPreviewEventHandler']                                          = '
 
 
 
-
+$route['cart'] = 'CartController/index';
 
 $route['reglaze']                                       = 'Home/reglaze';
 $route['set-reglaze-frame']                             = 'Home/setReglazeFrame';

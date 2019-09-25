@@ -105,24 +105,27 @@
                                 <li class="pt-1 pb-3">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <i class="fa fa-phone pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 pr-4 font-weight-bold"><?=$webManage['contact_phone']?></h6>
+                                        <h6 class="mb-0 pr-4 font-weight-bold">1223336</h6>
+                                        <?php /*$webManage['contact_phone']*/?>
                                     </div>
                                 </li>
                                 <li class="pt-1 pb-3">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <i class="fa fa-clock-o pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 pr-2 font-weight-bold"><?=$webManage['contact_timing']?></h6>
+                                        <h6 class="mb-0 pr-2 font-weight-bold">20.20</h6>
+                                        <?php /*$webManage['contact_timing']*/?>
                                     </div>
                                 </li>
                                 <li class="col-lg-auto col-md-12 col-sm-auto pt-1 pb-3">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <i class="fa fa-map-marker pr-2" aria-hidden="true"></i>
-                                        <h6 class="mb-0 font-weight-bold"><?=$webManage['contact_address']?></h6>
+                                        <h6 class="mb-0 font-weight-bold">Kolkata</h6>
+                                        <?php /*$webManage['contact_address']*/?>
                                     </div>
                                 </li>
                             </ul>
                             <div class="d-flex justify-content-center text-center pb-4">
-                                <h6><?=$webManage['contact_timing']?><?php if($webManage['contact_timing_alt'] != ''){ print ', '.$webManage['contact_timing_alt']; }?></h6>
+                                <h6><?php /* echo $webManage['contact_timing']?><?php if($webManage['contact_timing_alt'] != ''){ print ', '.$webManage['contact_timing_alt']; }*/?></h6>
                             </div>
                         </div>
                     </div>
@@ -171,10 +174,10 @@
                 <div class="col-12 col-md-6 text-center text-md-right">
                     <ul class="list-inline mt-2 mb-0">
                         <li class="list-inline-item pr-3">
-                            <a href="javascript:void(0);"><?=$webManage['contact_phone']?></a>
+                            <a href="javascript:void(0);"><? /*echo $webManage['contact_phone']*/?></a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="mailto:<?=$webManage['contact_email']?>"><?=$webManage['contact_email']?></a>
+                            <a href="mailto:<?php /* echo $webManage['contact_email']*/?>"><?php /*echo $webManage['contact_email']*/?></a>
                         </li>
                     </ul>
                     <p class="footer-p">Design & Developement by <a href="https://astutemyndz.com" target="_blank">astutemyndz.com</a></p>

@@ -30,7 +30,7 @@ $(document).ready(function(){
             location.href = API_URL + 'products/categories/' + categoryName;
         }, 300);
     });
-    if (page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
+    if (page == 'cart' || page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
@@ -1185,7 +1185,7 @@ $("#loginForm").submit(function (e) {
  // load pupillaryDistance
 
  const PupillaryDistanceComponent = function(props) {
-     return(`<option value="${props.pupillaryDistance.id}">${props.pupillaryDistance.name}</option>`)
+     return(`<option value="${props.pupillaryDistance.id}">${props.pupillaryDistance.name}</option>`);
  }
 
  const loadPupillaryDistanceDropDown = function() {

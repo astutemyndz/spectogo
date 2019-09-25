@@ -57,7 +57,8 @@
                         <li class="list-inline-item mr-3 d-none d-lg-inline-block">
                             <div class="d-flex flex-row justify-content-center align-items-center">
                                 <i class="fa fa-phone" aria-hidden="true"></i>
-                                <h5 class="text-primary ml-2 mb-0 font-weight-bold"><?=$webManage['contact_phone']?></h5>
+                                <h5 class="text-primary ml-2 mb-0 font-weight-bold">458555</h5>
+                                <?php /*$webManage['contact_phone']*/?>
                             </div>
                         </li>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block">
