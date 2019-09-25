@@ -1,15 +1,10 @@
 <?php
-
 // use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Response;
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class AuthController extends Common_Controller {
-   
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
-        
     }
     public function index(){
         if(isLoggedIn()) {
@@ -18,18 +13,19 @@ class AuthController extends Common_Controller {
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
+        $data['webManage'] = $this->getContactDetails();
         $this->load->view('frontend/layout/header', $data);
         $this->load->view('frontend/pages/sign-in');
         $this->load->view('frontend/layout/footer');
     }
     public function signUp() {
-        
         if(isLoggedIn()) {
             redirect(base_url());
         }
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
+        $data['webManage'] = $this->getContactDetails();
         $this->load->view('frontend/layout/header', $data);
         $this->load->view('frontend/pages/sign-up');
         $this->load->view('frontend/layout/footer');
@@ -52,8 +48,6 @@ class AuthController extends Common_Controller {
             print 'notok~~Sorry !!! Email already exists !!!';
         }
     }
-   
-    
     public function registerOrNot() {
         $this->setRequest($_REQUEST);
         if(!empty($this->request['loginEmail']) || isset($this->request['loginEmail'])) {
@@ -102,16 +96,10 @@ class AuthController extends Common_Controller {
                 ));
             }
         }
-        
-        
         $this->sendResponse();
     }
     public function logOut(){
         $this->emptyUser();
         redirect(base_url());
     }
-
-    
-
-    
 }

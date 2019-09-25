@@ -28,15 +28,37 @@ $(document).ready(function(){
         let categoryName = $(this).attr('data-categoryName');
         setTimeout(() => {
             location.href = API_URL + 'products/categories/' + categoryName;
-    
         }, 300);
-    
     });
-    if (page == 'product-details' || page == 'choose-your-lens' || page == 'preview') {
-        console.log(page);
+    if (page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
+            if (page == 'testimonial'){
+                $(document).ready(function() {
+                //var owl = $('.owl-carousel');
+                    owl.owlCarousel({
+                        autoplay:false,
+                        autoplayTimeout:3000,
+                        margin: 10,
+                        nav: true,
+                        loop: false,
+                        dots: false,
+                        navText:["<a href='javascript:void(0)'>Prev</a>","<a href='javascript:void(0)'>Next</a>"],
+                        responsive: {
+                            0: {
+                                items: 1
+                            },
+                            600: {
+                            items: 1
+                            },
+                            1000: {
+                            items: 1
+                            }
+                        }
+                    });
+                });
+            }
             var bigimage = $("#big");
             var thumbs = $("#thumbs");
             //var totalslides = 10;
@@ -180,15 +202,14 @@ const loadHeaderCategoryComponent = function() {
         },1001);
        
     });
-    
 }
 const loadFooterCategoryComponent = function() {
     var bannerCategory = [];
     fetch(API_URL + 'banners')
-      .then(function(response) {
+    .then(function(response) {
         return response.json();
     })
-      .then(function(myJson) {
+    .then(function(myJson) {
         let res = myJson;
         let data = myJson.data;
         $.each(data, function(index, banner) {
@@ -202,9 +223,7 @@ const loadFooterCategoryComponent = function() {
         setTimeout(function(){
             $FooterCategoryComponent.prepend(bannerCategory.join(''));
         },1001);
-       
     });
-    
 }
 const CategoryComponent = function(props) {
     let categoryName = props.banner.categoryName;
@@ -223,7 +242,6 @@ const ProductComponent = function(props) {
     sellPrice = sellPrice.toString().split(",");
     // sellPrice is a string
     sellPrice = sellPrice[0].toString();
-
     let colors = props.product.color;
     // colurs is an Array
     colors = colors.split(',');
@@ -299,11 +317,9 @@ const LensSubCategoryComponent = function(options) {
         <h5 class="text-uppercase font-weight-bold mb-0">`+options.lensSubCategory.lensSubCatName+`</h5>
         <h6 class="text-color-3 font-italic mt-1" style="font-size:12px;">Single Vision</h6>
         <p class="text-color-5">`+options.lensSubCategory.description+`</p>
-        
-            <span class="bg-primary badge rounded-circle p-0">
-                <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
-            </span>
-        
+        <span class="bg-primary badge rounded-circle p-0">
+            <i class="fa fa-angle-right text-white" aria-hidden="true"></i>
+        </span>
     </div>
     </a>
     `)
@@ -521,19 +537,22 @@ const onLoadProductEventHandler = function (options) {
         .then(function (myJson) {
             let res = myJson;
             let products = myJson.data;
-            $.each(products, function (index, product) {
-                productArr.push(ProductComponent({
-                    index: index,
-                    product: product,
-                    productImageUrl: res.productImageUrl,
-                    user: options.user
-                }));
-            });
-            $productListFragment.html(productArr.join(''));
-
+            if(Object.keys(products).length > 0){
+                $.each(products, function (index, product) {
+                    productArr.push(ProductComponent({
+                        index: index,
+                        product: product,
+                        productImageUrl: res.productImageUrl,
+                        user: options.user
+                    }));
+                });
+                $productListFragment.html(productArr.join(''));
+            }else{
+                $productListFragment.html('<div class="col-md-12 text-center"><h3>No Product Found !!!</h3></div>');
+            }
+            $('#prodListCount').text(Object.keys(products).length);
         });
 }
-
 const addToWishlistProduct = function (callback) {
     // Product add to wishlist start of code
     var $wishListButton = $(".wislist");
@@ -562,8 +581,6 @@ const addToWishlistProduct = function (callback) {
                 }, 300);
             }
             if (res.statusCode === 201) {
-               
-
             }
         });
         callback();
@@ -571,8 +588,8 @@ const addToWishlistProduct = function (callback) {
     // end of code
 }
 const loadProduct = function (options) {
-
     let $productListFragment = $('#productListFragment');
+    $productListFragment.html('');
     $productListFragment.loading();
     setTimeout(function () {
         $productListFragment.loading('stop');
@@ -583,15 +600,16 @@ const loadProduct = function (options) {
 }
 const currentUrlToArray = function () {
     var url = $(location).attr('href').split("/");
+    //console.log()
     return url;
 }
 const getCategoryNameFromUrl = function () {
     return currentUrlToArray()[6];
 }
-
-
-
-
+//http://localhost/spectogo/products/frames/Semi_Rimmed
+const productCategoryTypeFromUrl = function () {
+    return currentUrlToArray()[5];
+}
 function chooseColor(prodId, colorHex) {
     let $owl = $('.commomProduct');
     let $sellPrice = $('.sellPrice');
@@ -614,10 +632,6 @@ function chooseColor(prodId, colorHex) {
         success: function (res) {
             let STATUS_CODE = res.statusCode;
             let data = res.data;
-
-            //console.log(data);
-
-
             var thumbHtml = '';
             if (STATUS_CODE === 200) {
                 for (var i = 0; i < data.images.length; i++) {
@@ -643,7 +657,6 @@ function chooseColor(prodId, colorHex) {
         }
     });
 }
-
 const ajaxRequest = function (url, data = null, options = {
     beforeSend: null,
     method: null,
@@ -665,15 +678,12 @@ const ajaxRequest = function (url, data = null, options = {
         }
     });
 }
-
 // Goto for choose lens
 $(document).ready(function () {
-
     let $gtToCart = $('.gtToCart');
     let $hexColorCode = $('#hexColorCode');
     let $productId = $('#productId');
     let $chooseLense = $('#chooseLense');
-
     $gtToCart.on('click', function () {
         $.ajax({
             type: "POST",
@@ -685,7 +695,6 @@ $(document).ready(function () {
             },
             cache: false,
             beforeSend: function () {
-
             },
             success: function (res) {
                 let STATUS_CODE = res.statusCode;
@@ -699,15 +708,27 @@ $(document).ready(function () {
             }
         });
     });
-
 })
-let userId = $('#userId').attr('data-userId');
-const options = {
-    categoryName: getCategoryNameFromUrl(),
-    user: {
-        id: userId,
-    }
-};
+let userId = $('#userId').attr('data-userId');  
+let category = productCategoryTypeFromUrl();
+let options= {};
+if(category === 'frames') {
+    options = {
+        details: getCategoryNameFromUrl(),
+        category: category,
+        user: {
+            id: userId,
+        }
+    };
+} else {
+    options = {
+        categoryName: getCategoryNameFromUrl(),
+        user: {
+            id: userId,
+        }
+    };
+}
+
 $(document).ready(function () {
     loadProduct(options);
     loadPupillaryDistanceDropDown();
@@ -715,16 +736,13 @@ $(document).ready(function () {
     onLoadPreviewEventHandler();
 }).on("click", ".wishlist", function (e) {
     // Init variable
-
     const id_products = $(this).data("id_products");
     const id_users = $(this).data("id_users");
     const hexColorCode = $(this).data("hexColorCode");
-
     const data = {
         id_products: id_products,
         id_users: id_users
     };
-
     const optionsWithWishlist = {
         categoryName: options.categoryName,
         wishlist: 1,
@@ -749,18 +767,12 @@ $(document).ready(function () {
             $('#productDetailsWishlistButton').removeClass('wishlist').addClass('removeWishlist');
         }
     });
-
 }).on("click", ".removeWishlist", function (e) {
     // Init variable
-
     const wishlistId = $(this).attr("data-wishlistId");
-
     const data = {
         wishlistId: wishlistId
     };
-
-
-
     fetch(API_URL + 'wishlist/remove', {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded'
@@ -780,7 +792,6 @@ $(document).ready(function () {
             loadProduct(opt);
         }
     });
-
 });
 function setLensSubCatId(subCatId){
     $.ajax({
@@ -883,20 +894,15 @@ const addYourPrescription = function() {
  * @Form validation wizard
  */
 $(document).ready(function () {
-
     var navListItems = $('div.setup-panel ul li a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn');
-
     allWells.hide();
-
     navListItems.click(function (e) {
-        
         e.preventDefault();
        // console.log('clicked3');
         var $target = $($(this).attr('href')),
                 $item = $(this);
-
         if (!$item.hasClass('disabled')) {
            // console.log('if');
             navListItems.removeClass('active').addClass('');
@@ -908,14 +914,12 @@ $(document).ready(function () {
             console.log('else');
         }
     });
-
     allNextBtn.click(function(){
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
             curInputs = curStep.find("input[type='hidden']"),
             isValid = true;
-
         $(".choose-your-lens").removeClass("has-error");
         for(var i=0; i<curInputs.length; i++){
             if (!curInputs[i].validity.valid){
@@ -923,35 +927,27 @@ $(document).ready(function () {
                 $(curInputs[i]).closest(".choose-your-lens").addClass("has-error");
             }
         }
-
         if (isValid)
             nextStepWizard.removeAttr('disabled').trigger('click');
     });
-
    // $('div.setup-panel ul li a').trigger('click');
     $('.vision').trigger('click');
 });
-
-
 jQuery(document).ready(function () {
     /* initialize the slider based on the Slider's ID attribute */
     jQuery('#elegant_home_banner').show().revolution({
-
         /* options are 'auto', 'fullwidth' or 'fullscreen' */
         sliderLayout: 'auto',
         autoHeight: 'on',
         fullScreenAlignForce: 'off',
         stopAfterLoops: 0,
         stopAtSlide: 1,
-
         /* basic navigation arrows and bullets */
         navigation: {
-
             arrows: {
                 enable: true,
                 style: 'uranus',
                 hide_onleave: false,
-
                 left: {
                     container: 'slider',
                     h_align: 'right',
@@ -959,7 +955,6 @@ jQuery(document).ready(function () {
                     h_offset: 100,
                     v_offset: 160
                 },
-
                 right: {
                     container: 'slider',
                     h_align: 'right',
@@ -967,9 +962,7 @@ jQuery(document).ready(function () {
                     h_offset: 50,
                     v_offset: 160
                 }
-
             },
-
             bullets: {
                 enable: true,
                 style: 'uranus',
@@ -982,16 +975,11 @@ jQuery(document).ready(function () {
                 space: 0,
                 tmp: '<div class="tp-counter text-center">{{param1}}</div>'
             },
-
-
         }
     });
 });
-
-
 var $bigImage = $("#big");
 var $thumbs = $("#thumbs");
-
 const callbackOwl = function (data) {
     var content = "";
     for (var i in data["items"]) {
@@ -1001,40 +989,36 @@ const callbackOwl = function (data) {
     }
     $bigImage.html(content);
 }
-function swal_success(txt) {
+function swalMessage(text, type) {
+    if(type == 'success'){
+        var confirmButtonColor = '#48cab2';
+    }else{
+        var confirmButtonColor = '#DD6B55';
+    }
     swal({
-        text: txt,
-        type: "success",
-        buttons: true,
-        confirmButtonColor: "#48cab2",
-        buttons: 'OK',
-        closeModal: false
+        text: text,
+        type: type,
+        confirmButtonColor: confirmButtonColor
     });
 }
-
-function swal_success_then(txt, btn, url) {
+function swalMessageThen(text, type, url) {
+    if(type == 'success'){
+        var confirmButtonColor = '#48cab2';
+        var cancelButtonColor = '#DD6B55';
+        var showCancelButton = false;
+    }else{
+        var showCancelButton = true;
+        var confirmButtonColor = '#DD6B55';
+        var cancelButtonColor = '#48cab2';
+    }
     swal({
-        title: "Success !!!",
-        text: txt,
-        type: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#48cab2",
-        confirmButtonText: btn,
-        closeOnConfirm: false
-    }).then(function () {
-        window.location = url;
-    });
-}
-
-function swal_confirm_then(txt, btn, url) {
-    swal({
-        title: "Confirmation",
-        text: txt,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: btn,
-        closeOnConfirm: false
+        title: text,
+        type: type,
+        showCancelButton: showCancelButton,
+        confirmButtonColor: confirmButtonColor,
+        confirmButtonText: "OK",
+        confirmButtonColor: cancelButtonColor,
+        confirmButtonText: "Cancel"
     }).then(function () {
         window.location = url;
     });
@@ -1052,26 +1036,17 @@ function messageBox(title, text, type = 'info', url) {
         window.location = url;
     });
 }
-
-function swal_warning(txt) {
-    swal({
-        text: txt,
-        type: "warning",
-        buttons: true,
-        confirmButtonColor: "#DD6B55",
-        buttons: 'OK',
-        closeModal: false
-    });
-}
-
-function common_form_checking(flag, msgbox = '') {
-    $('.requiredCheck').each(function () {
+function commonFormChecking(flag, clss = '', msgbox = '') {
+    if(clss == ''){
+        clss = 'requiredCheck';
+    }
+    $('.'+clss).each(function () {
         if ($.trim($(this).val()) == '') {
             var txt = $(this).attr('data-check') + ' is mandatory !!!';
             if (msgbox != '') {
                 $("." + msgbox).text(txt);
             } else {
-                swal_warning(txt);
+                swalMessage(txt, 'warning');
             }
             flag = 'false';
             return false;
@@ -1083,7 +1058,7 @@ function common_form_checking(flag, msgbox = '') {
                     if (msgbox != '') {
                         $("." + msgbox).text(txt);
                     } else {
-                        swal_warning(txt);
+                        swalMessage(txt, 'warning');
                     }
                     flag = 'false';
                     return false;
@@ -1095,7 +1070,7 @@ function common_form_checking(flag, msgbox = '') {
                     if (msgbox != '') {
                         $("." + msgbox).text(txt);
                     } else {
-                        swal_warning(txt);
+                        swalMessage(txt, 'warning');
                     }
                     flag = 'false';
                     return false;
@@ -1107,7 +1082,7 @@ function common_form_checking(flag, msgbox = '') {
                     if (msgbox != '') {
                         $("." + msgbox).text(txt);
                     } else {
-                        swal_warning(txt);
+                        swalMessage(txt, 'warning');
                     }
                     flag = 'false';
                     return false;
@@ -1117,7 +1092,6 @@ function common_form_checking(flag, msgbox = '') {
     });
     return flag;
 }
-
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -1129,7 +1103,6 @@ function isNumber(evt) {
     }
     return true;
 }
-
 function isChar(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -1138,7 +1111,6 @@ function isChar(evt) {
     }
     return false;
 }
-
 $(document).on('keyup', '.restrictSpecial', function () {
     var yourInput = $(this).val();
     var re = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
@@ -1151,7 +1123,7 @@ $(document).on('keyup', '.restrictSpecial', function () {
 $("#signupForm").submit(function (e) {
     e.preventDefault();
     var tmp = 'true';
-    var flag = common_form_checking(tmp);
+    var flag = commonFormChecking(tmp);
     if (flag != 'false') {
         var formData = new FormData(this);
         $.ajax({
@@ -1168,9 +1140,9 @@ $("#signupForm").submit(function (e) {
                 $(".signUpBtn").prop("disabled", false);
                 var res = data.split('~~');
                 if (res[0] == 'ok') {
-                    swal_success_then(res[1], 'OK', base_url + 'sign-in');
+                    swalMessageThen(res[1], 'success',  base_url + 'sign-in');
                 } else {
-                    swal_warning(res[1]);
+                    swalMessage(res[1], 'warning');
                 }
             }
         });
@@ -1179,7 +1151,7 @@ $("#signupForm").submit(function (e) {
 $("#loginForm").submit(function (e) {
     e.preventDefault();
     var tmp = 'true';
-    var flag = common_form_checking(tmp);
+    var flag = commonFormChecking(tmp);
     if (flag != 'false') {
         var formData = new FormData(this);
         $.ajax({
@@ -1193,13 +1165,12 @@ $("#loginForm").submit(function (e) {
                 $(".logInBtn").prop("disabled", true);
             },
             success: function (res) {
-                console.log(res);
                 let STATUS_CODE = res.statusCode;
                 $(".logInBtn").prop("disabled", false);
                 if (STATUS_CODE === 200) {
-                    swal_success_then(res.message, 'OK', API_URL);
+                    swalMessageThen(res.message, 'success',  API_URL);
                 } else {
-                    swal_warning(res.message);
+                    swalMessage(res.message, 'warning');
                 }
             }
         });
@@ -1486,4 +1457,188 @@ const PreviewMainComponent = function(props) {
             </div>
         </div>
     `);
+}
+function commonSendEmail(formData, url, btnToDisable){
+    $.ajax({
+        type: "POST",
+        url: base_url + url,
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $("."+btnToDisable).prop("disabled", true);
+        },
+        success: function (data) {
+            $("."+btnToDisable).prop("disabled", false);
+            swalMessage("Thank you for caontacting us. We\'ll get back to you soon !!!", 'success');
+        }
+    });
+}
+$("#contactusForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = commonFormChecking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        commonSendEmail(formData, 'contact-us-email', 'contactUsBtn');
+    }
+});
+$("#footerContactForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = commonFormChecking(tmp, 'requiredCheckFooter');
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        commonSendEmail(formData, 'contact-us-email', 'footerContactBtn');
+    }
+});
+$("#blogCommentForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = commonFormChecking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "post-comment",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(".postCommentBtn").prop("disabled", true);
+            },
+            success: function (data) {
+                $(".postCommentBtn").prop("disabled", false);
+                var res = JSON.parse(data);
+                $('.commentDiv').append('<div class="media">\
+                                            <div class="name-icon">\
+                                                <h3>'+res.name.substring(0, 1)+'</h3>\
+                                            </div>\
+                                            <div class="media-body">\
+                                                <h5 class="mt-0">'+res.name+'</h5>\
+                                                <p>'+res.created_at+'</p>\
+                                                '+res.comment+'\
+                                            </div>\
+                                        </div>');
+                $('.commentCount').html(parseInt($('.commentCount').html()) + parseInt(1));
+                $('#commentDesc').val('');
+            }
+        });
+    }
+});
+$("#newsletterPost").click(function (e) {
+    if($("#newsletterEmail").val() != ''){
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if (reg.test($.trim($("#newsletterEmail").val())) == false) {
+            swalMessage("Please Enter valid Email !!!", 'warning');
+        }else{
+            $.ajax({
+                type: "POST",
+                url: base_url + "newsletter-subscribe",
+                data: {
+                    newsletter_email : $("#newsletterEmail").val()
+                },
+                cache: false,
+                beforeSend: function () {
+                    $("#newsletterPost").prop("disabled", true);
+                    $(".postCommentBtn").prop("disabled", true);
+                },
+                success: function (res) {
+                    $("#newsletterPost").prop("disabled", false);
+                    $(".postCommentBtn").prop("disabled", false);
+                    if(res == 'ok'){
+                        swalMessage("Newsletter Subscription Successful !!!", 'success')
+                    }else{
+                        swalMessage("You're already subscribed !!!", 'warning');
+                    }
+                }
+            });
+        } 
+    }else{
+        swalMessage("Email is mandatory for newsletter subscription !!!", 'warning');
+        $("#newsletterEmail").focus();
+    }
+});
+$("#searchProduct").keyup(function (e) {
+    if($("#searchProduct").val().length > 2){
+        $.ajax({
+            type: "POST",
+            url: base_url + "search-product",
+            data: {
+                search_product : $("#searchProduct").val()
+            },
+            cache: false,
+            beforeSend: function () {
+                $("#searchProduct").prop("disabled", true);
+                $('.search-ul').loading();
+            },
+            success: function (data) {
+                $("#searchProduct").prop("disabled", false);
+                var html = '';
+                var res = JSON.parse(data);
+                if(Object.keys(res).length > 0){
+                    $.each(res, function (key, product) {
+                        html += '<li>\
+                                    <a href="'+base_url+'product-details/categories/'+product.cat_name+'/'+product.slug+'">\
+                                        <div class="media">\
+                                            <img src="'+base_url+'assets/images/productImage/'+product.primary_image+'" class="img-fluid" alt="'+product.productName+'">\
+                                            <div class="media-body">\
+                                                <h5 class="mt-0">'+product.productName+'</h5>\
+                                            </div>\
+                                        </div>\
+                                    </a>\
+                                </li>';
+                    });
+                }else{
+                    html = '<li>\
+                                <a href="javascript:void(0);">\
+                                    <div class="media">\
+                                        <div class="media-body">\
+                                            <h5 class="mt-0">No Product Found !!!</h5>\
+                                        </div>\
+                                    </div>\
+                                </a>\
+                            </li>';
+                }
+                $('.search-ul').loading('stop');
+                $('.search-ul').loading('stop');
+                $('.search-ul').html(html);
+                $("#searchProduct").focus();
+            }
+        });
+    }else{
+        $('.search-ul').html('');
+    }
+});
+function filterProductByBrandAndName(){
+    if($('#filterBrand').val() == '' && $('#filterFrame').val() == ''){
+        swalMessage("Please select Barnd or Frame !!!", 'warning');
+    }else{
+        const options = {
+            categoryName: getCategoryNameFromUrl(),
+            brandId: $('#filterBrand').val(),
+            frameName: $('#filterFrame').val(),
+            user: {
+                id: UserId,
+            }
+        };
+        loadProduct(options);
+    }
+}
+function set_reglaze(frame_id){
+    $.ajax({
+        type: "POST",
+        url: base_url + "set-reglaze-frame",
+        data: {
+            frame_id : frame_id
+        },
+        cache: false,
+        beforeSend: function () {
+        },
+        success: function (data) {
+            window.location = base_url + 'choose-your-lens';
+        }
+    });
 }

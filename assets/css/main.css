@@ -167,7 +167,7 @@ textarea {
 	font-size:0.8125rem;
 }
 select {
-    background: url('../img/select-arrow.png') no-repeat right #ddd;
+    background: url('../images/select-arrow.png') no-repeat right #ddd;
     -webkit-appearance: none;
     background-position-x: 96%;
 	background-size:auto 7px;
@@ -380,7 +380,7 @@ footer .nav h6 {
 
 /* Testimonials */
 .testimonial_section {
-    background-image: url('../img/quote.png');
+    background-image: url('../images/quote.png');
 	background-repeat:no-repeat;
 }
 
@@ -1808,3 +1808,33 @@ ul.edit-prescription-area li a{
 .card-image-view .form-control{
 	height:42px;
 }
+/****Search Product CSS****/
+.Search.js-search .Search-content{
+	max-width:60%;
+	margin:auto;
+}
+ul.search-ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	max-height: 450px;
+    overflow-y: scroll;
+}
+ul.search-ul li{
+	text-align:left;
+	border-bottom: 1px solid #e8e8e8;
+    padding: 10px;	
+}
+ul.search-ul li:last-child{
+	border:none;
+}
+ul.search-ul li img{
+	max-width:90px;
+	margin-right:20px;
+}
+ul.search-ul li h5{
+	font-size:16px;
+	font-weight:600;
+	color:#111;
+}
+/****Search Product CSS****/

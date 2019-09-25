@@ -140,14 +140,14 @@ class Admin extends Common_Controller {
         if($this->input->post()){
             if($this->input->post('specs_edit_id') == ''){
                 if(empty($this->cm->get_specific('specs', array("LOWER(name)" => strtolower($this->input->post('specsName')))))){
-                    $this->cm->insert('specs', array("name" => ucfirst($this->input->post('specsName'))));
+                    $this->cm->insert('specs', array("name" => ucwords($this->input->post('specsName'))));
                     $this->session->set_flashdata('msg', 'Specs Type Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Specs Type Already Exists !!!');
                 }
             }else{
                 if(empty($this->cm->get_specific('specs', array("LOWER(name)" => strtolower($this->input->post('specsName')), "id != "=> $this->input->post('specs_edit_id'))))){
-                    $this->cm->update('specs', array("id" => $this->input->post('specs_edit_id')), array("name" => ucfirst($this->input->post('specsName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->cm->update('specs', array("id" => $this->input->post('specs_edit_id')), array("name" => ucwords($this->input->post('specsName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Specs Type Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Specs Type Already Exists !!!');
@@ -175,14 +175,14 @@ class Admin extends Common_Controller {
         if($this->input->post()){
             if($this->input->post('frame_edit_id') == ''){
                 if(empty($this->cm->get_specific('frames', array("LOWER(name)" => strtolower($this->input->post('frameName')))))){
-                    $this->cm->insert('frames', array("name" => ucfirst($this->input->post('frameName'))));
+                    $this->cm->insert('frames', array("name" => ucwords($this->input->post('frameName'))));
                     $this->session->set_flashdata('msg', 'Frame Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Frame Already Exists !!!');
                 }
             }else{
                 if(empty($this->cm->get_specific('frames', array("LOWER(name)" => strtolower($this->input->post('frameName')), "id != " => $this->input->post('frame_edit_id'))))){
-                    $this->cm->update('frames', array("id" => $this->input->post('frame_edit_id')), array("name" => ucfirst($this->input->post('frameName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->cm->update('frames', array("id" => $this->input->post('frame_edit_id')), array("name" => ucwords($this->input->post('frameName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Frame Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Frame Already Exists !!!');
@@ -849,5 +849,143 @@ class Admin extends Common_Controller {
         $this->load->view('backend/pages/add-reglaze');
         $this->load->view('backend/layout/footer');
     }
-    
+    public function websiteManagement($id = ''){
+        if($this->input->post()){
+            $updateArray = array(
+                "contact_phone"         => $this->input->post('contactPhone'),
+                "contact_phone_alt"     => $this->input->post('contactPhoneAlt'),
+                "contact_email"         => $this->input->post('contactEmail'),
+                "contact_email_alt"     => $this->input->post('contactEmailAlt'),
+                "contact_timing"        => $this->input->post('contactTiming'),
+                "contact_timing_alt"    => $this->input->post('contactTimingAlt'),
+                "contact_address"       => $this->input->post('contactAddress'),
+                "contact_desc"          => $this->input->post('contactDescription')
+            );
+            $this->cm->update('website_management', array("id" => 1), $updateArray);
+            $this->session->set_flashdata('msg', 'Details Successfully Updated !!!');
+        }
+        $data['webManage'] = $this->cm->select_row('website_management', array("id" => 1));
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/website-management');
+        $this->load->view('backend/layout/footer');
+    }
+    public function pageManagement(){
+        if($this->input->post()){
+            $upArray = array(
+                "name"          => $this->input->post('pageName'),
+                "title"         => $this->input->post('pageTitle'),
+                "description"   => $this->input->post('pageDescription')
+            );                    
+            $this->cm->update('page_management', array("slug" => $this->input->post('page_slug')), $upArray);
+            $this->session->set_flashdata('msg', 'Details Successfully Updated !!!');
+        }
+        $data['pages'] = $this->cm->get_all('page_management');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/page-management');
+        $this->load->view('backend/layout/footer');
+    }
+    public function editPage($slug = ''){
+        $data['page'] = $this->cm->select_row('page_management', array("slug" => $slug));
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-page');
+        $this->load->view('backend/layout/footer');
+    }
+    public function blogManagement(){
+        if($this->input->post()){
+            $files = $_FILES;
+            if($this->input->post('blog_id') == ''){
+                if (!empty($files) && $files['blogImage']['name'] != '') {
+                    $image = $this->commonFileUpload('assets/images/blogImage/', $files['blogImage']['name'], 'blogImage');
+                }
+                $slug = str_replace(' ', '_',strtolower($this->input->post('blogTitle')));
+                if(!empty($this->cm->get_specific('blog', array("slug" => $slug)))){
+                    $slug .= '_'.rand(); 
+                }
+                $inArray = array(
+                    "slug"          => $slug,
+                    "title"         => $this->input->post('blogTitle'),
+                    "description"   => $this->input->post('blogDesc'),
+                    "image"         => $image
+                );
+                $this->cm->insert('blog', $inArray);
+                $this->session->set_flashdata('msg', 'Blogs Successfully Added !!!');
+            }else{
+                if (!empty($files) && $files['blogImage']['name'] != '') {
+                    $image = $this->commonFileUpload('assets/images/blogImage/', $files['blogImage']['name'], 'blogImage', $this->input->post('old_blogImage'));
+                }else{
+                    $image = $this->input->post('old_blogImage');
+                }
+                $slug = str_replace(' ', '_',strtolower($this->input->post('blogTitle')));
+                if(!empty($this->cm->get_specific('blog', array("slug" => $slug)))){
+                    $slug .= '_'.rand(); 
+                }
+                $upArray = array(
+                    "slug"          => $slug,
+                    "title"         => $this->input->post('blogTitle'),
+                    "description"   => $this->input->post('blogDesc'),
+                    "image"         => $image,
+                    "updated_at"    => date('Y-m-d H:i:s')
+                );                    
+                $this->cm->update('blog', array("id" => $this->input->post('blog_id')), $upArray);
+                $this->session->set_flashdata('msg', 'Blog Successfully Updated !!!');
+            }
+        }
+        $data['blogs'] = $this->getBlogDetails();
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/blogs');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addBlog($id = ''){
+        $data = array();
+        if($id != ''){
+            $data['blog'] = $this->getBlogDetails(array("id" => $id));
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-blog');
+        $this->load->view('backend/layout/footer');
+    }
+    public function testimonialManagement(){
+        if($this->input->post()){
+            if($this->input->post('testimonial_id') == ''){
+                $inArray = array(
+                    "name"          => $this->input->post('testiName'),
+                    "city"          => $this->input->post('testiCity'),
+                    "description"   => $this->input->post('testiDesc'),
+                    "for_spectogo"  => $this->input->post('testiThanksGiving')
+                );
+                $this->cm->insert('testimonial', $inArray);
+                $this->session->set_flashdata('msg', 'Testimonial Successfully Added !!!');
+            }else{
+                $upArray = array(
+                    "name"          => $this->input->post('testiName'),
+                    "city"          => $this->input->post('testiCity'),
+                    "description"   => $this->input->post('testiDesc'),
+                    "for_spectogo"  => $this->input->post('testiThanksGiving')
+                );
+                $this->cm->update('testimonial', array("id" => $this->input->post('testimonial_id')), $upArray);
+                $this->session->set_flashdata('msg', 'Testimonial Successfully Updated !!!');
+            }
+        }
+        $data['testimonials'] = $this->cm->get_all('testimonial');
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/testimonial');
+        $this->load->view('backend/layout/footer');
+    }
+    public function addTestimonial($id = ''){
+        if($id != ''){
+            $data['testimonial'] = $this->cm->get_specific('testimonial', array("id" => $id))[0];
+        }else{
+            $data = array();
+        }
+        $this->load->view('backend/layout/header', $data);
+        $this->load->view('backend/layout/sidemenu');
+        $this->load->view('backend/pages/add-testimonial');
+        $this->load->view('backend/layout/footer');
+    }
 }

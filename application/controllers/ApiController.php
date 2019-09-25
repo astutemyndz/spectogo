@@ -5,7 +5,6 @@ use Services\Distance\PupillaryDistanceService;
 use Illuminate\Http\Response;
 use Models\UploadHandler;
 class ApiController extends Common_Controller {
-
     private $listOfProduct = array();
     private $listOfLens = array();
     private $banners = array();
@@ -84,7 +83,6 @@ class ApiController extends Common_Controller {
                 Response::HTTP_OK,
                 ['Content-Type', 'application/json']
             ));
-            
         } else {
             $this->setResponse(new Response(
                 array(
@@ -98,7 +96,6 @@ class ApiController extends Common_Controller {
             ));
         }
         $this->sendResponse();
-        
     }
      /**
      * /banners Api
@@ -332,9 +329,7 @@ class ApiController extends Common_Controller {
                 ['Content-Type', 'application/json']
             ));
         }
-       
         $this->sendResponse();
-        
     }
     public function setChooseLense($chooseLense) {
         $this->chooseLense = $chooseLense;
@@ -344,35 +339,46 @@ class ApiController extends Common_Controller {
      * /products Api
      */
     public function products() {
-        
-        
         if(isLoggedIn()) {
             $this->setUser((array)$this->sessionVar['user']);
         } 
         $this->setRequest($_REQUEST);
-
+        if(isset($this->request['brandId']) || !empty($this->request['brandId'])) {
+            $this->setBrandId($this->request['brandId']);
+        }
+        if(isset($this->request['frameName']) || !empty($this->request['frameName'])) {
+            $this->setFrameName($this->request['frameName']);
+        }
         if(isset($this->request['category']) || !empty($this->request['category'])) {
             $this->setCategory($this->request['category']);
         } 
-       
         if(isset($this->request['details']) || !empty($this->request['details'])) {
             $this->setDetails($this->request['details']);
-        } 
+        }
+        // $this->setCategory($this->uri->segment(2));
+        // $this->setDetails($this->uri->segment(3));
 
         if(isset($this->request['categoryName']) || !empty($this->request['categoryName'])) {
             $this->setCategoryName($this->request['categoryName']);
-        } 
-
+        }
         if(isset($this->request['wishlist']) || !empty($this->request['wishlist'])) {
             $this->setWishlist($this->request['wishlist']);
         } else {
             $this->setWishlist(false);
         }
-
         // if(isset($this->request['user']) || !empty($this->request['user'])) {
         //    $this->setUser($this->request['user']);
-        // } 
-
+        // }
+        if($this->brandId) {
+            $this->options[] = array(
+                'brandId' => $this->brandId
+            );
+        }
+        if($this->frameName) {
+            $this->options[] = array(
+                'frameName' => $this->frameName
+            );
+        }
         if($this->category) {
             $this->options[] = array(
                 'category' => $this->category
@@ -397,9 +403,7 @@ class ApiController extends Common_Controller {
             $this->options[] = array(
                 'wishlist' => $this->wishlist
             );
-           
-        } 
-
+        }
         if($this->user) {
             $this->options[] =  array(
                 'user' => $this->user
@@ -414,14 +418,17 @@ class ApiController extends Common_Controller {
             }
         }
         $this->options = $options;
-
-       
+        //print_r($this->options); die;
         if(!empty($this->options)) {
-            $this->listOfProduct = $this->getProductListDetails($this->options);
+            $this->getProductListDetails($this->options);
+            // echo '<pre>';
+            // print_r($this->product); die;
+            $this->listOfProduct = $this->getProduct();
+            //$this->listOfProduct = $this->getProductListDetails($this->options);
         } else {
             $this->listOfProduct = $this->getProductListDetails();
         }
-       
+        
         if($this->listOfProduct) {
             $this->response = new Response(
                 array(
@@ -434,7 +441,6 @@ class ApiController extends Common_Controller {
                 Response::HTTP_OK,
                 ['Content-Type', 'application/json']
             );
-            
         } else {
             $this->response = new Response(
                 array(
@@ -450,7 +456,6 @@ class ApiController extends Common_Controller {
         }
         $this->response->send();
     }
-
     public function filterProductImageByColor(){
         $this->setRequest($_REQUEST);
 

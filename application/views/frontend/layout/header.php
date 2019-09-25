@@ -1,12 +1,11 @@
 <!doctype html>
 <html class="no-js" lang="">
-
 <head>
     <meta charset="utf-8">
-    <title>Specs2Go v2.1.0</title>
+    <title>Specs2Go</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="<?=base_url('assets/images/icon.png')?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?=base_url('assets/images/icon.png')?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?=base_url('assets/css/normalize.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/bootstrap.css')?>">
@@ -18,18 +17,14 @@
     <meta name="theme-color" content="#fafafa">
     <script>
         var page = '';
-
     </script>
     <style>
-
-
-.dx-toast-content {
-    min-width: 300px;
-    max-width: 400px;
-}
+        .dx-toast-content {
+            min-width: 300px;
+            max-width: 400px;
+        }
     </style>
 </head>
-
 <body id="home">
     <header class="home-header">
         <div class="container">
@@ -44,13 +39,14 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-0 text-uppercase text-spacing HeaderCategoryComponent">
-                               
-                                <li class="nav-item"> <a class="nav-link" href="javascript:void(0);">Reglaze</a></li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Contact</a>
+                                    <a class="nav-link" href="<?=base_url('reglaze')?>">Reglaze</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Testimonial</a>
+                                    <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?=base_url('testimonial')?>">Testimonial</a>
                                 </li>
                             </ul>
                         </div>
@@ -58,9 +54,10 @@
                 </div>
                 <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right d-none d-sm-block">
                     <ul class="list-inline mb-0 pt-4 pt-md-0">
-                        <li class="list-inline-item mr-4 d-none d-lg-inline-block">
-                            <div class="d-flex flex-row justify-content-center align-items-center"><i class="fa fa-phone" aria-hidden="true"></i>
-                                <h5 class="text-primary ml-2 mb-0 font-weight-bold">020 8064 0960</h5>
+                        <li class="list-inline-item mr-3 d-none d-lg-inline-block">
+                            <div class="d-flex flex-row justify-content-center align-items-center">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <h5 class="text-primary ml-2 mb-0 font-weight-bold"><?=$webManage['contact_phone']?></h5>
                             </div>
                         </li>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block">
@@ -80,6 +77,13 @@
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </a>
                         </li>
+                        <?php if(isLoggedIn()){ ?>
+                        <!-- <li class="list-inline-item mr-4 d-none d-sm-inline-block wishlist-link">
+                            <a href="javascript:void(0);">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        </li> -->
+                        <?php } ?>
                         <li class="list-inline-item d-none d-sm-inline-block">
                             <?php if(!isLoggedIn()){ ?>
                             <a href="<?=base_url('sign-in')?>" class="btn btn-primary text-uppercase">Sign In</a>

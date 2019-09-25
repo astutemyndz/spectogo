@@ -1,11 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$route['default_controller'] = 'Home/index';
+$route['default_controller']                            = 'Home/index';
 /*
     This route for frontend
 */
 $route['home']                                          = 'Home';
-
 $route['sign-in']                                       = 'AuthController';
 $route['sign-up']                                       = 'AuthController/signUp';
 $route['sign-out']                                      = 'AuthController/logOut';
@@ -14,10 +13,8 @@ $route['do-login']                                      = 'AuthController/doLogi
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
 // product-details/frames/frame-1/slug
 // product-details/category/cat-name/slug
-$route['product-details/(:any)/(:any)/(:any)']                        = 'Product/productDetails/$1/$2/$3';
+$route['product-details/(:any)/(:any)/(:any)']          = 'Product/productDetails/$1/$2/$3';
 $route['filterProductImageByColor']                     = 'ApiController/filterProductImageByColor';
-
-
 $route['filterLensDetails']                             = 'ApiController/filterLensDetails';
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
@@ -40,7 +37,21 @@ $route['banners'] = "ApiController/banners";
 
 
 $route['contact-us']                                    = 'Home/contact-us';
+$route['wishlist/add']                                  = 'WishlistController/save';
+$route['wishlist/remove']                               = 'WishlistController/remove';
+$route['wishlist']                                      = 'WishlistController/index';
+$route['products']                                      = 'ApiController/products';
+$route['product/category/(:any)']                       = 'Product/getProductCategoryWise/$1';
+$route['filterProduct']                                 = 'Product/filterProduct';
+$route['banners']                                       = "ApiController/banners";
+$route['contact-us']                                    = 'Home/contactUs';
+$route['info/(:any)']                                   = 'Home/pageInfo/$1';
+$route['blogs']                                         = 'Home/blogs';
+$route['blog-details/(:any)']                           = 'Home/blogDetails/$1';
+$route['post-comment']                                  = 'Home/postComment';
+$route['newsletter-subscribe']                          = 'Home/newsletterSubscribe';
 $route['testimonial']                                   = 'Home/testimonial';
+$route['search-product']                                = 'Home/searchProduct';
 $route['cart']                                          = 'Home/cart';
 $route['preview']                                          = 'Product/preview';
 $route['onLoadPreviewEventHandler']                                          = 'ApiController/onLoadPreviewEventHandler';
@@ -50,6 +61,9 @@ $route['onLoadPreviewEventHandler']                                          = '
 
 
 
+$route['reglaze']                                       = 'Home/reglaze';
+$route['set-reglaze-frame']                             = 'Home/setReglazeFrame';
+$route['contact-us-email']                              = 'Home/contactUsEmail';
 /*
     This route for admin
 */
@@ -96,26 +110,17 @@ $route['admin/edit-lenses-and-tints/(:any)']            = 'Admin/addLensesAndTin
 $route['admin/lenses-and-tints-details']                = 'Admin/lensesAndTintsDetails';
 $route['admin/add-lenses-and-tints-details']            = 'Admin/addLensesAndTintsDetails';
 $route['admin/edit-lenses-and-tints-details/(:any)']    = 'Admin/addLensesAndTintsDetails/$1';
-
-
 $route['admin/reglaze-management']                      = 'Admin/reglazeManagement';
 $route['admin/add-reglaze']                             = 'Admin/addReglaze';
 $route['admin/edit-reglaze/(:any)']                     = 'Admin/addReglaze/$1';
-
 $route['admin/website-management']                      = 'Admin/websiteManagement';
-
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
-
-
-/**
- * Wishlist 
- */
-
-$route['wishlist/add'] = 'WishlistController/save';
-$route['wishlist/remove'] = 'WishlistController/remove';
-$route['wishlist'] = 'WishlistController/index';
-$route['products'] = 'ApiController/products';
-$route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';
-$route['filterProduct'] = 'Product/filterProduct';
-$route['banners'] = "ApiController/banners";
+$route['admin/page-management']                         = 'Admin/pageManagement';
+$route['admin/edit-page/(:any)']                        = 'Admin/editPage/$1';
+$route['admin/blog-management']                         = 'Admin/blogManagement';
+$route['admin/add-blog']                                = 'Admin/addBlog';
+$route['admin/edit-blog/(:any)']                        = 'Admin/addBlog/$1';
+$route['admin/testimonial-management']                  = 'Admin/testimonialManagement';
+$route['admin/add-testimonial']                         = 'Admin/addTestimonial';
+$route['admin/edit-testimonial/(:any)']                 = 'Admin/addTestimonial/$1';
+$route['404_override']                                  = '';
+$route['translate_uri_dashes']                          = FALSE;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2019 at 04:10 PM
+-- Generation Time: Sep 24, 2019 at 02:57 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 5.6.39
 
@@ -45,6 +45,57 @@ INSERT INTO `banners` (`id`, `image`, `cat_id`, `status`, `created_at`, `updated
 (1, '5dd6822c45914dd5cfd42b77daa5f766.jpg', '1', 1, '2019-09-10 16:22:24', NULL),
 (2, '429a5ab51d605b822b0c0bfa42530d9d.jpg', '2', 1, '2019-09-10 16:22:57', NULL),
 (4, 'cd8889371b7e936684dce074fa03928b.jpg', '3', 1, '2019-09-10 16:37:44', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blog`
+--
+
+CREATE TABLE `blog` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(500) NOT NULL,
+  `image` varchar(200) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `description` text NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `blog`
+--
+
+INSERT INTO `blog` (`id`, `slug`, `image`, `title`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_10619', '8b674441127631173aad363b7b9d4acb.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry', '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>\r\n\r\n<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', 1, '2019-09-23 16:51:28', '2019-09-23 17:26:20'),
+(2, 'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_22700', 'd6784cb14ef4fb3581184468ac96ed83.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry', '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>\r\n\r\n<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', 1, '2019-09-23 17:11:06', '2019-09-23 17:20:24'),
+(3, 'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_29824', '5c5c3bbe4b5f1613c50e2ed0f5a4f614.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry', '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>\r\n\r\n<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', 1, '2019-09-23 17:11:30', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blog_comment`
+--
+
+CREATE TABLE `blog_comment` (
+  `id` int(11) NOT NULL,
+  `blog_id` varchar(200) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `comment` text NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `blog_comment`
+--
+
+INSERT INTO `blog_comment` (`id`, `blog_id`, `name`, `email`, `comment`, `status`, `created_at`) VALUES
+(1, '3', 'Anurag Sen', 'anurag@mail.com', 'Test First Comment...', 1, '2019-09-23 19:36:53'),
+(2, '3', 'Sen Anurag', 'anurag@mail.com', 'Test second comment of women pic blog', 1, '2019-09-24 11:17:08'),
+(4, '2', 'Sourav Ghosh', 'sourav@mail.com', 'Test First comment of men pic blog........', 1, '2019-09-24 11:39:39');
 
 -- --------------------------------------------------------
 
@@ -99,7 +150,8 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Men', 1, '2019-03-30 12:24:29', '2019-09-10 15:58:34'),
 (2, 'Women', 1, '2019-03-30 12:31:54', '2019-09-10 15:58:36'),
-(3, 'Unisex', 1, '2019-09-10 16:07:27', '2019-09-10 16:11:50');
+(3, 'Unisex', 1, '2019-09-10 16:07:27', '2019-09-10 16:11:50'),
+(4, '', 1, '2019-09-24 13:55:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -254,6 +306,48 @@ INSERT INTO `lens_sub_category` (`id`, `lens_cat_id`, `name`, `description`, `im
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `newsletter`
+--
+
+CREATE TABLE `newsletter` (
+  `id` int(11) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `page_management`
+--
+
+CREATE TABLE `page_management` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(200) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `title` varchar(500) DEFAULT NULL,
+  `description` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `page_management`
+--
+
+INSERT INTO `page_management` (`id`, `slug`, `name`, `title`, `description`) VALUES
+(1, 'our-story', 'Our Story', 'Specs2Go - a little bit about us', '<h5>At Specs2Go we are committed to the production and dispensing of high quality prescription glasses. Our physical presence began in 1984 with the aim to provide low cost, high quality eyewear for our customers. Over the years, fashion and technology in the optical world have changed dramatically, however, we have maintained our low prices and high quality to ensure our customers&#39; continued satisfaction and loyalty.<br />\r\nIn 2013 we launched our online e-commerce store with a cutting edge website developed around the end-user to provide a fast and effective online shopping experience.</h5>\r\n\r\n<h5><strong><span style=\"font-size:24px\">We Own Our Labs</span></strong></h5>\r\n\r\n<p>Many eyewear stores send your glasses away to be made with your prescription; however, we own our lab and together with our opticians and technicians we&#39;re able to ensure high quality prescription glasses at a low cost. As we hold a large range of lenses and frames in stock we can even dispatch orders within 48hrs &ndash; something you&#39;re unlikely to find elsewhere.</p>\r\n\r\n<h4><strong><span style=\"font-size:24px\">Quality Assurance</span></strong></h4>\r\n\r\n<p>Our lab technicians are fully trained and qualified to set up and operate the machines we use to cut, grind and polish lenses. We pay close attention to detail in order to correctly identify the lens and frame specifications from the prescription. Using special lens-measuring equipment we can mark lens blanks accordingly before fitting them into your glasses. Once your glasses are ready for dispatch a final inspection is made to make sure it meets our high quality standards. At Specs2Go we use the latest in prescription lab technology, the Essilor Kappa. This Machine has been developed to streamline the finishing process and to improve quality as well as virtually eliminating every manual step in the finishing process.</p>\r\n'),
+(2, 'support', 'Support', 'Specs2Go - a little bit support', '<p>Demo Description of SUpport</p>\r\n'),
+(3, 'billing-and-shipping', 'Billing And Shipping', 'Specs2Go - a little bit Billing And Shipping', '<p>Demo Description of Billing And Shipping</p>\r\n'),
+(4, 'return-policy', 'Return Policy', 'Specs2Go - a little bit Return Policy', '<p>Demo Description of Return Policy</p>\r\n'),
+(5, 'site-map', 'SITE MAP', 'Specs2Go - a little bit SITE MAP', '<p>Demo Description of&nbsp; SITE MAP</p>\r\n'),
+(6, 'faq', 'FAQ', 'Specs2Go - a little bit FAQ', '<p>Demo Description of&nbsp; FAQ</p>\r\n'),
+(7, 'privacy-policy', 'Privacy Policy', 'Specs2Go - a little bit Privacy Policy', '<p><span style=\"font-size:24px\"><strong>Demo Description of&nbsp; Privacy Policy</strong></span></p>\r\n'),
+(8, 'terms-and-conditions', 'Terms And Conditions', 'Specs2Go - a little bit Terms And Conditions', '<p><span style=\"font-size:24px\"><strong>Demo Description of&nbsp; Terms And Conditions</strong></span></p>\r\n'),
+(9, 'customer-service', 'Customer Service', 'Specs2Go - a little bit Customer Service', '<p><span style=\"font-size:24px\"><strong>Demo Description of&nbsp; Customer Service</strong></span></p>\r\n');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -266,7 +360,16 @@ CREATE TABLE `products` (
   `frame_id` int(11) NOT NULL,
   `brand_id` int(11) NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `main_color` varchar(200) NOT NULL,
+  `main_color_name` varchar(200) NOT NULL,
+  `price` varchar(100) NOT NULL,
+  `sell_price` varchar(100) NOT NULL,
+  `discount` varchar(100) NOT NULL,
+  `stock` varchar(100) NOT NULL,
   `primary_image` varchar(100) DEFAULT NULL,
+  `primary_image_one` varchar(200) DEFAULT NULL,
+  `primary_image_two` varchar(200) DEFAULT NULL,
+  `primary_image_three` varchar(200) DEFAULT NULL,
   `arm` varchar(100) NOT NULL,
   `bridge` varchar(100) NOT NULL,
   `lens` varchar(100) NOT NULL,
@@ -282,7 +385,15 @@ CREATE TABLE `products` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- Error reading data for table spectogo.products: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `spectogo`.`products`' at line 1
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `slug`, `cat_id`, `spec_id`, `frame_id`, `brand_id`, `description`, `main_color`, `main_color_name`, `price`, `sell_price`, `discount`, `stock`, `primary_image`, `primary_image_one`, `primary_image_two`, `primary_image_three`, `arm`, `bridge`, `lens`, `height`, `sku`, `warranty`, `progressives`, `includes`, `single_vision`, `spring_hinge`, `suitable_for_tints`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Men Black Frame', 'men-black-frame-aa1234', 1, 1, 1, 1, '<p>Some Description</p>\r\n', '000000', 'Black', '66', '55', '16.67', '100', '4cf3f4c9e7eda2627464f0b1e84b2c0c.png', 'a81b7497a45241481645fc4af261d7f5.png', 'c9488e7ac5573b3902ecf81872432c91.png', '48b057a0bf1c4b5eae2ee943d12be16c.png', '150', '18', '56', '40', 'AA1234', '12', 'Test Prog', 'Case', 1, 0, 1, 1, '2019-09-18 17:39:58', '2019-09-18 17:41:52'),
+(2, 'Women Soho Frame', 'women-soho-frame-qq6541', 2, 1, 2, 3, '<p>Wome semi rimmed desc</p>\r\n', 'FF94B9', 'Light Pink', '52', '49', '5.77', '50', '89e6c02a0ef32cf544b7c9b109ca8a89.png', 'ada788963cbf5be5da311356ed162241.png', '002c99c49479e2718bd1d5d6e816d771.png', 'c35af7b4852ca9590c2b4770fd112e3c.png', '152', '16', '52', '41', 'QQ6541', '12', 'Testing ....', 'Case, Clothes', 1, 1, 1, 1, '2019-09-18 17:45:08', '2019-09-18 17:45:09'),
+(3, 'Unisex Soho Frame', 'unisex-soho-frame-po1234', 3, 1, 3, 8, '<p>Tagheuer description</p>\r\n', '6EFF66', 'Light Green', '62', '61', '1.61', '100', '015975188f3f2b30f2b3a55228f79cf9.png', '1a5d77948db698d57f4efb1bfb1ffc92.png', 'eae26daa9eec16775990a2f3e9b9c115.png', '38ab1d8562b56c8b3035b2410856a301.png', '155', '17', '51', '45', 'PO1234', '24', 'Prog Test', 'Case, clothes, Warranty Card', 1, 1, 1, 1, '2019-09-18 17:48:33', '2019-09-18 17:48:34');
 
 -- --------------------------------------------------------
 
@@ -308,13 +419,12 @@ CREATE TABLE `product_attribute` (
 --
 
 INSERT INTO `product_attribute` (`id`, `product_id`, `color`, `color_name`, `price`, `sell_price`, `discount`, `stock`, `created_at`, `updated_at`) VALUES
-(1, '1', 'FF0000', 'Red', '65', '55.25', '15.00', '100', '2019-09-12 11:15:43', '2019-09-12 11:50:31'),
-(2, '1', 'FF8605', 'Orange', '65', '55.25', '15.00', '100', '2019-09-12 11:19:44', '2019-09-16 14:39:45'),
-(3, '1', '4DFF61', 'Light Green', '65', '55.25', '15.00', '70', '2019-09-12 11:34:09', '2019-09-12 11:51:48'),
-(4, '2', 'E203FF', 'Purple', '65', '55.25', '15.00', '25', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(5, '3', '00B7FF', 'Indigo', '65', '55.25', '15.00', '55', '2019-09-12 11:54:03', NULL),
-(6, '3', 'FF006A', 'Pink', '65', '55.25', '15.00', '65', '2019-09-12 11:54:42', NULL),
-(7, '4', '0051FF', 'Blue', '55', '46.5', '15.45', '50', '2019-09-12 16:39:57', NULL);
+(1, '1', '000000', 'Black', '66', '55', '16.67', '100', '2019-09-18 17:39:59', '2019-09-18 17:41:52'),
+(2, '1', 'FF0000', 'Red', '65', '57', '12.31', '50', '2019-09-18 17:42:47', NULL),
+(3, '2', 'FF94B9', 'Light Pink', '52', '49', '5.77', '50', '2019-09-18 17:45:08', NULL),
+(4, '2', 'D230FF', 'Purple', '55', '52', '5.45', '50', '2019-09-18 17:46:28', NULL),
+(5, '3', '6EFF66', 'Light Green', '62', '61', '1.61', '100', '2019-09-18 17:48:33', NULL),
+(6, '3', 'C0FF5C', 'Lime Yellow', '62', '62', '0.00', '50', '2019-09-18 17:55:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -336,28 +446,31 @@ CREATE TABLE `product_images` (
 --
 
 INSERT INTO `product_images` (`id`, `product_id`, `color`, `image`, `created_at`, `updated_at`) VALUES
-(10, '2', 'E203FF', '84f0356c736afce0a05eaddadbe431fe.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(11, '2', 'E203FF', 'ab012e921b6cbdfa3e1149b348a93527.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(12, '2', 'E203FF', '021b42db0ee53deddb345a98a9545446.png', '2019-09-12 11:49:50', '2019-09-12 14:20:42'),
-(13, '1', 'FF0000', '4ff16906e0cfb91a1182440e15f0367b.png', '2019-09-12 11:50:31', NULL),
-(14, '1', 'FF0000', 'b9ae41529a6f3d282f4ced5a9bb8fe72.png', '2019-09-12 11:50:31', NULL),
-(15, '1', 'FF0000', 'a12ae3b56ef371951e79e6f82e7e3d0b.png', '2019-09-12 11:50:31', NULL),
-(16, '1', 'FF8605', '72ff7c2a7071fc079ff2744ebae573b8.png', '2019-09-12 11:51:07', NULL),
-(17, '1', 'FF8605', 'ee552ed8e2b12bbd98f5f687a419612f.png', '2019-09-12 11:51:07', NULL),
-(18, '1', 'FF8605', 'aec253cd2714099d8176db0c6a652841.png', '2019-09-12 11:51:07', NULL),
-(19, '1', '4DFF61', '243b197204a83257dd2c9332cefbb3ad.png', '2019-09-12 11:51:48', NULL),
-(20, '1', '4DFF61', '1b1b7a65160c46ab8dfe343849a138ab.png', '2019-09-12 11:51:48', NULL),
-(21, '1', '4DFF61', 'f43085209d9a3949517739006ea63650.png', '2019-09-12 11:51:48', NULL),
-(22, '3', '00B7FF', '79e212ad292bb21e5702ceaba8b31319.png', '2019-09-12 11:54:03', NULL),
-(23, '3', '00B7FF', 'ea54bc617e8de06e21d518b2cc139a3b.png', '2019-09-12 11:54:03', NULL),
-(24, '3', '00B7FF', 'd3c029f78ea8f0c0ba8ae46a4641d302.png', '2019-09-12 11:54:03', NULL),
-(25, '3', 'FF006A', '4c0ef4ba5dd4f897a7e436bf901c5ca0.png', '2019-09-12 11:54:42', NULL),
-(26, '3', 'FF006A', '7b6d1914299a5e1aceb8ad6bce7c213b.png', '2019-09-12 11:54:42', NULL),
-(27, '3', 'FF006A', 'd1fd96d14e11efd01ea228a19e19eb5e.png', '2019-09-12 11:54:42', NULL),
-(28, '4', '0051FF', '3048fc0aab84d55f75c3f2c1916da59a.png', '2019-09-12 16:39:57', NULL),
-(29, '4', '0051FF', 'ffd5634874d986d426d7d1d6b6a7a2ff.png', '2019-09-12 16:39:57', NULL),
-(30, '4', '0051FF', '33bf78289f1ea8cce5abf5852c4cbcf3.png', '2019-09-12 16:39:57', NULL),
-(31, '4', '0051FF', 'ba80c0e30f806ed9f7676249a0de3744.png', '2019-09-12 16:39:57', NULL);
+(1, '1', '000000', '4cf3f4c9e7eda2627464f0b1e84b2c0c.png', '2019-09-18 17:40:00', NULL),
+(2, '1', '000000', 'a81b7497a45241481645fc4af261d7f5.png', '2019-09-18 17:40:00', NULL),
+(3, '1', '000000', 'c9488e7ac5573b3902ecf81872432c91.png', '2019-09-18 17:40:01', NULL),
+(4, '1', '000000', '48b057a0bf1c4b5eae2ee943d12be16c.png', '2019-09-18 17:40:01', NULL),
+(5, '1', 'FF0000', 'de3ce37f672bf282601e8cb01ae473ad.png', '2019-09-18 17:42:48', NULL),
+(6, '1', 'FF0000', 'b0631f178811df0634f2a5f863c503fe.png', '2019-09-18 17:42:48', NULL),
+(7, '1', 'FF0000', '830ecea4fef422aaf720f254bea76099.png', '2019-09-18 17:42:48', NULL),
+(8, '1', 'FF0000', '9ca4ffb403945e7b907f05d168f515ab.png', '2019-09-18 17:42:48', NULL),
+(9, '2', 'FF94B9', '89e6c02a0ef32cf544b7c9b109ca8a89.png', '2019-09-18 17:45:09', NULL),
+(10, '2', 'FF94B9', 'ada788963cbf5be5da311356ed162241.png', '2019-09-18 17:45:09', NULL),
+(11, '2', 'FF94B9', '002c99c49479e2718bd1d5d6e816d771.png', '2019-09-18 17:45:09', NULL),
+(12, '2', 'FF94B9', 'c35af7b4852ca9590c2b4770fd112e3c.png', '2019-09-18 17:45:09', NULL),
+(13, '2', 'D230FF', '385d9867f000c5626b9aba247fe38cfb.png', '2019-09-18 17:46:28', NULL),
+(14, '2', 'D230FF', '0c752507faefa8e9b3daa187d8fa5872.png', '2019-09-18 17:46:28', NULL),
+(15, '2', 'D230FF', 'd14f8f73fe6caa1ef564b984d47faf55.png', '2019-09-18 17:46:28', NULL),
+(16, '2', 'D230FF', 'c13f4b9cfe01220a023898bde470ca7a.png', '2019-09-18 17:46:29', NULL),
+(17, '2', 'D230FF', 'af5cf6939f24f161fe9cf3699e5ddb73.png', '2019-09-18 17:46:29', NULL),
+(18, '3', '6EFF66', '015975188f3f2b30f2b3a55228f79cf9.png', '2019-09-18 17:48:34', NULL),
+(19, '3', '6EFF66', '1a5d77948db698d57f4efb1bfb1ffc92.png', '2019-09-18 17:48:34', NULL),
+(20, '3', '6EFF66', 'eae26daa9eec16775990a2f3e9b9c115.png', '2019-09-18 17:48:34', NULL),
+(21, '3', '6EFF66', '38ab1d8562b56c8b3035b2410856a301.png', '2019-09-18 17:48:34', NULL),
+(22, '3', 'C0FF5C', '94f2d2effc54deb85486cf2872e32e1f.png', '2019-09-18 17:55:37', NULL),
+(23, '3', 'C0FF5C', '77bc70c8be10524492f9970244de7bc7.png', '2019-09-18 17:55:37', NULL),
+(24, '3', 'C0FF5C', 'fd077e97cbb9eab61260a6dc9df3d3e3.png', '2019-09-18 17:55:37', NULL),
+(25, '3', 'C0FF5C', '282641c359f1d91a8a7de5b19f68d23a.png', '2019-09-18 17:55:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -369,27 +482,24 @@ CREATE TABLE `product_ledger` (
   `id` int(11) NOT NULL,
   `product_id` varchar(100) NOT NULL,
   `attribute_id` varchar(100) NOT NULL,
-  `color` varchar(100) NOT NULL,
-  `transaction_type` enum('in','out') NOT NULL,
-  `quantity` varchar(100) NOT NULL,
-  `comment` varchar(150) NOT NULL,
-  `crated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `color` varchar(150) NOT NULL,
+  `transaction_type` varchar(150) NOT NULL,
+  `quantity` varchar(150) NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product_ledger`
 --
 
-INSERT INTO `product_ledger` (`id`, `product_id`, `attribute_id`, `color`, `transaction_type`, `quantity`, `comment`, `crated_at`) VALUES
-(1, '1', '1', 'FF0000', 'in', '100', 'Product Opening Stock', '2019-09-12 11:15:43'),
-(2, '1', '2', 'FF8605', 'in', '100', 'Product Opening Stock', '2019-09-12 11:19:44'),
-(3, '1', '1', 'FF0000', 'out', '25', 'Product Stock Adjustment', '2019-09-12 11:24:23'),
-(4, '1', '1', 'FF0000', 'in', '25', 'Product Stock Adjustment', '2019-09-12 11:25:31'),
-(5, '1', '3', '4DFF61', 'in', '70', 'Product Opening Stock', '2019-09-12 11:34:10'),
-(6, '2', '4', 'E203FF', 'in', '25', 'Product Opening Stock', '2019-09-12 11:49:50'),
-(7, '3', '5', '00B7FF', 'in', '55', 'Product Opening Stock', '2019-09-12 11:54:03'),
-(8, '3', '6', 'FF006A', 'in', '65', 'Product Opening Stock', '2019-09-12 11:54:42'),
-(9, '4', '7', '0051FF', 'in', '50', 'Product Opening Stock', '2019-09-12 16:39:57');
+INSERT INTO `product_ledger` (`id`, `product_id`, `attribute_id`, `color`, `transaction_type`, `quantity`, `comment`, `created_at`) VALUES
+(1, '1', '1', '000000', 'in', '100', 'Product Opening Stock', '2019-09-18 17:39:59'),
+(4, '1', '2', 'FF0000', 'in', '50', 'Product Opening Stock', '2019-09-18 17:42:47'),
+(5, '2', '3', 'FF94B9', 'in', '50', 'Product Opening Stock', '2019-09-18 17:45:09'),
+(6, '2', '4', 'D230FF', 'in', '50', 'Product Opening Stock', '2019-09-18 17:46:28'),
+(7, '3', '5', '6EFF66', 'in', '100', 'Product Opening Stock', '2019-09-18 17:48:34'),
+(8, '3', '6', 'C0FF5C', 'in', '50', 'Product Opening Stock', '2019-09-18 17:55:37');
 
 -- --------------------------------------------------------
 
@@ -559,6 +669,30 @@ CREATE TABLE `specs` (
 INSERT INTO `specs` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Spectacles', 1, '2019-09-10 17:55:55', NULL),
 (2, 'Sunglass', 1, '2019-09-10 17:58:11', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `testimonial`
+--
+
+CREATE TABLE `testimonial` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `city` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `for_spectogo` text NOT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `testimonial`
+--
+
+INSERT INTO `testimonial` (`id`, `name`, `city`, `description`, `for_spectogo`, `status`, `created_at`) VALUES
+(1, 'George Miller', 'NJ', 'I\'ve had glasses my whole life,and they\'re now a very important accessory to me,so being able to buy good quality and affordable glasses to me. I can\'t believe I waited this long to try them... ', 'Excellent quality from specs2go. This is my fourth pair of glasses from here and won\'t be my last. Thank you !!!', 1, '2019-09-24 13:57:29'),
+(2, 'Cruise Tom', 'NY', 'I\'ve had glasses my whole life,and they\'re now a very important accessory to me,so being able to buy good quality and affordable glasses to me. I can\'t believe I waited this long to try them... ', 'Excellent quality from specs2go. This is my fourth pair of glasses from here and won\'t be my last. Thank you !', 1, '2019-09-24 14:00:17');
 
 -- --------------------------------------------------------
 
@@ -52985,6 +53119,31 @@ INSERT INTO `user_states` (`id`, `name`, `country_id`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `website_management`
+--
+
+CREATE TABLE `website_management` (
+  `id` int(11) NOT NULL,
+  `contact_address` text NOT NULL,
+  `contact_phone` varchar(25) NOT NULL,
+  `contact_phone_alt` varchar(25) NOT NULL,
+  `contact_email` varchar(100) NOT NULL,
+  `contact_email_alt` varchar(100) NOT NULL,
+  `contact_timing` varchar(250) NOT NULL,
+  `contact_timing_alt` varchar(250) NOT NULL,
+  `contact_desc` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `website_management`
+--
+
+INSERT INTO `website_management` (`id`, `contact_address`, `contact_phone`, `contact_phone_alt`, `contact_email`, `contact_email_alt`, `contact_timing`, `contact_timing_alt`, `contact_desc`) VALUES
+(1, 'Harrow, Middlesex, UK', '020 8064 0960', '', 'info@specs2go.co.uk', '', 'Mon - Fri: 10:00 - 19:00', 'Sat, Sun: 11:00 - 17:00', 'Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wishlists`
 --
 
@@ -53011,6 +53170,18 @@ INSERT INTO `wishlists` (`id`, `id_products`, `id_users`) VALUES
 -- Indexes for table `banners`
 --
 ALTER TABLE `banners`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blog`
+--
+ALTER TABLE `blog`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blog_comment`
+--
+ALTER TABLE `blog_comment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -53053,6 +53224,18 @@ ALTER TABLE `lens_category`
 -- Indexes for table `lens_sub_category`
 --
 ALTER TABLE `lens_sub_category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `newsletter`
+--
+ALTER TABLE `newsletter`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `page_management`
+--
+ALTER TABLE `page_management`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -53104,6 +53287,12 @@ ALTER TABLE `specs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `testimonial`
+--
+ALTER TABLE `testimonial`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -53134,6 +53323,12 @@ ALTER TABLE `user_states`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `website_management`
+--
+ALTER TABLE `website_management`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wishlists`
 --
 ALTER TABLE `wishlists`
@@ -53152,6 +53347,18 @@ ALTER TABLE `banners`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `blog`
+--
+ALTER TABLE `blog`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `blog_comment`
+--
+ALTER TABLE `blog_comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
@@ -53161,7 +53368,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `frames`
@@ -53194,28 +53401,40 @@ ALTER TABLE `lens_sub_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT for table `newsletter`
+--
+ALTER TABLE `newsletter`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `page_management`
+--
+ALTER TABLE `page_management`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product_attribute`
 --
 ALTER TABLE `product_attribute`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `product_ledger`
 --
 ALTER TABLE `product_ledger`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pupillary_distance`
@@ -53239,6 +53458,12 @@ ALTER TABLE `site_settings`
 -- AUTO_INCREMENT for table `specs`
 --
 ALTER TABLE `specs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `testimonial`
+--
+ALTER TABLE `testimonial`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -53270,6 +53495,12 @@ ALTER TABLE `user_countries`
 --
 ALTER TABLE `user_states`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4122;
+
+--
+-- AUTO_INCREMENT for table `website_management`
+--
+ALTER TABLE `website_management`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `wishlists`

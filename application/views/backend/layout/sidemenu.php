@@ -15,6 +15,12 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    <li <?php if($this->uri->segment(2) == 'website-management'){ ?> class="active-item" <?php } ?>>
+                        <a href="<?=base_url('admin/website-management')?>">
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            <span>Website Management</span>
+                        </a>
+                    </li>
                     <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'category-management' || $this->uri->segment(2) == 'add-category' || $this->uri->segment(2) == 'edit-category'){ ?> active-item <?php } ?>">
                         <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Category Management</span> </a>
                         <ul class="nav child-nav level-1">
@@ -99,11 +105,29 @@
                             <li <?php if($this->uri->segment(2) == 'reglaze-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/reglaze-management')?>">Reglaze Details List</a></li>
                         </ul>
                     </li>
-                    <li <?php if($this->uri->segment(2) == 'website-management'){ ?> class="active-item" <?php } ?>>
-                        <a href="<?=base_url('admin/website-management')?>">
-                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                            <span>Website Management</span>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'page-management' || $this->uri->segment(2) == 'edit-page'){ ?> active-item <?php } ?>">
+                        <a>
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i><span>Page Management</span>
                         </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'page-management'){ ?> class="active-item" <?php } ?>>
+                                <a href="<?=base_url('admin/page-management')?>">Page Management List</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'blog-management' || $this->uri->segment(2) == 'add-blog' || $this->uri->segment(2) == 'edit-blog'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Blog Management</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-blog'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-blog')?>">Add Blog</a></li>
+                            <li <?php if($this->uri->segment(2) == 'blog-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/blog-management')?>">Blog List</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child-item close-item <?php if($this->uri->segment(2) == 'testimonial-management' || $this->uri->segment(2) == 'add-testimonial' || $this->uri->segment(2) == 'edit-testimonial'){ ?> active-item <?php } ?>">
+                        <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Testimonial</span> </a>
+                        <ul class="nav child-nav level-1">
+                            <li <?php if($this->uri->segment(2) == 'add-testimonial'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/add-testimonial')?>">Add Testimonial</a></li>
+                            <li <?php if($this->uri->segment(2) == 'testimonial-management'){ ?> class="active-item" <?php } ?>><a href="<?=base_url('admin/testimonial-management')?>">Testimonial List</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
