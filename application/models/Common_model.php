@@ -96,40 +96,39 @@ class Common_model extends CI_model {
             return $status;
         }
     }
-    /**
-        * -----------------------------------------
-        * @Description : send email to user from admin
-        * ----------------------------------------
-        * @param       : to(string/to email)
-        * @param       : subject(string/email subject)
-        * @param       : param(array/data for email template)
-        * @param       : template(string/email template)
-        * @return      : affected row(int)
-        * 
-    */
-    public function send_email($to,$from,$cc,$reply_to,$subject = '',$message,$attach='',$param = array(),$template){
-        $config['protocol']        = 'sendmail';
-        $config['mailpath']        = '/usr/sbin/sendmail';
-        $config['charset']         = 'utf-8';
-        $config['wordwrap']        = TRUE;
-        $config['mailtype']        = 'html';
-        $this->email->initialize($config);
-        $this->email->from($from, 'Adult Lounge');
-        $this->email->to($to);
-        $this->email->cc($cc);
-        $this->email->reply_to($reply_to);
-        $this->email->subject($subject);
-        if(!empty($message)){
-            $this->email->message($message);
-        }else{
-            $email_body = $this->load->view('email_templates/'.$template, $param ,TRUE);
-            $this->email->message($email_body);
+    public function sendMail($eml, $sub, $msg, $file = '') {
+        include_once APPPATH.'third_party/Mail/class.phpmailer.php';
+        $mail = new PHPMailer;
+        $mail -> CharSet = 'UTF-8';
+        $mail -> IsSMTP();
+        //Reverese for attachment
+        //$mail -> IsSMTP();
+        //$mail -> CharSet = 'UTF-8';
+        $mail -> Host = 'localhost';
+        $mail -> SMTPAuth = true;
+        $mail -> Port = 587;
+        //Reverese for attachment
+        //$mail -> Port = 587;
+        //$mail -> SMTPAuth = true;
+        $mail -> Username = 'no-reply@spec2go.com';
+        $mail -> Password = 'sC7LC2BW5hqv';
+        $mail -> SMTPSecure = 'none';
+        $mail -> From = 'no-reply@spec2go.com';
+        $mail -> FromName = 'Spec2Go';
+        $mail -> addAddress($eml);
+        $mail -> addBcc('asd@mail.com');
+        $mail -> WordWrap = 5000;
+        $mail -> Subject = $sub;
+        $mail -> Body = $msg;
+        $mail -> isHTML(true);
+        if ($file != '')
+            $mail -> AddAttachment($file);
+        if (!$mail -> send()){
+            //print $mail->ErrorInfo;
+            return "notok";
         }
-        if(!empty($attach)){
-            $this->email->attach('fontend/' . $attach);	
+        else{
+            return "ok";
         }
-        $status     = $this->email->send();
-        //echo $this->email->print_debugger();
-        return $status;
     }
 }

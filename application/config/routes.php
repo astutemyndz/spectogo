@@ -35,6 +35,9 @@ $route['newsletter-subscribe']                          = 'Home/newsletterSubscr
 $route['testimonial']                                   = 'Home/testimonial';
 $route['search-product']                                = 'Home/searchProduct';
 $route['cart']                                          = 'Home/cart';
+$route['reglaze']                                       = 'Home/reglaze';
+$route['set-reglaze-frame']                             = 'Home/setReglazeFrame';
+$route['contact-us-email']                              = 'Home/contactUsEmail';
 /*
     This route for admin
 */

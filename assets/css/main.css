@@ -167,7 +167,7 @@ textarea {
 	font-size:0.8125rem;
 }
 select {
-    background: url('../img/select-arrow.png') no-repeat right #ddd;
+    background: url('../images/select-arrow.png') no-repeat right #ddd;
     -webkit-appearance: none;
     background-position-x: 96%;
 	background-size:auto 7px;

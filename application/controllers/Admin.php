@@ -140,14 +140,14 @@ class Admin extends Common_Controller {
         if($this->input->post()){
             if($this->input->post('specs_edit_id') == ''){
                 if(empty($this->cm->get_specific('specs', array("LOWER(name)" => strtolower($this->input->post('specsName')))))){
-                    $this->cm->insert('specs', array("name" => ucfirst($this->input->post('specsName'))));
+                    $this->cm->insert('specs', array("name" => ucwords($this->input->post('specsName'))));
                     $this->session->set_flashdata('msg', 'Specs Type Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Specs Type Already Exists !!!');
                 }
             }else{
                 if(empty($this->cm->get_specific('specs', array("LOWER(name)" => strtolower($this->input->post('specsName')), "id != "=> $this->input->post('specs_edit_id'))))){
-                    $this->cm->update('specs', array("id" => $this->input->post('specs_edit_id')), array("name" => ucfirst($this->input->post('specsName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->cm->update('specs', array("id" => $this->input->post('specs_edit_id')), array("name" => ucwords($this->input->post('specsName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Specs Type Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Specs Type Already Exists !!!');
@@ -175,14 +175,14 @@ class Admin extends Common_Controller {
         if($this->input->post()){
             if($this->input->post('frame_edit_id') == ''){
                 if(empty($this->cm->get_specific('frames', array("LOWER(name)" => strtolower($this->input->post('frameName')))))){
-                    $this->cm->insert('frames', array("name" => ucfirst($this->input->post('frameName'))));
+                    $this->cm->insert('frames', array("name" => ucwords($this->input->post('frameName'))));
                     $this->session->set_flashdata('msg', 'Frame Successfully Added !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Frame Already Exists !!!');
                 }
             }else{
                 if(empty($this->cm->get_specific('frames', array("LOWER(name)" => strtolower($this->input->post('frameName')), "id != " => $this->input->post('frame_edit_id'))))){
-                    $this->cm->update('frames', array("id" => $this->input->post('frame_edit_id')), array("name" => ucfirst($this->input->post('frameName')), "updated_at" => date('Y-m-d H:i:s')));
+                    $this->cm->update('frames', array("id" => $this->input->post('frame_edit_id')), array("name" => ucwords($this->input->post('frameName')), "updated_at" => date('Y-m-d H:i:s')));
                     $this->session->set_flashdata('msg', 'Frame Successfully Updated !!!');
                 }else{
                     $this->session->set_flashdata('msg', 'Frame Already Exists !!!');

@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-
 class Common_Controller extends CI_Controller {
-
     protected $data         = array();
     protected $product      = array();
     protected $request      = array();
@@ -29,17 +26,14 @@ class Common_Controller extends CI_Controller {
     protected $secondaryTable = '';
     protected $categoryId;
     protected $categoryName;
-
     protected $productId;
     protected $hexColorCode;
     protected $resultArray;
     protected $filterArray;
-
     protected $lensCatId;
     protected $lensSubCatId;
-
+    protected $reglazeFrameId;
     public $sessionVar;
-
 	function __construct() {
          parent::__construct();
          $this->userdata();
@@ -93,6 +87,13 @@ class Common_Controller extends CI_Controller {
     }
     public function getLensSubCatId() {
         return $this->lensSubCatId;
+    }
+    public function setReglazeFrameId($reglazeFrameId) {
+        $this->reglazeFrameId = $reglazeFrameId;
+        return $this;
+    }
+    public function getReglazeFrameId() {
+        return $this->reglazeFrameId;
     }
     
     
@@ -335,7 +336,6 @@ class Common_Controller extends CI_Controller {
         $this->primaryTable = 'products p';
         $this->condition[] = array("p.status" => 1);
         if(!empty($this->options) || $this->options != null) {
-
             if(!empty($this->options['brandId'])) {
                 if(is_array($this->options) && in_array($this->options['brandId'], $this->options)) {
                     $this->setBrandId($this->options['brandId']);
@@ -367,9 +367,7 @@ class Common_Controller extends CI_Controller {
                 } 
             }
             if(!empty($this->options['details'])) {
-               
                 if(is_array($this->options) && in_array($this->options['details'], $this->options)) {
-                 
                     $this->setDetails($this->options['details']);
                 }
             }
@@ -394,11 +392,10 @@ class Common_Controller extends CI_Controller {
                     case 'categories':
                         $this->joinCategory = true;
                         $this->condition[]  = array("c.name" => ucwords(strtolower(str_replace('_', ' ', $this->details))));
-                     
                         break;
                     case 'frames':
                         $this->joinFrames   = true;
-                        $this->condition[]  = array("f.name" => ucwords(strtolower(str_replace('_', ' ', $this->details))));
+                        $this->condition[]  = array("f.name" => str_replace('_', ' ', $this->details));
                         break;
                     default:
                         $this->condition[] = array();
@@ -474,7 +471,6 @@ class Common_Controller extends CI_Controller {
         } else {
             $this->join[] = ['table' => 'categories c', 'on' => 'c.id = p.cat_id', 'type' => 'left'];
             $this->sql   .= ',c.name cat_name';
-
             $this->join[] = ['table' => 'frames f', 'on' => 'f.id = p.frame_id', 'type' => 'left'];
             $this->sql   .= ',f.name frame_name';
         }
@@ -487,6 +483,8 @@ class Common_Controller extends CI_Controller {
             }
         }
         $this->condition = $condition;
+        //print_r($this->condition); die;
+        //print_r($this->join); die;
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
@@ -502,14 +500,12 @@ class Common_Controller extends CI_Controller {
         $this->sql .= ',(select GROUP_CONCAT(pa.stock) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) stock';
         $this->sql .= ',(select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = p.id order by pi.id ASC) product_images';
         $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit, $offset, $group_by = '', $row = true);
-        //echo $this->db->last_query();
-       
+        //echo $this->db->last_query(); die;
+        //echo '<pre>';
+        //print_r($productList); die;
+        $this->setProduct($productList);
         return $productList;
     }
-
-    
-    
-    
     public function isAjaxRequest() {
         if ($this->input->is_ajax_request()) {
             return true;

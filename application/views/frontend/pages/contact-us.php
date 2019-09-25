@@ -92,10 +92,10 @@
                     <form id="contactusForm">
                         <div class="form-row d-flex justify-content-between">
                             <div class="col-md-6 col-sm-6 mb-2 pb-1">
-                                <input type="text" name="contactFormFirstName" class="form-control requiredCheck bg-transparent w-100" data-check="First Name" onkeypress="return isChar(this.event)" placeholder="FIRST NAME">
+                                <input type="text" name="contactFormFirstName" class="form-control requiredCheck restrictSpecial bg-transparent w-100" data-check="First Name" onkeypress="return isChar(this.event)" placeholder="FIRST NAME">
                             </div>
                             <div class="col-md-6 col-sm-6 mb-2 pb-1">
-                                <input type="text" name="contactFormLastName" class="form-control requiredCheck bg-transparent w-100" data-check="Last Name" onkeypress="return isChar(this.event)" placeholder="LAST NAME">
+                                <input type="text" name="contactFormLastName" class="form-control requiredCheck restrictSpecial bg-transparent w-100" data-check="Last Name" onkeypress="return isChar(this.event)" placeholder="LAST NAME">
                             </div>
                         </div>
                         <div class="form-row d-flex justify-content-between">

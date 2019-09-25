@@ -24,8 +24,7 @@
                     <div class="col-sm-3 col-12 mb-2">
                         <h6 class="text-uppercase font-weight-bold">Spectacle</h6>
                         <ul class="nav footer-nav flex-column pt-2 pb-3 FooterCategoryComponent">
-                           
-                            <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Spectacle On Sale</a></li>
+                            <!-- <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Spectacle On Sale</a></li> -->
                         </ul>
                     </div>
                     <div class="col-sm-3 col-12 mb-2">
@@ -34,7 +33,7 @@
                         <ul class="nav footer-nav flex-column pt-2 pb-3">
                             <?php foreach($frames as $frame){ ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url('products/frames/'.str_replace(' ', '_', strtoupper($frame->name)))?>">
+                                <a class="nav-link" href="<?=base_url('products/frames/'.str_replace(' ', '_', $frame->name))?>">
                                     <?=$frame->name?>
                                 </a>
                             </li>
@@ -130,20 +129,20 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <form class="footer_contact_form">
+                        <form class="footer_contact_form" id="footerContactForm">
                             <div class="form-row d-flex justify-content-between">
                                 <div class="col-md-6 mb-2 pb-1">
-                                    <input type="text" class="form-control bg-transparent w-100" placeholder="Name">
+                                    <input type="text" class="form-control bg-transparent w-100 requiredCheckFooter restrictSpecial" name="contactFormName" onkeypress="return isChar(this.event)" data-check="Name" placeholder="Name">
                                 </div>
                                 <div class="col-md-6 mb-2 pb-1">
-                                    <input type="text" class="form-control bg-transparent w-100" placeholder="Email">
+                                    <input type="text" class="form-control bg-transparent w-100 requiredCheckFooter" name="contactFormEmail" data-check="Email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-12 text-right">
                                     <div class="pt-2 pl-3 pr-3 pb-3 border rounded">
-                                        <textarea class="form-control bg-transparent border-0 p-0 mb-2" placeholder="Message"></textarea>
-                                        <button type="submit" class="btn btn-primary text-uppercase text-spacing">Send</button>
+                                        <textarea class="form-control bg-transparent border-0 p-0 mb-2 requiredCheckFooter"name="contactFormMessage" data-check="Message" placeholder="Message"></textarea>
+                                        <button type="submit" class="btn btn-primary text-uppercase text-spacing footerContactBtn">Send</button>
                                     </div>
                                 </div>
                             </div>
@@ -158,15 +157,25 @@
             <div class="row copyright">
                 <div class="col-12 col-md-6 text-center text-md-left">
                     <ul class="nav w-auto d-flex justify-content-center justify-content-md-start">
-                        <li class="nav-item pr-4"><a class="nav-link active" href="<?=base_url('info/terms-and-conditions')?>">Terms and conditions</a></li>
-                        <li class="nav-item pr-4"><a class="nav-link" href="<?=base_url('info/privacy-policy')?>">Privacy Policy</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?=base_url('info/customer-service')?>">Customer Service</a></li>
+                        <li class="nav-item pr-4">
+                            <a class="nav-link active" href="<?=base_url('info/terms-and-conditions')?>">Terms and conditions</a>
+                        </li>
+                        <li class="nav-item pr-4">
+                            <a class="nav-link" href="<?=base_url('info/privacy-policy')?>">Privacy Policy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=base_url('info/customer-service')?>">Customer Service</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-12 col-md-6 text-center text-md-right">
                     <ul class="list-inline mt-2 mb-0">
-                        <li class="list-inline-item pr-3"><a href="javascript:void(0);"><?=$webManage['contact_phone']?></a></li>
-                        <li class="list-inline-item"><a href="mailto:<?=$webManage['contact_email']?>"><?=$webManage['contact_email']?></a></li>
+                        <li class="list-inline-item pr-3">
+                            <a href="javascript:void(0);"><?=$webManage['contact_phone']?></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="mailto:<?=$webManage['contact_email']?>"><?=$webManage['contact_email']?></a>
+                        </li>
                     </ul>
                     <p class="footer-p">Design & Developement by <a href="https://astutemyndz.com" target="_blank">astutemyndz.com</a></p>
                 </div>

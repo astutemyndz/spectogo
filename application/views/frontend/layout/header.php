@@ -5,7 +5,7 @@
     <title>Specs2Go</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="<?=base_url('assets/images/icon.png')?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?=base_url('assets/images/icon.png')?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?=base_url('assets/css/normalize.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/bootstrap.css')?>">
@@ -40,7 +40,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-0 text-uppercase text-spacing HeaderCategoryComponent">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Reglaze</a>
+                                    <a class="nav-link" href="<?=base_url('reglaze')?>">Reglaze</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=base_url('contact-us')?>">Contact</a>

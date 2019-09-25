@@ -57,8 +57,8 @@ class Product extends Common_Controller {
         }else{
             redirect(base_url());
         }
-        $this->load->view('frontend/layout/header');
-        $this->load->view('frontend/pages/product', $data);
+        $this->load->view('frontend/layout/header', $data);
+        $this->load->view('frontend/pages/product');
         $this->load->view('frontend/layout/footer');
     }
     public function getProductCategoryWise($slug) {
