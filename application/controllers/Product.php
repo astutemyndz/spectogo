@@ -53,7 +53,7 @@ class Product extends Common_Controller {
             $data['partner'] = $this->getBrandDetails();
             $data['frames'] = $this->getFrameDetails();
             $data['webManage'] = $this->getContactDetails();
-            $data['product'] = $this->getProductListDetails(array('category' => $category, 'details'=> $details));
+            //$data['product'] = $this->getProductListDetails(array('category' => $category, 'details'=> $details));
         }else{
             redirect(base_url());
         }

@@ -355,9 +355,6 @@ class ApiController extends Common_Controller {
         if(isset($this->request['details']) || !empty($this->request['details'])) {
             $this->setDetails($this->request['details']);
         }
-        // $this->setCategory($this->uri->segment(2));
-        // $this->setDetails($this->uri->segment(3));
-
         if(isset($this->request['categoryName']) || !empty($this->request['categoryName'])) {
             $this->setCategoryName($this->request['categoryName']);
         }
@@ -366,9 +363,6 @@ class ApiController extends Common_Controller {
         } else {
             $this->setWishlist(false);
         }
-        // if(isset($this->request['user']) || !empty($this->request['user'])) {
-        //    $this->setUser($this->request['user']);
-        // }
         if($this->brandId) {
             $this->options[] = array(
                 'brandId' => $this->brandId
@@ -404,11 +398,17 @@ class ApiController extends Common_Controller {
                 'wishlist' => $this->wishlist
             );
         }
+        // if($this->user) {
+        //     $this->options[] =  array(
+        //         'user' => $this->user
+        //     );
+        // }
         if($this->user) {
             $this->options[] =  array(
-                'user' => $this->user
+                'id' => $this->user['id']
             );
         }
+
         $options = array();
         if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
             for($i = 0; $i < count($this->options); $i++) {
@@ -418,13 +418,12 @@ class ApiController extends Common_Controller {
             }
         }
         $this->options = $options;
-        //print_r($this->options); die;
         if(!empty($this->options)) {
-            $this->getProductListDetails($this->options);
+            //$this->getProductListDetails($this->options);
             // echo '<pre>';
             // print_r($this->product); die;
-            $this->listOfProduct = $this->getProduct();
-            //$this->listOfProduct = $this->getProductListDetails($this->options);
+            //$this->listOfProduct = $this->getProduct();
+            $this->listOfProduct = $this->getProductListDetails($this->options);
         } else {
             $this->listOfProduct = $this->getProductListDetails();
         }
@@ -456,6 +455,63 @@ class ApiController extends Common_Controller {
         }
         $this->response->send();
     }
+
+    /* wishlist api*/
+    public function loadWishlist() {
+        if(isLoggedIn()) {
+            $this->setUser((array)$this->sessionVar['user']);
+        }
+        $this->options[] = array(
+            'wishlist' => 'wishlist'
+        );
+        if($this->user) {
+            $this->options[] =  array(
+                'id' => $this->user['id']
+            );
+        }
+        $options = array();
+        if(isset($this->options) || !empty($this->options) && is_array($this->options)) {
+            for($i = 0; $i < count($this->options); $i++) {
+                foreach($this->options[$i] as $k => $v) {
+                    $options[$k] = $v;
+                }
+            }
+        }
+        $this->options = $options;
+        if(!empty($this->options)) {
+            $this->listOfProduct = $this->getProductListDetails($this->options);
+        }
+        //print_r($this->listOfProduct); die;
+        if($this->listOfProduct) {
+            $this->response = new Response(
+                array(
+                    'data' => $this->listOfProduct,
+                    'statusCode' => Response::HTTP_OK,
+                    'message' => Response::$statusTexts[200],
+                    'productImageUrl' => base_url().'assets/images/productImage/',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+        } else {
+            $this->response = new Response(
+                array(
+                    'data' => [],
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'message' => Response::$statusTexts[404],
+                    'productImageUrl' => base_url().'assets/images/productImage/',
+                ),
+                Response::HTTP_OK,
+                ['Content-Type', 'application/json']
+            );
+        }
+        $this->response->send();
+    }
+    /* wishlist api*/
+
+
+
+
     public function filterProductImageByColor(){
         $this->setRequest($_REQUEST);
 

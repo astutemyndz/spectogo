@@ -1838,3 +1838,15 @@ ul.search-ul li h5{
 	color:#111;
 }
 /****Search Product CSS****/
+
+
+.wishlist-box {
+    border: 1px solid #1e99b2;
+    margin-bottom: 30px;
+    padding: 15px;
+    position: relative;
+    background: #fff;
+}
+#wishListDiv{
+    min-height: 200px;
+}

@@ -54,7 +54,6 @@ class Common_Controller extends CI_Controller {
     public function getResponse() {
         return $this->response;
     }
-
     public function sendResponse() {
         $this->response->send();
     }
@@ -72,10 +71,6 @@ class Common_Controller extends CI_Controller {
     public function getHexColorCode() {
         return $this->hexColorCode;
     }
-    
-    
-
-    
     public function setLensCatId($lensCatId) {
         $this->lensCatId = $lensCatId;
         return $this;
@@ -101,10 +96,6 @@ class Common_Controller extends CI_Controller {
     public function getReglazeFrameId() {
         return $this->reglazeFrameId;
     }
-    
-    
-    
-    
     public function checkLogin(){
         if(!$this->session->userdata('UserId')){
             redirect(base_url('sign-in'));
@@ -264,10 +255,6 @@ class Common_Controller extends CI_Controller {
     public function getFrameName() {
         return $this->frameName;
     }
-
-
-
-
     public function setCategory($category) {
         $this->category = $category;
         return $this;
@@ -276,11 +263,9 @@ class Common_Controller extends CI_Controller {
         $this->details = $details;
         return $this;
     }
-
     public function getCategory() {
         return $this->category;
     }
-
     public function setOptions($options) {
         $this->options = $options;
         return $this;
@@ -388,17 +373,15 @@ class Common_Controller extends CI_Controller {
                     $this->setSlug($this->options['slug']);
                 }
             }
-            if(!empty($this->options['user'])) {
-                if(is_array($this->options) && in_array($this->options['user'], $this->options)) {
-                    $this->setUser($this->options['user']);
-                }
+            if(!empty($this->options['id'])) {
+                $this->setUserId($this->options['id']);
             }
             //Filter data by category
             if($this->category) {
                 switch($this->category) {
                     case 'categories':
                         $this->joinCategory = true;
-                        $this->condition[]  = array("c.name" => ucwords(strtolower(str_replace('_', ' ', $this->details))));
+                        $this->condition[]  = array("c.name" => str_replace('_', ' ', $this->details));
                         break;
                     case 'frames':
                         $this->joinFrames   = true;
@@ -423,7 +406,6 @@ class Common_Controller extends CI_Controller {
                 $this->condition[]  = array("p.name LIKE " => '%'.$this->frameName.'%');
             }
             /*** This is for Filter product***/
-
             if($this->categoryId) {
                 $this->joinCategory = true;
                 $this->condition[]  = array("c.id" => $this->categoryId);
@@ -436,25 +418,20 @@ class Common_Controller extends CI_Controller {
             if($this->slug) {
                 $this->condition[] = array("p.slug" => $this->options['slug']);
             }
-            if($this->user) {
-                if(is_array($this->user)) {
-                    $this->setUserId($this->user['id']);
-                } 
-            }
-            if($this->userId) {
-               if($this->isProductAvailableInWishlist()) {
-                  // echo "1";
-                    $this->condition[]  = array('wl.id_users' => $this->userId);
-                    $this->joinWishlist = true;
-               } else {
-                  // echo "0";
-                    $this->condition[]  = array();
-                    $this->joinWishlist = false;
-               }
-            }
+            // if($this->userId) {
+            //    if($this->isProductAvailableInWishlist()) {
+            //        echo "1"; die;
+            //         $this->condition[]  = array('wl.id_users' => $this->userId);
+            //         $this->joinWishlist = true;
+            //    } else {
+            //        echo "0"; die;
+            //         $this->condition[]  = array();
+            //         $this->joinWishlist = false;
+            //    }
+            // }
             if($this->userId && $this->wishlist) {
-                 //$this->condition[]  = array('wl.id_users' => $this->userId);
-                 $this->joinWishlist = true;
+                $this->condition[]  = array('wl.id_users' => $this->userId);
+                $this->joinWishlist = true;
             }
         /** ########## Join tables start of code ########## */
             // Categories
@@ -468,11 +445,12 @@ class Common_Controller extends CI_Controller {
                 $this->sql .= ',f.name frame_name';
             }
             //Wishlists
+            $this->join[]       = ['table' => 'wishlists wl', 'on' => 'wl.id_products = p.id', 'type' => 'left'];
+            $this->join[]       = ['table' => 'users u', 'on' => 'wl.id_users = u.id', 'type' => 'left'];
             if($this->joinWishlist) {
-                $this->join[]       = ['table' => 'wishlists wl', 'on' => 'wl.id_products = p.id', 'type' => 'left'];
-                $this->join[]       = ['table' => 'users u', 'on' => 'wl.id_users = u.id', 'type' => 'left'];
-                //$this->sql         .= ',wl.id wishlistId';
-                $this->sql .= ",(select ws.id from wishlists ws  where ws.id_users = u.id AND u.id = '".$this->userId."') wishlistId";
+                $this->sql         .= ',wl.id wishlistId';
+            }else{
+                $this->sql .= ",(select ws.id from wishlists ws where ws.id_users = u.id AND ws.id_products = p.id AND u.id = '".$this->userId."') wishlistId";
             }
         /** ########## Join tables end of code ########## */
         } else {
@@ -481,7 +459,6 @@ class Common_Controller extends CI_Controller {
             $this->join[] = ['table' => 'frames f', 'on' => 'f.id = p.frame_id', 'type' => 'left'];
             $this->sql   .= ',f.name frame_name';
         }
-       // echo $this->sql;
         if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
             for($i = 0; $i < count($this->condition); $i++) {
                 foreach($this->condition[$i] as $k => $v) {
@@ -490,12 +467,10 @@ class Common_Controller extends CI_Controller {
             }
         }
         $this->condition = $condition;
-        //print_r($this->condition); die;
-        //print_r($this->join); die;
         $this->join[] = ['table' => 'specs s', 'on' => 's.id = p.spec_id', 'type' => 'left'];
         $this->join[] = ['table' => 'brands b', 'on' => 'b.id = p.brand_id', 'type' => 'left'];
         $this->join[] = ['table' => 'banners bn', 'on' => 'bn.cat_id = c.id', 'type' => 'left'];
-        $this->sql .= ',p.id, p.name,p.name as productName,p.id as productId, p.slug, p.primary_image, p.primary_image_one, p.primary_image_two, p.primary_image_three, p.description, p.main_color, p.main_color_name, p.price, p.sell_price, p.discount, p.stock, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
+        $this->sql .= ',p.id, p.name,p.name as productName,p.id as productId, p.slug, p.primary_image, p.primary_image_one, p.primary_image_two, p.primary_image_three, p.description, p.main_color, p.main_color_name, p.price main_price, p.sell_price main_sell_price, p.discount, p.stock, p.arm, p.bridge, p.lens, p.height, p.sku, p.warranty, p.progressives, p.includes, p.single_vision, p.spring_hinge, p.suitable_for_tints';
         $this->sql .= ',b.name brand_name';
         $this->sql .= ',s.name spec_name';
         $this->sql .= ',bn.image banner_image';
@@ -507,9 +482,6 @@ class Common_Controller extends CI_Controller {
         $this->sql .= ',(select GROUP_CONCAT(pa.stock) from product_attribute pa where pa.product_id = p.id order by pa.id ASC) stock';
         $this->sql .= ',(select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = p.id order by pi.id ASC) product_images';
         $productList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'p.id', 'DESC', $this->join, $limit, $offset, $group_by = '', $row = true);
-        //echo $this->db->last_query(); die;
-        //echo '<pre>';
-        //print_r($productList); die;
         $this->setProduct($productList);
         return $productList;
     }
@@ -568,19 +540,14 @@ class Common_Controller extends CI_Controller {
                 }
             }
         }
-         $this->condition = $condition;
-        // echo "<pre>";
-        // print_r($this->condition);
-        // exit;
+        $this->condition = $condition;
         $this->sql .= 'p.name as productName, p.description as productDescription,p.main_color as productHexColorCode, p.main_color_name as productColor,p.arm as productArm, p.bridge as productBridge, p.lens as productLens, p.height as productHeight, p.sku as productSku, p.warranty as productWarranty, p.progressives as productProgressive,p.includes as productIncludes, p.single_vision as productSingleVision, p.spring_hinge as productSpringHinge, p.suitable_for_tints as productSuitableForTints';
         $this->sql .= ',pa.color as productAttributeColorCode, pa.color_name as productAttributeColorName, pa.price as productAttributePrice, pa.sell_price as productAttributeSellPrice, pa.discount as productAttributeDiscount, pa.stock as productAttributeStock, (select GROUP_CONCAT(pi.image) from product_images pi where pi.product_id = pa.product_id AND pi.color = pa.color order by pi.id ASC) images';
-        
         // Join with product table
         if($this->joinProduct) {
             $this->join[] = ['table' => 'products p', 'on' => 'p.id = pa.product_id', 'type' => 'left'];
             $this->sql   .= ',p.id as productId, p.primary_image as productPrimaryImage';
         }
-
         $this->resultArray = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'pa.id', 'asc', $this->join);
         if(isset($this->resultArray) && !empty($this->resultArray) && is_array($this->resultArray)) {
             $this->filterArray = $this->resultArray;
@@ -599,7 +566,6 @@ class Common_Controller extends CI_Controller {
         } 
         return false;
     }
-    
     public function setSession($key, $value) {
         (isset($key)) ? $this->session->set_userdata($key, $value) : $this->session->set_userdata('default', array());
     }
@@ -614,7 +580,6 @@ class Common_Controller extends CI_Controller {
          }
          return $this->sessionVar;
     }
-
     public function loggedInUser() {
         if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
             if(is_array($this->sessionVar)) {
@@ -625,9 +590,6 @@ class Common_Controller extends CI_Controller {
         } 
         return false;
     }
-
-
-
     // public function userId() {
         // if(!empty($this->sessionVar)|| isset($this->sessionVar)) {
         //     if(is_array($this->sessionVar) && in_array('user', $this->sessionVar)) {
@@ -646,12 +608,10 @@ class Common_Controller extends CI_Controller {
             }
         } 
     }
-
     public function emptyUser() {
         $this->session->unset_userdata('user');
         return true;
     }
-
     public function isProductAvailableInWishlist() {
         $this->resultArray = $this->db->get_where('wishlists', array('id_users' => $this->getUserId()))->result_array();
         if(!empty($this->resultArray)) {
@@ -675,7 +635,6 @@ class Common_Controller extends CI_Controller {
                     $this->setLensSubCatId($this->options['lensSubCatId']);
                 } 
             }
-            
         }
         $this->joinLens = false;
         if($this->lensCatId) {
@@ -711,8 +670,6 @@ class Common_Controller extends CI_Controller {
         }
         return $this->filterArray;
     }
-
-
     public function getLensTints() {
        return $this->db->get('lenses_and_tints')
                     ->result_array();
@@ -721,7 +678,6 @@ class Common_Controller extends CI_Controller {
         $this->lensTintDetailsId = $id;
         return $this;
     }
-
     public function getLensTintsDetails($options = null) {
         $this->sql = '';
         $this->primaryTable = 'lenses_and_tints_details ld';
@@ -740,7 +696,6 @@ class Common_Controller extends CI_Controller {
             }
         }
         $this->condition[]  = array("ld.status" => 1);
-
         $this->joinLens = true;
         if($this->lensId) {
             $this->condition[]  = array("lens.id" => $this->lensId);
@@ -750,7 +705,6 @@ class Common_Controller extends CI_Controller {
             $this->condition[]  = array("ld.id" => $this->lensTintDetailsId);
             $this->condition[]  = array("ld.status" => 1);
         }
-       
        // $this->condition[]  = array("l.status" => 1);
         $condition = array();
         if(isset($this->condition) || !empty($this->condition) && is_array($this->condition)) {
@@ -773,12 +727,7 @@ class Common_Controller extends CI_Controller {
         } else {
             $this->filterArray = array();
         }
-        // echo "<pre>";
-        // print_r($this->filterArray);
         return $this->filterArray;
     }
-    
-
-    
 }
 ?>

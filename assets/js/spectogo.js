@@ -4,7 +4,6 @@ const currentUrl = function() {
 const back = function() {
     currentUrl();
 }
-
 const backToChooseLens = function() {
     $(document).on('click', '.backToChooseLens', function(e) {
         location.href = API_URL + 'choose-your-lens';
@@ -20,7 +19,7 @@ $(document).ready(function(){
             location.href = API_URL + 'products/categories/' + categoryName;
         }, 300);
     });
-    if (page == 'cart' || page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
+    if (page == 'wishlist' || page == 'cart' || page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
@@ -208,7 +207,7 @@ const loadFooterCategoryComponent = function() {
 }
 const CategoryComponent = function(props) {
     let categoryName = props.banner.categoryName;
-        categoryName = categoryName.toUpperCase();
+        //categoryName = categoryName.toUpperCase();
         categoryName = categoryName.replace(" ", "_");
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
@@ -252,6 +251,9 @@ const ProductComponent = function(props) {
                    `+colorsComponent+`
                 </ul><div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                     <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
+                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`">
+                            <i class="fa fa-heart" aria-hidden="true"></i> wishlist
+                        </button>
                     </div>
                 </div>
             </div>
@@ -266,8 +268,6 @@ $('.useOldPres').click(function(){
     $('.addPresDiv').addClass('d-none');
     $('#saveYourPrescription').removeClass('d-none');
 });
-
-
 const LensCategoryComponent = function(options) {
     return(`
     <li class="nav-item">
@@ -679,31 +679,125 @@ $(document).ready(function () {
         });
     });
 })
-let userId = $('#userId').attr('data-userId');  
-let category = productCategoryTypeFromUrl();
-let options= {};
-if(category === 'frames') {
-    options = {
-        details: getCategoryNameFromUrl(),
-        category: category,
-        user: {
-            id: userId,
-        }
-    };
-} else {
-    options = {
-        categoryName: getCategoryNameFromUrl(),
-        user: {
-            id: userId,
-        }
-    };
+const loadWishlist = function (options) {
+    let $productListFragment = $('#wishListDiv');
+    $productListFragment.html('');
+    $productListFragment.loading();
+    setTimeout(function () {
+        $productListFragment.loading('stop');
+    }, 1000);
+    setTimeout(function() {
+        onLoadWishListProductEventHandler(options);
+    }, 1001);
 }
-
+const onLoadWishListProductEventHandler = function (options) {
+    let productArr = [];
+    let $productWishListFragment = $('#wishListDiv');
+    fetch(API_URL + 'load-wishlist', {
+            headers: {
+                "Content-Type": 'application/x-www-form-urlencoded'
+            },
+            method: 'post',
+            body: $.param(options)
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (myJson) {
+            let res = myJson;
+            let products = myJson.data;
+            if(Object.keys(products).length > 0){
+                $.each(products, function (index, product) {
+                    productArr.push(ProductWishListComponent({
+                        index: index,
+                        product: product,
+                        productImageUrl: res.productImageUrl,
+                        user: options.user
+                    }));
+                });
+                $productWishListFragment.html(productArr.join(''));
+            }else{
+                $productWishListFragment.html('<div class="col-md-12 text-center"><h3>No Product Found !!!</h3></div>');
+            }
+        });
+}
+const ProductWishListComponent = function(props) {
+    let sellPrice = props.product.sell_price;
+    sellPrice = sellPrice.toString().split(",");
+    sellPrice = sellPrice[0].toString();
+    let colors = props.product.color;
+    colors = colors.split(',');
+    let style = {};
+    if (props.product.wishlistId) {
+        style = {
+            wishlistButton: {
+                class: 'removeWishlist'
+            }
+        };
+    }
+    let colorsComponent = '';
+    $.each(colors, function (index, color) {
+        colorsComponent += (ColorComponent({color: color}));
+    });
+    return (
+        `
+        <div class="col-sm-4 text-center product_box position-relative">
+            <div class="wishlist-box">
+                <a href="` + API_URL + `product-details/categories/`+ props.product.cat_name + "/" + props.product.slug + `">
+                    <div class="product">
+                        <img src="` + props.productImageUrl + props.product.primary_image + `" class="w-50 w-sm-75 w-lg-100">
+                        <h6 class="mb-0 text-color-9 pt-2 pb-1 text-uppercase">` + props.product.brand_name + `</h6>
+                        <h5 class="mb-0 font-weight-bold pb-1">` + props.product.name + `</h5>
+                        <h5 class="mb-0 text-primary font-weight-semibold pb-2">£` + sellPrice + `</h5>
+                    </div>
+                </a>
+                <ul class="choose-glass-color">
+                `+colorsComponent+`
+                </ul>
+                <div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
+                    <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
+                        <button data-id_products="`+props.product.id+`" data-id_users="`+props.user+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`">
+                            <i class="fa fa-trash" style="font-size:20px" aria-hidden="true"></i> remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    );
+}
+let userId = $('#userId').attr('data-userId');
+let options= {};
+let wishListOptions= {};
+options = {
+    details: getCategoryNameFromUrl(),
+    category: productCategoryTypeFromUrl(),
+    user: {
+        id: userId,
+    }
+};
+wishListOptions = {
+    user: userId
+};
+// options = {
+//     categoryName: getCategoryNameFromUrl(),
+//     user: {
+//         id: userId,
+//     }
+// };
 $(document).ready(function () {
-    loadProduct(options);
-    loadPupillaryDistanceDropDown();
-    addYourPrescription();
-    onLoadPreviewEventHandler();
+    if (page == 'product-details' || page == 'products') {
+        loadProduct(options);
+    }
+    if (page == 'wishlist') {
+        loadWishlist(wishListOptions);
+    }
+    if (page == 'choose-your-lens') {
+        loadPupillaryDistanceDropDown();
+        addYourPrescription();
+    }
+    if (page == 'preview') {
+        onLoadPreviewEventHandler();
+    }
 }).on("click", ".wishlist", function (e) {
     // Init variable
     const id_products = $(this).data("id_products");
@@ -714,8 +808,10 @@ $(document).ready(function () {
         id_users: id_users
     };
     const optionsWithWishlist = {
-        categoryName: options.categoryName,
-        wishlist: 1,
+        //categoryName: options.categoryName,
+        details: options.details,
+        category: options.category,
+        //wishlist: 1,
         user: options.user
     };
     fetch(API_URL + 'wishlist/add', {
@@ -753,12 +849,21 @@ $(document).ready(function () {
     }).then(function (myJson) {
         let res = myJson;
         if (res.statusCode === 200) {
-            let opt = {
-                categoryName: options.categoryName,
-                wishlist: null,
-                user: options.user
-            };
-            loadProduct(opt);
+            let opt = {};
+            if (page == 'product-details' || page == 'products') {
+                opt = {
+                    details: options.details,
+                    category: options.category,
+                    user: options.user
+                };
+                loadProduct(opt);
+            }
+            if (page == 'wishlist') {
+                opt = {
+                    user: options.user
+                };
+                loadWishlist(opt);
+            }            
         }
     });
 });
