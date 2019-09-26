@@ -19,27 +19,19 @@ $route['filterLensDetails']                             = 'ApiController/filterL
 $route['choose-your-lens']                              = 'Product/chooseYourLens';
 $route['set-lens-for-product']                          = 'Product/setLensForProduct';
 $route['distance']                                      = 'ApiController/distance';
-$route['lens/tints']                                      = 'ApiController/lens';
-$route['lens/tints/details']                                      = 'ApiController/onLoadLensTintsDetailsEventHandler';
-$route['setLensTintToProduct']                                      = 'ApiController/setLensTintToProduct';
-$route['setPrescription']                                      = 'ApiController/setPrescription';
-$route['attachmentUploadHandler']                                      = 'ApiController/attachmentUploadHandler';
-
-
-$route['wishlist/add'] = 'WishlistController/save';
-$route['wishlist'] = 'WishlistController/index';
-$route['products'] = 'ApiController/products';
-$route['product/category/(:any)'] = 'Product/getProductCategoryWise/$1';
-$route['filterProduct'] = 'Product/filterProduct';
-$route['banners'] = "ApiController/banners";
-
-
-
-
-$route['contact-us']                                    = 'Home/contact-us';
+$route['lens/tints']                                    = 'ApiController/lens';
+$route['lens/tints/details']                            = 'ApiController/onLoadLensTintsDetailsEventHandler';
+$route['setLensTintToProduct']                          = 'ApiController/setLensTintToProduct';
+$route['setPrescription']                               = 'ApiController/setPrescription';
+$route['attachmentUploadHandler']                       = 'ApiController/attachmentUploadHandler';
 $route['wishlist/add']                                  = 'WishlistController/save';
 $route['wishlist/remove']                               = 'WishlistController/remove';
+
+
 $route['wishlist']                                      = 'WishlistController/index';
+$route['load-wishlist']                                 = 'ApiController/loadWishlist';
+
+
 $route['products']                                      = 'ApiController/products';
 $route['product/category/(:any)']                       = 'Product/getProductCategoryWise/$1';
 $route['filterProduct']                                 = 'Product/filterProduct';
@@ -53,14 +45,9 @@ $route['newsletter-subscribe']                          = 'Home/newsletterSubscr
 $route['testimonial']                                   = 'Home/testimonial';
 $route['search-product']                                = 'Home/searchProduct';
 $route['cart']                                          = 'Home/cart';
-$route['preview']                                          = 'Product/preview';
-$route['onLoadPreviewEventHandler']                                          = 'ApiController/onLoadPreviewEventHandler';
-
-
-
-
-$route['cart'] = 'CartController/index';
-
+$route['preview']                                       = 'Product/preview';
+$route['onLoadPreviewEventHandler']                     = 'ApiController/onLoadPreviewEventHandler';
+$route['cart']                                          = 'CartController/index';
 $route['reglaze']                                       = 'Home/reglaze';
 $route['set-reglaze-frame']                             = 'Home/setReglazeFrame';
 $route['contact-us-email']                              = 'Home/contactUsEmail';

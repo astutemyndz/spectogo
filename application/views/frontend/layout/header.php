@@ -72,12 +72,14 @@
                                 <span class="badge badge-success rounded-pill">0</span>
                             </a>
                         </li>
+                        <?php if(isLoggedIn()){ ?>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block wishlist-link">
-                            <a href="#">
+                            <a href="<?=base_url('wishlist')?>">
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </a>
                         </li>
+                        <?php } ?>
                         <?php if(isLoggedIn()){ ?>
                         <!-- <li class="list-inline-item mr-4 d-none d-sm-inline-block wishlist-link">
                             <a href="javascript:void(0);">
