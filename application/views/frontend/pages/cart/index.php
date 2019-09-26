@@ -6,26 +6,30 @@
           		 
             </div>
         </div>
-        <form>
+      
           <div class="row">
             <div class="col-sm-8">
                 <div class="cart-area">
                     <table class="table">
-                      <tbody>
+                      <tbody id="cartItems">
                          <!--Cart Item Component-->
                         <tr height="10"></tr>
                        
                       </tbody>
                     </table>
                     <div class="shoping-continue">
-                        <a href="#">Continue Shoping..</a>
+                        <a href="<?php echo base_url();?>">Continue Shoping..</a>
                     </div>
                 </div>  
             </div>
             <div class="col-sm-4">
-                <div class="cart-total">
+                <div class="cart-total" >
+                  <div id="cartSummery"></div>
                     <!--Cart Summery Component-->
                     <!--Checkout Button Component-->
+                    <button type="submit" class="checkout-btn d-block">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> Proceed to Checkout
+                    </button>
                     
                 </div>
                 <div class="apply-coupon">
@@ -35,11 +39,15 @@
                 </div>
                 <div class="accept-card-view">
                     <p>At Checkout We Accept:</p>
-                    <img src="img/accept_cards.png" class="img-fluid"/>
+                    <img src="<?php echo base_url();?>assets/images/accept_cards.png" class="img-fluid"/>
                 </div>
                 
             </div>
           </div>
-       </form>
+      
   </div>
 </div>
+<script>
+    page = 'cart';
+
+</script>

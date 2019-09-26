@@ -337,7 +337,8 @@ class Common_Controller extends CI_Controller {
     }
     public function getProductListDetails($options = null, $limit = '', $offset = 0) {
        // $flag = false;
-        $this->setOptions($options);
+        //$this->options = $options;
+       // print_r($options); die;
         $this->sql = '';
         $this->primaryTable = 'products p';
         $this->condition[] = array("p.status" => 1);

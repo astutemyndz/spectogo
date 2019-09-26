@@ -60,6 +60,10 @@ $route['onLoadPreviewEventHandler']                                          = '
 
 
 $route['cart'] = 'CartController/index';
+$route['onLoadCartEventHandler'] = 'CartController/onLoadCartEventHandler';
+$route['onClickCartEmptyEventHandler'] = 'CartController/onClickCartEmptyEventHandler';
+$route['onClickRemoveCartEventHandler'] = 'CartController/onClickRemoveCartEventHandler';
+$route['addToCart'] = 'CartController/addToCart';
 
 $route['reglaze']                                       = 'Home/reglaze';
 $route['set-reglaze-frame']                             = 'Home/setReglazeFrame';

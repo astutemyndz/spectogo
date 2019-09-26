@@ -12,16 +12,6 @@ const backToChooseLens = function() {
 }
 $(document).ready(function(){
     backToChooseLens();
-    // var URI = $(location).attr('href');
-    // console.log(URI);
-    // let $bannerUL = $('#bannerUL');
-    // $bannerUL.loading();
-    // setTimeout(function(){
-    //     $bannerUL.loading('stop');
-    // },1000);
-    // setTimeout(function(){
-    //     loadBanner();
-    // },1001);
     var $bannerCategoryLink = $('.bannerCategoryLink');
     $bannerCategoryLink.on('click', function () {
         let categoryId = $(this).attr('data-categoryId');
@@ -36,7 +26,6 @@ $(document).ready(function(){
             $('header').removeClass('home-header');
             if (page == 'testimonial'){
                 $(document).ready(function() {
-                //var owl = $('.owl-carousel');
                     owl.owlCarousel({
                         autoplay:false,
                         autoplayTimeout:3000,
@@ -193,10 +182,6 @@ const loadHeaderCategoryComponent = function() {
             category.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
         });
         $HeaderCategoryComponent = $('.HeaderCategoryComponent');
-        //$HeaderCategoryComponent.loading();
-        // setTimeout(function(){
-        //     $HeaderCategoryComponent.loading('stop');
-        // },1000);
         setTimeout(function(){
             $HeaderCategoryComponent.prepend(category.join(''));
         },1001);
@@ -216,10 +201,6 @@ const loadFooterCategoryComponent = function() {
             bannerCategory.push(CategoryComponent({index: index, banner: banner, bannerImageUrl: res.bannerImageUrl}));
         });
         $FooterCategoryComponent = $('.FooterCategoryComponent');
-        // $FooterCategoryComponent.loading();
-        // setTimeout(function(){
-        //     $FooterCategoryComponent.loading('stop');
-        // },1000);
         setTimeout(function(){
             $FooterCategoryComponent.prepend(bannerCategory.join(''));
         },1001);
@@ -232,18 +213,13 @@ const CategoryComponent = function(props) {
      return ('<li class="nav-item" data-categoryId="'+props.banner.categoryId+'" data-categoryName="'+props.banner.categoryName+'" data-param="'+props.index+'" ><a class="nav-link" href="'+API_URL+'products/categories/'+categoryName+'">'+categoryName+'</a</li>');
 }
 const ColorComponent = function(props) {
-   // console.log(props);
     return (`<li style="background-color:#3330;"><i class="fa fa-circle" style="color: #` + props.color + `"></i></li>`);
 }
 const ProductComponent = function(props) {
-    //console.log(props);
     let sellPrice = props.product.sell_price;
-    // sellPrice is an Array
     sellPrice = sellPrice.toString().split(",");
-    // sellPrice is a string
     sellPrice = sellPrice[0].toString();
     let colors = props.product.color;
-    // colurs is an Array
     colors = colors.split(',');
     let style = {
         wishlistButton: {
@@ -258,11 +234,9 @@ const ProductComponent = function(props) {
         };
     }
     let colorsComponent = '';
-    //console.log(colors);
     $.each(colors, function (index, color) {
         colorsComponent += (ColorComponent({color: color}));
     });
-    //console.log(colorsComponent);
     return (
         `
             <div class="col-md-4 col-sm-6 text-center mb-5 product_box position-relative">
@@ -278,14 +252,12 @@ const ProductComponent = function(props) {
                    `+colorsComponent+`
                 </ul><div class="d-flex flex-row justify-content-center position-absolute w-100 top_position">
                     <div class="col-lg-6 col-md-6 col-sm-6 pr-md-0 pr-4 text-left">
-                        
                     </div>
                 </div>
             </div>
         `
     );
 }
-//<button data-id_products="`+props.product.id+`" data-id_users="`+props.user.id+`" data-wishlistId="`+props.product.wishlistId+`" type="button" class="text-uppercase btn btn-primary wishlistButtonLoader `+style.wishlistButton.class+`"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</button>
 $('.addPres').click(function(){
     $('.addPresDiv').removeClass('d-none');
     $('#saveYourPrescription').addClass('d-none');
@@ -427,7 +399,6 @@ const onLoadLensTintsEventHandler = function (options) {
     .then(function (myJson) {
         let res = myJson;
         let data = res.data;
-        //console.log(data);
         $.each(data, function (index, lens) {
             arr.push(LensComponent({
                 index: index,
@@ -486,7 +457,6 @@ $(document).ready(function () {
                     
                 });
             }
-            //console.log(arr);
             $tintsVisionFragment.html(arr.join(''));
         });
     }, 1001);
@@ -763,7 +733,6 @@ $(document).ready(function () {
         }
         if (res.statusCode === 201) {
             loadProduct(optionsWithWishlist);
-            console.log('fire');
             $('#productDetailsWishlistButton').removeClass('wishlist').addClass('removeWishlist');
         }
     });
@@ -813,9 +782,6 @@ function setLensSubCatId(subCatId){
     });
 }
 function setLensTintToProduct(id){
-    // setTimeout(() => {
-        
-    // }, 1000);
     let data = {
         id: id
     };
@@ -830,7 +796,6 @@ function setLensTintToProduct(id){
     }).then(function (myJson) {
         let res = myJson;
         if (res.statusCode === 200) {
-            console.log(res);
             setTimeout(() => {
                 location.href = API_URL + 'preview';
             }, 1000);
@@ -852,7 +817,6 @@ function setLensTintToProduct(id){
             done: function (e, data) {
                 let fileName;
                 $.each(data.result.files, function (index, file) {
-                    console.log(file);
                     fileName = file.name;
                 });
                 data.context.text(fileName);
@@ -866,8 +830,6 @@ function setLensTintToProduct(id){
 const addYourPrescription = function() {
     $PrescriptionButton = $('.PrescriptionButton');
     $PrescriptionButton.on('click', function(e) {
-        //e.preventDefault();
-        console.log('click');
         $addPresDiv = $('#addPresDiv');
         $addPresDiv.loading();
         const data = $(".prescription_form").serialize();
@@ -882,7 +844,6 @@ const addYourPrescription = function() {
         }).then(function (myJson) {
             let res = myJson;
             if (res.statusCode === 200) {
-                console.log(res);
                 $addPresDiv.loading('stop');
                 $('.lenses').trigger('click');
             }
@@ -900,19 +861,15 @@ $(document).ready(function () {
     allWells.hide();
     navListItems.click(function (e) {
         e.preventDefault();
-       // console.log('clicked3');
         var $target = $($(this).attr('href')),
                 $item = $(this);
         if (!$item.hasClass('disabled')) {
-           // console.log('if');
             navListItems.removeClass('active').addClass('');
             $item.addClass('');
             allWells.hide();
             $target.show();
             $target.find('input:eq(0)').focus();
-        } else {
-            console.log('else');
-        }
+        } 
     });
     allNextBtn.click(function(){
         var curStep = $(this).closest(".setup-content"),
@@ -930,7 +887,6 @@ $(document).ready(function () {
         if (isValid)
             nextStepWizard.removeAttr('disabled').trigger('click');
     });
-   // $('div.setup-panel ul li a').trigger('click');
     $('.vision').trigger('click');
 });
 jQuery(document).ready(function () {
@@ -1299,7 +1255,7 @@ const onLoadPreviewEventHandler = function () {
             prescription: data.prescription,
             lensTint: data.lensTint
         };
-        console.log(options);
+       // console.log(options);
         $previewFragment.html(PreviewMainComponent(options));
      });
     }, 1000);
@@ -1334,6 +1290,15 @@ const PreviewFrameComponent = function(props) {
 }
 const PreviewPrescriptionComponent = function(props) {
     //console.log(props.prescription);
+    const rightSphere = (props.prescription) ? props.prescription.details[0].sphere : 0;
+    const rightCylinder = (props.prescription) ? props.prescription.details[0].cylinder : 0;
+    const rightAxis = (props.prescription) ? props.prescription.details[0].axis : 0;
+
+    const leftSphere = (props.prescription) ? props.prescription.details[1].sphere : 0;
+    const leftCylinder = (props.prescription) ? props.prescription.details[1].cylinder : 0;
+    const leftAxis = (props.prescription) ? props.prescription.details[1].axis : 0;
+
+    const pupillaryDistance = (props.prescription) ? props.prescription.id_pupillary_distance : 0;
     return(`
             <div class="col-sm-4">
                 <div class="your-presciption">
@@ -1358,13 +1323,13 @@ const PreviewPrescriptionComponent = function(props) {
                                     <em>(Right Eye)</em>
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[0].sphere+`
+                                    `+rightSphere+`
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[0].cylinder+`
+                                    `+rightCylinder+`
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[0].axis+`
+                                    `+rightAxis+`
                                 </td>
                             </tr>
                             <tr class="leftEye">
@@ -1374,13 +1339,13 @@ const PreviewPrescriptionComponent = function(props) {
                                     <em>(Left Eye)</em>
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[1].sphere+`
+                                    `+leftSphere+`
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[1].cylinder+`
+                                    `+leftCylinder+`
                                 </td>
                                 <td class="grey-cell">
-                                    `+props.prescription.details[1].axis+`
+                                    `+leftAxis+`
                                 </td>
                             </tr>
                             <tr>
@@ -1388,7 +1353,7 @@ const PreviewPrescriptionComponent = function(props) {
                                     <strong>PD</strong>
                                 </td>
                                 <td class="grey-cell" colspan="4">
-                                    <strong>`+props.prescription.id_pupillary_distance+`</strong>
+                                    <strong>`+pupillaryDistance+`</strong>
                                 </td>
                             </tr>
                         </tbody>
@@ -1400,13 +1365,14 @@ const PreviewPrescriptionComponent = function(props) {
 }
 
 const PreviewLensComponent = function(props) {
-    let lensDetailsPrice = (parseFloat(props.lensTint.lensDetailsPrice).toFixed(2));
+    let lensDetailsPrice = (props.lensTint) ? (parseFloat(props.lensTint.lensDetailsPrice).toFixed(2)) : '0.00';
     if(lensDetailsPrice) {
         lensDetailsPrice = lensDetailsPrice;
     } else {
         lensDetailsPrice = '0.00'
     }
-  
+    const lens = (props.lensTint) ? props.lensTint.lensName : '';
+    const lensDetailsName = (props.lensTint) ? props.lensTint.lensDetailsName : '';
     return(`
             <div class="col-sm-4">
                 <div class="my-lenses">
@@ -1414,12 +1380,12 @@ const PreviewLensComponent = function(props) {
                     <table class="table scriptForm unstriped lensesConfirm table-borderless">
                     <tbody>
                         <tr>
-                            <td class="text-left">`+props.lensTint.lensName+`</td>
+                            <td class="text-left">`+lens+`</td>
                             <td class="text-center"><strong></strong></td>
                             <td class="text-right"></td>
                         </tr>
                         <tr>
-                            <td class="text-left">`+props.lensTint.lensDetailsName+`</td>
+                            <td class="text-left">`+lensDetailsName+`</td>
                             <td class="text-center"><strong>$`+lensDetailsPrice+`</strong></td>
                             <td class="text-right"></td>
                         </tr>
@@ -1430,8 +1396,8 @@ const PreviewLensComponent = function(props) {
     `);
 }
 const PreviewTotalComponent = function(props) {
-    let sellPrice = parseFloat(props.product.attributes.sellPrice);
-    let lensDetailsPrice = parseFloat(props.lensTint.lensDetailsPrice);
+    let sellPrice = (props.product.attributes) ? parseFloat(props.product.attributes.sellPrice) : 0;
+    let lensDetailsPrice = (props.lensTint) ? parseFloat(props.lensTint.lensDetailsPrice) : 0;
     let totalSellPrice = 0;
     totalSellPrice = (sellPrice + lensDetailsPrice).toFixed(2);
     return(`

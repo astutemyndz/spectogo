@@ -69,7 +69,7 @@
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block">
                             <a href="<?=base_url('cart')?>">
                                 <img src="<?=base_url('assets/images/cart.png')?>" />
-                                <span class="badge badge-success rounded-pill">0</span>
+                                <span class="badge badge-success rounded-pill numberOfCartItemComponent">0</span>
                             </a>
                         </li>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block wishlist-link">
