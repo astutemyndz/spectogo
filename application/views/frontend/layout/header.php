@@ -26,6 +26,9 @@
     </style>
 </head>
 <body id="home">
+    <div id="HeaderComponent"></div>
+    
+    
     <header class="home-header">
         <div class="container">
             <div class="row align-items-md-center">
@@ -58,7 +61,7 @@
                             <div class="d-flex flex-row justify-content-center align-items-center">
                                 <i class="fa fa-phone" aria-hidden="true"></i>
                                 <h5 class="text-primary ml-2 mb-0 font-weight-bold">458555</h5>
-                                <?php /*$webManage['contact_phone']*/?>
+                                <?php //$webManage['contact_phone']?>
                             </div>
                         </li>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block">
@@ -99,5 +102,6 @@
             </div>
         </div>
     </header>
+    
     <input type="hidden" data-userId="<?php echo userId();?>" id="userId">
     <!--<div id="header"></div>-->

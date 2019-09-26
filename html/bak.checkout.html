@@ -83,86 +83,40 @@
                  		<p><strong>Not you? <a href="#">use another account</a> </strong></p>
                     </div>
                     
-                    <div class="account-form-area checkout-details checkout-first">
-                    	<h3>2. Billing Address <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
-                        <form>
-                        	<div class="form-group">
-                              <label>Address Line 1</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                              <label>Address Line 2</label>
-                              <input type="text" class="form-control">
-                            </div>
-                          <div class="form-row">
-                            <div class="form-group col-sm-6">
-                              <label>Town/City</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label>County/State</label>
-                              <input type="text" class="form-control">
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-sm-6">
-                              <label>Post Code/Zip</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label>Country</label>
-                              <select class="form-control">
-                              	<option>UK</option>
-                                <option>USA</option>
-                              </select>
-                            </div>
-                          </div>
-                        </form>
-                    </div>
-                    
-                    <div class="account-form-area checkout-details checkout-first">
-                    	<h3>3. Delivery Address <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
-                        <form>
-                        	<div class="custom-control custom-checkbox checkbox-check">
-                                  <input type="checkbox" class="custom-control-input" id="shiping">
-                                  <label class="custom-control-label" for="shiping">SHIP TO A DIFFERENT ADDRESS?</label>
-                             </div>
-                        	<div class="form-group">
-                              <label>Address Line 1</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                              <label>Address Line 2</label>
-                              <input type="text" class="form-control">
-                            </div>
-                          <div class="form-row">
-                            <div class="form-group col-sm-6">
-                              <label>Town/City</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label>County/State</label>
-                              <input type="text" class="form-control">
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-sm-6">
-                              <label>Post Code/Zip</label>
-                              <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label>Country</label>
-                              <select class="form-control">
-                              	<option>UK</option>
-                                <option>USA</option>
-                              </select>
-                            </div>
-                          </div>
-                        </form>
+                    <div class="checkout-details checkout-first">
+                    	<h3>2. Delivery Address <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
+                        <table class="table table-borderless table-sm">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Address Line 1</strong></td>
+                                    <td>Abcd Zyxw</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address Line 2</strong></td>
+                                    <td>abc@xyz.comw</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Town/City</strong></td>
+                                    <td>98765 43210</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>County/State</strong></td>
+                                    <td>98765 43210</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Post Code</strong></td>
+                                    <td>98765 43210</td>
+                                </tr>
+                                 <tr>
+                                    <td><strong>Country</strong></td>
+                                    <td>98765 43210</td>
+                                </tr>
+                            </tbody>
+                         </table>
                     </div>
                     
                     <div class="checkout-details checkout-third">
-                    	<h3>4. Shiping Method <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
+                    	<h3>3. Shiping Method <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
                         <table class="table table-hover" id="tableSelect">
                         	<thead>
                             	<tr>
@@ -214,7 +168,7 @@
                     </div>
                     
                     <div class="checkout-details">
-                    	<h3>5. Order Summery & Payment <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
+                    	<h3>4. Order Summery & Payment <i class="fa fa-check-circle"></i> <span class="badge badge-secondary"><a href="#">Change</a></span></h3>
                         <div class="payment-form">
                         	<div class="custom-control custom-checkbox checkbox-check">
                                   <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -240,7 +194,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-user"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name="username" placeholder="" required>
+                                        <input type="text" class="form-control" name="username" placeholder="" required="">
                                     </div> <!-- input-group.// -->
                                     </div> <!-- form-group.// -->
                                     
@@ -277,7 +231,7 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card">CVV <i class="fa fa-question-circle"></i></label>
-                                                <input class="form-control" required type="text">
+                                                <input class="form-control" required="" type="text">
                                             </div> <!-- form-group.// -->
                                         </div>
                                     </div> <!-- row.// -->
@@ -297,37 +251,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="cart-total">
-                    <table class="table table-borderless">
-                     <thead>
-                        <tr>
-                            <th colspan="2">Cart Summary</th>
-                        </tr>
-                     </thead>
-                      <tbody>
-                        <tr>
-                            <td>Sub Total </td>
-                            <td class="text-right total-price">$199.98 </td>
-                        </tr>
-                        <tr>
-                            <td>Shipping Discount </td>
-                            <td class="text-right total-price">  - ($15.00) </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Total</strong> </td>
-                            <td class="text-right total-price"><strong>$199.98</strong> </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                </div>
-                
-                <div class="accept-card-view">
-                    <p>At Checkout We Accept:</p>
-                    <img src="img/accept_cards.png" class="img-fluid">
-                </div>
-                
             </div>
         </div>
   </div>

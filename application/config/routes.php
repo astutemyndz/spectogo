@@ -50,6 +50,7 @@ $route['onClickCartEmptyEventHandler']                  = 'CartController/onClic
 $route['onClickRemoveCartEventHandler']                 = 'CartController/onClickRemoveCartEventHandler';
 $route['addToCart']                                     = 'CartController/addToCart';
 $route['cart']                                          = 'CartController/index';
+$route['cart/checkout']                                 = 'CartController/checkout';
 // Product Preview
 $route['preview']                                       = 'Product/preview';
 $route['onLoadPreviewEventHandler']                     = 'ApiController/onLoadPreviewEventHandler';

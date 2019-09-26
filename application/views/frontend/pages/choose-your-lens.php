@@ -93,68 +93,7 @@
                     <div class="row d-flex justify-content-md-center">
                         <div class="col-lg-9 col-12">
                             <div class="row d-flex justify-content-md-center pb-5 ml-4 mr-4 ml-sm-0 mr-md-0">
-                                <!-- <div class="col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
-                                    <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
-                                        <img src="<?=base_url('assets/images/forward.png')?>" />
-                                    </div>
-                                    <div class="rounded-circle mx-auto mb-3 bg-light prescription_box_img_hover" style="height:100px;width:100px;line-height:100px;display:none;">
-                                        <img src="<?=base_url('assets/images/forward_hover.png')?>" />
-                                    </div>
-                                    <h6 class="text-uppercase font-weight-bold mb-3">Send Prescription Later</h6>
-                                    <p class="text-color-5 mb-4 h-25">via photo, email, phone or post<br />
-                                        after placing your order.</p>
-                                    <a href="javascript:void(0);" class="d-block">
-                                        <span class="bg-primary badge rounded-circle p-0">
-                                            <i class="fa fa-angle-down text-white" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="addPres col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
-                                    <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
-                                        <img src="<?=base_url('assets/images/add-prescription.png')?>" />
-                                    </div>
-                                    <div class="rounded-circle mx-auto mb-3 bg-light prescription_box_img_hover" style="height:100px;width:100px;line-height:100px;display:none;">
-                                        <img src="<?=base_url('assets/images/add-prescription-hover.png')?>" />
-                                    </div>
-                                    <h6 class="text-uppercase font-weight-bold mb-3">Add Your Prescription</h6>
-                                    <p class="text-color-5 mb-4 h-25">I would like to enter my <br />
-                                        prescription details to receive <br />
-                                        lens recommendations.</p>
-                                    <a href="javascript:void(0)" class="d-block">
-                                        <span class="bg-primary badge rounded-circle p-0">
-                                            <i class="fa fa-angle-down text-white" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </div> -->
-                                <!-- <div class="useOldPres col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
-                                    <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
-                                        <img src="<?=base_url('assets/images/download.png')?>" />
-                                    </div>
-                                    <div class="rounded-circle mx-auto mb-3 bg-light prescription_box_img_hover" style="height:100px;width:100px;line-height:100px;display:none;">
-                                        <img src="<?=base_url('assets/images/download-hover.png')?>" />
-                                    </div>
-                                    <h6 class="text-uppercase font-weight-bold mb-3">Use Saved Prescription</h6>
-                                    <p class="text-color-5 mb-4 h-25">I would like to use a<br />
-                                        prescription I have used before<br />
-                                        from a previous purchase.</p>
-                                    <a href="javascript:void(0)" class="d-block">
-                                        <span class="bg-primary badge rounded-circle p-0">
-                                            <i class="fa fa-angle-down text-white" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                </div> -->
-                                <!-- <div class="col-md-3 col-sm-3 col-12 mb-sm-0 mb-4 text-center prescription_box pt-4 pb-4 rounded">
-                                    <div class="rounded-circle mx-auto mb-3 bg-dark prescription_box_img" style="height:100px;width:100px;line-height:100px;">
-                                        <img src="<?=base_url('assets/images/telephone.png')?>" />
-                                    </div>
-                                    <div class="rounded-circle mx-auto mb-3 bg-light prescription_box_img_hover" style="height:100px;width:100px;line-height:100px;display:none;">
-                                        <img src="<?=base_url('assets/images/telephone-hover.png')?>" />
-                                    </div>
-                                    <h6 class="text-uppercase font-weight-bold mb-3">have us call your optician</h6>
-                                    <p class="text-color-5 mb-4 h-25">We are available to call<br />
-                                        your optician and get the details.</p>
-                                    <a href="javascript:void(0)" class="d-block"><span class="bg-primary badge rounded-circle p-0"><i class="fa fa-angle-down text-white" aria-hidden="true"></i></span></a>
-                                </div> -->
+                               
                             </div>
                         </div>
                     </div>
@@ -240,12 +179,7 @@
                                     </div>
                         <div class="form-row">
                         <div class="form-group col-md-2 col-sm-2"></div>
-                        <!-- <div class="form-group form-check col-md-8 col-sm-8 text-left mb-0 mb-sm-4">
-                            <div class="custom-control custom-checkbox">
-                                <input id="addPrism" type="checkbox" class="custom-control-input addPrism">
-                                <label class="custom-control-label" for="addPrism">Add a prism <span class="text-red-1 font-weight-bold">(£17.34)</span></label>
-                            </div>
-                            </div> -->
+                        
                         </div>
                         <div class="copy-prescription-form copyPrescriptionForm d-none" id="copyPrescriptionForm">
                                         <p>Select the prism values shown in your prescription - additional charge: £16.67.</p>
@@ -402,142 +336,11 @@
             <!--Add Your Prescription -->
             <!--Sign in start of code -->
            <div id="saveYourPrescription">                                         
-            <!-- <div class="container border-bottom pt-4 pb-4 login-from-area d-none"> -->
-                <!-- <div class="col-sm-12 ">
-                        <h4 class="font-weight-bold">Your saved prescription</h4>
-                        <p class="text-center text-color-1">Sign in to retrieve a previously used prescription.</p>
-                        <div class="row justify-content-center">
-                            <div class="col-sm-5">
-                                <form class="bg-secondary">
-                                    <div class="form-group">
-                                        <label>Your email address</label>
-                                        <input type="email" class="form-control"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control"/>
-                                    </div>
-                                    <button type="submit" class="btn my-btn">Sign In</button>
-                                    <a href="#" class="forgot-pass">Forgotten your password?</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div> -->
+           
                 </div>
                 <!--Sign in end of code -->
                 <!--prescription area-->
-            <?php if($hasPrescription) {/*?>
-            <div class="container border-bottom pt-4 pb-4">
-                <div class="row">
-                    <div class="col-12 border-bottom">
-                        <h4 class="text-center font-weight-bold mt-0">Your saved prescription</h4>
-                        <p class="text-center mb-5">Select an existing prescription then click <b>'Continue with selected prescription'</b> to continue. You can edit a prescription if you wish to update it.</p>
-                    </div>
-                </div>
-                <form>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="select-prescription">
-                            <div class="form-inline justify-content-between">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="prescription1" name="customRadio" class="custom-control-input">
-                                <label class="custom-control-label" for="prescription1">Prescription 1</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="prescription2" name="customRadio" class="custom-control-input">
-                                <label class="custom-control-label" for="prescription2">Prescription 1</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary my-btn mb-2">Select</button>
-                            </div>
-                            <ul class="edit-prescription-area">
-                                <li><a href="#">Edit prescription</a></li>
-                                <li><a href="#">Delete prescription</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="prescription-view your-presciption">
-                            <table class="table table-sm text-center scriptForm unstriped table-borderless">
-                            <thead>
-                            <tr>
-                                    <th></th>
-                                    <th class="eye"><b>SPH</b><br /><em>(Sphere)</em></th>
-                                    <th class="eye"><b>CYL</b><br /><em>(Cylinder)</em></th>
-                                    <th class="eye"><b>AXIS</b><br /><em>(Axis)</em></th>
-                                    <th class="eye"><b>ADD</b><br /><em>(Addition)</em></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="rightEye">
-                                    <td class="eye">
-                                        <strong>OD</strong>
-                                        <br>
-                                        <em>(Right Eye)</em>
-                                    </td>
-                                    <td class="grey-cell">
-                                        - 4.00
-                                    </td>
-                                    <td class="grey-cell">
-                                        - 3.50
-                                    </td>
-                                    <td class="grey-cell">
-                                        6
-                                    </td>
-                                    <td class="grey-cell">
-                                        + 0.75
-                                    </td>
-                                </tr>
-                                <tr class="leftEye">
-                                    <td class="eye">
-                                        <strong>OS</strong>
-                                        <br>
-                                        <em>(Left Eye)</em>
-                                    </td>
-                                    <td class="grey-cell">
-                                        - 3.50
-                                    </td>
-                                    <td class="grey-cell">
-                                        - 3.75
-                                    </td>
-                                    <td class="grey-cell">
-                                        4
-                                    </td>
-                                    <td class="grey-cell">
-                                        + 0.75
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="eye">
-                                        <strong>PD</strong>
-                                        <br>
-                                        <em>(Pupillary Distance)</em>
-                                    </td>
-                                    <td class="grey-cell">
-                                        <strong>Average</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="custom-control custom-checkbox checkbox-check">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">I confirm that my selected prescription is correct with the correct '<strong>+</strong>' and '<strong>-</strong>' <strong>SPH</strong> and <strong>CYL</strong> values selected; my prescription is not over 2 years old, I am over 16 years old; and that I'm neither registered blind or partially blind. I have read and agree to the <a href="#">Terms of Sale</a>.</label>
-                        </div>
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary my-btn mb-2">Confirm Prescription</button>
-                        </div>
-                    </div>
-                </div>
-                </form>
-            </div>
-            <?php //}  else {?>
-                <p>Sorry, you do not have any prescriptions stored within your account. Please enter a new prescription, this will be saved in your account for future use.</p>
-            <?php */} ?>
+           
             </div>
       <!--prescription area-->
         </div>

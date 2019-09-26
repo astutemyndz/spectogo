@@ -60,14 +60,14 @@ $wishlistId = (!empty($product) && isset($product[0]['wishlistId'])) ? $product[
                                         ?>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 order-md-2 order-1 mb-3">
+                                <!-- <div class="col-lg-3 col-md-3 order-md-2 order-1 mb-3">
                                     <h6 class="text-uppercase font-weight-bold mb-3 pr-4" style="letter-spacing:2px;">Quantity</h6>
                                     <div class="quantity pt-3">
                                         <a href="javascript:void(0)" class="bg-transparent border-0 pr-2 pl-2 text-color-1">-</a>
                                         <span class="border-left border-right pl-4 pr-4">1</span>
                                         <a href="javascript:void(0);" class="bg-transparent border-0 pl-2 pr-2 text-color-1">+</a>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
                                 <div class="col-lg-8 col-md-8">

@@ -25,6 +25,12 @@ class CartController extends Common_Controller {
         $this->load->view('frontend/layout/footer');
     }
 
+    public function checkout() {
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/cart/checkout');
+        $this->load->view('frontend/layout/footer');
+    }
+
     public function onClickRemoveCartEventHandler() {
         if($this->cart->contents()) {
             // Remove Cart
