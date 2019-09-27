@@ -329,9 +329,7 @@ class Common_Controller extends CI_Controller {
         return $this->cm->select($this->primaryTable, $this->condition, $this->sql, "t1.id", "DESC", $this->join, $limit = "", $offset = 0, $group_by = "", $row = true);
     }
     public function getProductListDetails($options = null, $limit = '', $offset = 0) {
-       // $flag = false;
-        //$this->options = $options;
-       // print_r($options); die;
+        $this->options = $options;
         $this->sql = '';
         $this->primaryTable = 'products p';
         $this->condition[] = array("p.status" => 1);
