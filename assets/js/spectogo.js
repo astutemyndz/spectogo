@@ -1459,7 +1459,7 @@ const PreviewFrameComponent = function(props) {
 	  		<h4>`+props.product.name+`</h4>
 	  		<p>`+props.product.attributes.color.name+`</p>
 	  		<p><strong>Size</strong>: `+props.product.arm + `-` +props.product.bridge+`-`+props.product.lens+`-`+props.product.height+`</p>
-	  		<p><b>$`+props.product.attributes.sellPrice+`.00</b> (frame price) <br>`+props.product.includes+`</p>
+	  		<p><b>&pound;`+props.product.attributes.sellPrice+`.00</b> (frame price) <br>`+props.product.includes+`</p>
 	  	</div>
 	  </div>
     `);
@@ -1557,7 +1557,7 @@ const PreviewLensComponent = function(props) {
                         </tr>
                         <tr>
                             <td class="text-left">`+lensDetailsName+`</td>
-                            <td class="text-center"><strong>$`+lensDetailsPrice+`</strong></td>
+                            <td class="text-center"><strong>&pound;`+lensDetailsPrice+`</strong></td>
                             <td class="text-right"></td>
                         </tr>
                     </tbody>
@@ -1574,7 +1574,7 @@ const PreviewTotalComponent = function(props) {
     return(`
     <div class="col-12">
         <ul class="cart-add">
-            <li class="add-cart-total">Eyewear Total: <span>$`+totalSellPrice+`</span></li>
+            <li class="add-cart-total">Eyewear Total: <span>&pound;`+totalSellPrice+`</span></li>
             <li><a href="javascript:void(0);" class="addToCart">Add To Cart</a></li>
             <li><a href="javascript:void(0);" class="backToChooseLens">Back</a></li>
         </ul>

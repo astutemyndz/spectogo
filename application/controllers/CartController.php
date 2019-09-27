@@ -324,7 +324,9 @@ class CartController extends Common_Controller {
     }
     public function paymentSuccess(){
         $this->saveOrder();
-        $this->onClickCartEmptyEventHandler();
+        $this->cart->destroy();
+        $this->unsetSession('shippingAddress');
+        $this->unsetSession('billingAddress');
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
