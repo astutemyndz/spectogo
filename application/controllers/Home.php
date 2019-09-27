@@ -232,6 +232,11 @@ class Home extends Common_Controller {
             </table>';
         $this->cm->sendMail($to, $subject, $html);
     }
+
+    
+
+
+
     /*
         donot touch or run this function
     */
