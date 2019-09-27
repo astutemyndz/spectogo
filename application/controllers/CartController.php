@@ -205,6 +205,10 @@ class CartController extends Common_Controller {
         $this->cartItems =  ($this->cart->contents()) ? $this->cart->contents() : [];
         return $this->cartItems;
     }
+
+    public function saveOrderToDatabase() {
+        
+    }
    
     
 	
