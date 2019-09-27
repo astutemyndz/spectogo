@@ -32,7 +32,8 @@
 			"Models\\": "application/models/",
 			"Services\\": "application/services/",
 			"Contracts\\": "application/contracts/",
-			"App\\": "src/Illuminate/App/"
+			"App\\": "src/Illuminate/App/",
+			"PayPal\\": "vendor/paypal/"
         }
     }
 }

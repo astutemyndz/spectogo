@@ -19,6 +19,7 @@ return array(
     'Services\\' => array($baseDir . '/application/services'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src/Prophecy'),
+    'PayPal\\' => array($vendorDir . '/paypal'),
     'Models\\' => array($baseDir . '/application/models'),
     'Illuminate\\' => array($baseDir . '/src/Illuminate'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),

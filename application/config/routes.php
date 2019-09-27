@@ -58,7 +58,7 @@ $route['redirecting-to-payment']                        = 'CartController/redire
 $route['payment-success']                               = 'CartController/paymentSuccess';
 $route['payment-cancel']                                = 'CartController/paymentCancel';
 
-
+///$route['foo'] = 'CartController/foo';
 /*
     This route for admin
 */

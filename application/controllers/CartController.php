@@ -5,10 +5,28 @@ class CartController extends Common_Controller {
     public $defaultStore = 'sessionStorage';
 	public $cartItems = array();
     private $isCart = false;
+    private $hasCartData = false;
+    private $order;
+    private $orderAttributes;
+    private $orderColors;
+    private $orderLensTints;
+    private $orderPrescription;
+    private $orderPrescriptionDetails;
+    private $orderPrescriptionPrism;
+    private $payerId;
+    private $paymentStatus;
+    private $transactionId;
+    private $cartData = array();
+
     function __construct() {
         parent::__construct();
         $this->cart->product_name_safe = FALSE;
         //$this->isCart = (count($this->cart->contents()) > 0) ? true : false;
+        if($this->cart->contents()) {
+            $this->hasCartData = true;
+        }
+
+        $this->getCartData();
     }
     /**
      * List of cart items or Cart page
@@ -86,11 +104,13 @@ class CartController extends Common_Controller {
                 ['Content-Type', 'application/json']
             );
         }
-        $this->response->send();
+       $this->response->send();
     }
     public function onClickCartEmptyEventHandler() {
         if($this->cart->contents()) {
             $this->cart->destroy();
+            $this->unsetSession('shippingAddress');
+            $this->unsetSession('billingAddress');
             $this->response = new Response(
                 array(
                     'data' => $this->cart->contents(),
@@ -203,23 +223,109 @@ class CartController extends Common_Controller {
         $this->load->view('frontend/pages/redirecting-to-payment');
         $this->load->view('frontend/layout/footer');
     }
+    public function getCartData() {
+        if($this->hasCartData) {
+            $this->cartData =  $this->cart->contents();
+        }
+        return $this->cartData;
+    }
+    
+    public function setOrder($order) {
+        $this->order = $order;
+        return $this;
+    }
+    public function setOrderAttributes($orderAttributes) {
+        $this->orderAttributes = $orderAttributes;
+        return $this;
+    }
+    public function setOrderColors($orderColors) {
+        $this->orderColors = $orderColors;
+        return $this;
+    }
+    public function setOrderLensTints($orderLensTints) {
+        $this->orderLensTints = $orderLensTints;
+        return $this;
+    }
+    public function setOrderPrescription($orderPrescription) {
+        $this->orderPrescription = $orderPrescription;
+        return $this;
+    }
+    public function setOrderPrescriptionDetails($orderPrescriptionDetails) {
+        $this->orderPrescriptionDetails = $orderPrescriptionDetails;
+        return $this;
+    }
+    public function setOrderPrescriptionPrism($orderPrescriptionPrism) {
+        $this->orderPrescriptionPrism = $orderPrescriptionPrism;
+        return $this;
+    }
+    public function setOrderUser($user) {
+        $this->user = $user;
+        return $this;
+    }
+    public function setTransaction($transaction) {
+        $this->transaction = $transaction;
+    }
+    public function setPayerId($payerId) {
+        $this->payerId = $payerId;
+    }
+    public function setTransactionId($transactionId) {
+        $this->transactionId = $transactionId;
+    }
+    public function setPaymentStatus($paymentStatus) {
+        $this->paymentStatus = $paymentStatus;
+    }
+    public function saveOrderToDatabase() {
+        /*
+        if($this->isPost()) 
+        {
+            $this->setRequest($this->request);
+            if(!empty($this->request) || isset($this->request)) {
+
+                if(!empty($this->request['payer_id']) || isset($this->request['payer_id'])) {
+                    $this->setPayerId($this->request['payer_id']);
+                }
+                if(!empty($this->request['txn_id']) || isset($this->request['txn_id'])) {
+                    $this->setTransactionId($this->request['txn_id']);
+                }
+                if(!empty($this->request['payment_status']) || isset($this->request['payment_status'])) {
+                    $this->setPaymentStatus($this->request['payment_status']);
+                }
+
+                $userData = $this->userdata();
+
+                if(!empty($userData) || isset($userData)) {
+
+                        if(!empty($userData['user']) || isset($userData['user'])) {
+                            $this->setUser($userData['user']);
+                        }
+                        if(!empty($userData['billingAddress']) || isset($userData['billingAddress'])) {
+                            $this->setBillingAddress($userData['billingAddress']);
+                        }
+                        if(!empty($userData['shippingAddress']) || isset($userData['shippingAddress'])) {
+                            $this->setShippingAddress($userData['shippingAddress']);
+                        }
+                        
+                }
+                if($this->payerId) {
+
+                }
+
+                if($this->cartData) {
+                    foreach($this->cartData as $rowId => $data) {
+                        $this->order = array(
+                            'name' => $data['name']
+                        );
+                    }
+                }
+
+            }
+            
+        }
+        */
+    }
     public function paymentSuccess(){
-        echo $_GET['tx'];
-        die;
-        echo "<pre>";
-        print_r($_POST);
-        echo "<pre>";
-        print_r($_GET);
-        echo "<pre>";
-        print_r($_REQUEST);
-
-        $paypalInfo = $this->input->get();
-        //print_r($paypalInfo); die;
-        // if($_POST){
-
-        //     $this->session->set_userdata('paymentId', $_POST['TransactionID']);
-        //     $this->session->set_userdata('paymentMathod', $_POST['TransactionID']);
-        // }
+        $this->saveOrder();
+        $this->onClickCartEmptyEventHandler();
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
@@ -236,6 +342,18 @@ class CartController extends Common_Controller {
         $this->load->view('frontend/layout/header', $data);
         $this->load->view('frontend/pages/payment-cancel');
         $this->load->view('frontend/layout/footer');
+    }
+
+    public function saveOrder() {
+        if($this->cart->contents()) {
+            foreach($this->cart->contents() as $cart) {
+                $data = array(
+                    'content'=> json_encode($cart),
+                );
+                $this->db->insert('temp', $data);
+            }
+        }
+        return true;
     }
 
 
