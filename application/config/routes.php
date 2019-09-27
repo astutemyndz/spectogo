@@ -11,8 +11,6 @@ $route['sign-out']                                      = 'AuthController/logOut
 $route['do-registration']                               = 'AuthController/doRegistration';
 $route['do-login']                                      = 'AuthController/doLogin';
 $route['products/(:any)/(:any)']                        = 'Product/index/$1/$2';
-// product-details/frames/frame-1/slug
-// product-details/category/cat-name/slug
 $route['product-details/(:any)/(:any)/(:any)']          = 'Product/productDetails/$1/$2/$3';
 $route['filterProductImageByColor']                     = 'ApiController/filterProductImageByColor';
 $route['filterLensDetails']                             = 'ApiController/filterLensDetails';
@@ -24,14 +22,11 @@ $route['lens/tints/details']                            = 'ApiController/onLoadL
 $route['setLensTintToProduct']                          = 'ApiController/setLensTintToProduct';
 $route['setPrescription']                               = 'ApiController/setPrescription';
 $route['attachmentUploadHandler']                       = 'ApiController/attachmentUploadHandler';
-
 // Wishlist Routes
 $route['wishlist/add']                                  = 'WishlistController/save';
 $route['wishlist/remove']                               = 'WishlistController/remove';
 $route['wishlist']                                      = 'WishlistController/index';
 $route['load-wishlist']                                 = 'ApiController/loadWishlist';
-
-
 $route['products']                                      = 'ApiController/products';
 $route['product/category/(:any)']                       = 'Product/getProductCategoryWise/$1';
 $route['filterProduct']                                 = 'Product/filterProduct';
@@ -54,11 +49,16 @@ $route['cart/checkout']                                 = 'CartController/checko
 // Product Preview
 $route['preview']                                       = 'Product/preview';
 $route['onLoadPreviewEventHandler']                     = 'ApiController/onLoadPreviewEventHandler';
-
-
 $route['reglaze']                                       = 'Home/reglaze';
 $route['set-reglaze-frame']                             = 'Home/setReglazeFrame';
 $route['contact-us-email']                              = 'Home/contactUsEmail';
+$route['save-billing-shipping-address']                 = 'CartController/saveBillingShippingAddress';
+
+$route['redirecting-to-payment']                        = 'CartController/redirectingToPayment';
+$route['payment-success']                               = 'CartController/paymentSuccess';
+$route['payment-cancel']                                = 'CartController/paymentCancel';
+
+
 /*
     This route for admin
 */

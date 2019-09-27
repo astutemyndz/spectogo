@@ -70,7 +70,11 @@
                             </a>
                         </li>
                         <li class="list-inline-item mr-4 d-none d-sm-inline-block">
+                        <?php if(isLoggedIn()){ ?>
                             <a href="<?=base_url('cart')?>">
+                        <?php }else{ ?>
+                            <a href="<?=base_url('sign-in')?>">
+                        <?php } ?>
                                 <img src="<?=base_url('assets/images/cart.png')?>" />
                                 <span class="badge badge-success rounded-pill numberOfCartItemComponent">0</span>
                             </a>
@@ -82,8 +86,6 @@
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </a>
                         </li>
-                        <?php } ?>
-                        <?php if(isLoggedIn()){ ?>
                         <!-- <li class="list-inline-item mr-4 d-none d-sm-inline-block wishlist-link">
                             <a href="javascript:void(0);">
                                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -102,6 +104,5 @@
             </div>
         </div>
     </header>
-    
     <input type="hidden" data-userId="<?php echo userId();?>" id="userId">
     <!--<div id="header"></div>-->

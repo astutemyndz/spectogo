@@ -19,7 +19,7 @@ $(document).ready(function(){
             location.href = API_URL + 'products/categories/' + categoryName;
         }, 300);
     });
-    if (page == 'wishlist' || page == 'cart' || page == 'checkout' || page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
+    if (page == 'payment-success' || page == 'payment-cancel' || page == 'reditect-to-payment' || page == 'wishlist' || page == 'cart' || page == 'checkout' || page == 'reglaze' || page == 'testimonial' || page == 'page-info' || page == 'product-details' || page == 'choose-your-lens' || page == 'contact-us' || page == 'blogs' || page == 'blog-details' || page == 'preview') {
         var owl = $('.owl-carousel');
         $(document).ready(function () {
             $('header').removeClass('home-header');
@@ -622,7 +622,6 @@ const addToWishlistProduct = function (callback) {
             return response.json();
         }).then(function (myJson) {
             let res = myJson;
-            //console.log(res);
             if (res.statusCode === 401) {
                 setTimeout(() => {
                     location.href = API_URL + '/sign-in';
@@ -633,7 +632,6 @@ const addToWishlistProduct = function (callback) {
         });
         callback();
     });
-    // end of code
 }
 const loadProduct = function (options) {
     let $productListFragment = $('#productListFragment');
@@ -648,7 +646,6 @@ const loadProduct = function (options) {
 }
 const currentUrlToArray = function () {
     var url = $(location).attr('href').split("/");
-    //console.log()
     return url;
 }
 const getCategoryNameFromUrl = function () {
@@ -678,7 +675,6 @@ function chooseColor(prodId, colorHex) {
             $sellPrice.html("");
         },
         success: function (res) {
-            console.log(res);
             let STATUS_CODE = res.statusCode;
             let data = res.data;
             var thumbHtml = '';
@@ -734,28 +730,32 @@ $(document).ready(function () {
     let $productId = $('#productId');
     let $chooseLense = $('#chooseLense');
     $gtToCart.on('click', function () {
-        $.ajax({
-            type: "POST",
-            url: API_URL + "filterProductImageByColor",
-            data: {
-                'productId': $productId.val(),
-                'hexColorCode': $hexColorCode.val(),
-                'chooseLense': $chooseLense.val()
-            },
-            cache: false,
-            beforeSend: function () {
-            },
-            success: function (res) {
-                let STATUS_CODE = res.statusCode;
-                let data = res.data;
-                if (STATUS_CODE === 200) {
-                    location.href = API_URL + 'choose-your-lens';
+        if(UserId  == ''){
+            swalMessageThen('You need to sign in !!!', 'warning', API_URL + 'sign-in')
+        }else{
+            $.ajax({
+                type: "POST",
+                url: API_URL + "filterProductImageByColor",
+                data: {
+                    'productId': $productId.val(),
+                    'hexColorCode': $hexColorCode.val(),
+                    'chooseLense': $chooseLense.val()
+                },
+                cache: false,
+                beforeSend: function () {
+                },
+                success: function (res) {
+                    let STATUS_CODE = res.statusCode;
+                    let data = res.data;
+                    if (STATUS_CODE === 200) {
+                        location.href = API_URL + 'choose-your-lens';
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
                 }
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
+            });
+        }
     });
 })
 const loadWishlist = function (options) {
@@ -1157,8 +1157,8 @@ function swalMessageThen(text, type, url) {
         showCancelButton: showCancelButton,
         confirmButtonColor: confirmButtonColor,
         confirmButtonText: "OK",
-        confirmButtonColor: cancelButtonColor,
-        confirmButtonText: "Cancel"
+        cancelButtonColor: cancelButtonColor,
+        cancelButtonText: "Cancel"
     }).then(function () {
         window.location = url;
     });
@@ -1384,8 +1384,6 @@ $("#loginForm").submit(function (e) {
     });
    
 });
-
-
 const onLoadPreviewEventHandler = function () {
     let $previewFragment = $('#preview');
     $previewFragment.loading();
@@ -1400,7 +1398,6 @@ const onLoadPreviewEventHandler = function () {
     .then(function (myJson) {
         let res = myJson;
         let data = res.data;
-        
         let options = {
             product: {
                 id: data.productId,
@@ -1439,14 +1436,10 @@ const onLoadPreviewEventHandler = function () {
             prescription: data.prescription,
             lensTint: data.lensTint
         };
-       // console.log(options);
         $previewFragment.html(PreviewMainComponent(options));
      });
     }, 1000);
-    
 }
-
-
 const PreviewHeaderComponent = function(props) {
     return(`
         <div class="col-12">
@@ -1457,7 +1450,6 @@ const PreviewHeaderComponent = function(props) {
         </div>
     `);
 }
-
 const PreviewFrameComponent = function(props) {
     return(`
     <div class="col-sm-4">
@@ -1467,21 +1459,18 @@ const PreviewFrameComponent = function(props) {
 	  		<h4>`+props.product.name+`</h4>
 	  		<p>`+props.product.attributes.color.name+`</p>
 	  		<p><strong>Size</strong>: `+props.product.arm + `-` +props.product.bridge+`-`+props.product.lens+`-`+props.product.height+`</p>
-	  		<p>$`+props.product.attributes.sellPrice+`.00 (frame price) <br>`+props.product.includes+`</p>
+	  		<p><b>$`+props.product.attributes.sellPrice+`.00</b> (frame price) <br>`+props.product.includes+`</p>
 	  	</div>
 	  </div>
     `);
 }
 const PreviewPrescriptionComponent = function(props) {
-    //console.log(props.prescription);
     const rightSphere = (props.prescription) ? props.prescription.details[0].sphere : 0;
     const rightCylinder = (props.prescription) ? props.prescription.details[0].cylinder : 0;
     const rightAxis = (props.prescription) ? props.prescription.details[0].axis : 0;
-
     const leftSphere = (props.prescription) ? props.prescription.details[1].sphere : 0;
     const leftCylinder = (props.prescription) ? props.prescription.details[1].cylinder : 0;
     const leftAxis = (props.prescription) ? props.prescription.details[1].axis : 0;
-
     const pupillaryDistance = (props.prescription) ? props.prescription.id_pupillary_distance : 0;
     return(`
             <div class="col-sm-4">
@@ -1496,7 +1485,6 @@ const PreviewPrescriptionComponent = function(props) {
                                 <th>Sphere</th>
                                 <th>Cylinder</th>
                                 <th>Axis</th>
-                               
                             </tr>
                         </thead>
                         <tbody>
@@ -1547,13 +1535,12 @@ const PreviewPrescriptionComponent = function(props) {
             </div>
     `);
 }
-
 const PreviewLensComponent = function(props) {
     let lensDetailsPrice = (props.lensTint) ? (parseFloat(props.lensTint.lensDetailsPrice).toFixed(2)) : '0.00';
     if(lensDetailsPrice) {
         lensDetailsPrice = lensDetailsPrice;
     } else {
-        lensDetailsPrice = '0.00'
+        lensDetailsPrice = '0.00';
     }
     const lens = (props.lensTint) ? props.lensTint.lensName : '';
     const lensDetailsName = (props.lensTint) ? props.lensTint.lensDetailsName : '';
@@ -1594,7 +1581,6 @@ const PreviewTotalComponent = function(props) {
     </div>
     `);
 }
-
 const PreviewMainComponent = function(props) {
     return(`
         <div class="container">
@@ -1792,3 +1778,71 @@ function set_reglaze(frame_id){
         }
     });
 }
+$("#shiping").click(function (e) {
+    if($(this).prop('checked')){
+        $('#shippingName').addClass('requiredCheck');
+        $('#shippingAddOne').addClass('requiredCheck');
+        $('#shippingCity').addClass('requiredCheck');
+        $('#shippingState').addClass('requiredCheck');
+        $('#shippingZip').addClass('requiredCheck');
+        $('#shippingCountry').addClass('requiredCheck');
+        $('.shipping-address').removeClass('d-none');
+        $('#shiping').val('checked');
+    }else{
+        $('#shippingName').removeClass('requiredCheck');
+        $('#shippingAddOne').removeClass('requiredCheck');
+        $('#shippingCity').removeClass('requiredCheck');
+        $('#shippingState').removeClass('requiredCheck');
+        $('#shippingZip').removeClass('requiredCheck');
+        $('#shippingCountry').removeClass('requiredCheck');
+        $('.shipping-address').addClass('d-none');
+        $('#shiping').val('unchecked');
+    }
+});
+$("#checkPaypal").click(function (e) {
+    if($(this).prop('checked')){
+        $("#paypal-submit").prop("disabled", false);
+    }else{
+        $("#paypal-submit").prop("disabled", true);
+    }
+});
+$("#checkOutForm").submit(function (e) {
+    e.preventDefault();
+    var tmp = 'true';
+    var flag = commonFormChecking(tmp);
+    if (flag != 'false') {
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: base_url + "save-billing-shipping-address",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#paypal-submit").prop("disabled", true);
+                $("#checkOutForm").loading();
+            },
+            success: function (res) {
+                window.location = base_url + "redirecting-to-payment";
+            }
+        });
+    }
+});
+$(document).ready(function(){
+    if(page == 'payment-success'){
+        setTimeout(function(){
+            //window.location = base_url;
+        },3001);
+    }
+    if(page == 'payment-cancel'){
+        setTimeout(function(){
+            window.location = base_url + "cart/checkout";
+        },3001);
+    }
+    if(page == 'reditect-to-payment'){
+        setTimeout(function(){
+            $("#paymentForm").submit();
+        },1001);
+    }
+});
