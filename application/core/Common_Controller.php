@@ -8,6 +8,7 @@ class Common_Controller extends CI_Controller {
     protected $category     = '';
     protected $productName  = '';
     protected $brandId      = '';
+    protected $orderId      = '';
     protected $frameName    = '';
     protected $details      = '';
     protected $options      = array();
@@ -63,6 +64,13 @@ class Common_Controller extends CI_Controller {
     }
     public function getProductId() {
         return $this->productId;
+    }
+    public function setOrderId($orderId) {
+        $this->orderId = $orderId;
+        return $this;
+    }
+    public function getOrderId() {
+        return $this->orderId;
     }
     public function setHexColorCode($hexColorCode) {
         $this->hexColorCode = $hexColorCode;
@@ -729,5 +737,46 @@ class Common_Controller extends CI_Controller {
         }
         return $this->filterArray;
     }
+
+    public function getOrderListDetails($options = null, $limit = '', $offset = 0) {
+        $this->primaryTable = 'orders o';
+        $this->join[] = ['table' => 'orders_lens_tints olt', 'on' => 'olt.id_orders = o.id', 'type' => 'left'];
+        $this->join[] = ['table' => 'orders_prescriptions op', 'on' => 'op.id_orders = o.id', 'type' => 'left'];
+        $this->join[] = ['table' => 'orders_prescriptions_details opd', 'on' => 'opd.id_orders = o.id', 'type' => 'left'];
+        $this->join[] = ['table' => 'orders_prescriptions_prism opp', 'on' => 'opp.id_orders = o.id', 'type' => 'left'];
+        $this->join[] = ['table' => 'orders_users ou', 'on' => 'ou.id_orders = o.id', 'type' => 'left'];
+        $this->join[] = ['table' => 'users u', 'on' => 'ou.id_users = u.id', 'type' => 'left'];
+        $this->sql = 'o.*, olt.*, op.*, opd.*, opp.*, ou.*, u.name userName, u.phone userPhone, u.email userEmail';
+        if(!empty($this->options['orderId'])) {
+            if(is_array($this->options) && in_array($this->options['orderId'], $this->options)) {
+                $this->setOrderId($this->options['orderId']);
+            } 
+        }
+        if(!empty($this->options['productId'])) {
+            if(is_array($this->options) && in_array($this->options['productId'], $this->options)) {
+                $this->setProductId($this->options['productId']);
+            } 
+        }
+        if($this->orderId) {
+            $this->condition[]  = array("o.id" => $this->orderId);
+        }
+        if($this->productId) {
+            $this->condition[]  = array("o.id_products" => $this->productId);
+        }
+        if(!empty($this->condition) && is_array($this->condition)) {
+            for($i = 0; $i < count($this->condition); $i++) {
+                foreach($this->condition[$i] as $k => $v) {
+                    $condition[$k] = $v;
+                }
+            }
+        }
+        $this->condition = $condition;
+        $orderList = $this->cm->select($this->primaryTable, $this->condition, $this->sql, 'o.id', 'DESC', $this->join, $limit, $offset, $group_by = '', $row = true);
+        return $orderList;
+     }
+
+
+
+
 }
 ?>

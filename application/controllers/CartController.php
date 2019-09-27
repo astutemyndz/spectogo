@@ -193,7 +193,6 @@ class CartController extends Common_Controller {
             print_r($billingAddress);
         }
     }
-
     public function redirectingToPayment(){
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
@@ -204,22 +203,6 @@ class CartController extends Common_Controller {
         $this->load->view('frontend/layout/footer');
     }
     public function paymentSuccess(){
-        echo $_GET['tx'];
-        die;
-        echo "<pre>";
-        print_r($_POST);
-        echo "<pre>";
-        print_r($_GET);
-        echo "<pre>";
-        print_r($_REQUEST);
-
-        $paypalInfo = $this->input->get();
-        //print_r($paypalInfo); die;
-        // if($_POST){
-
-        //     $this->session->set_userdata('paymentId', $_POST['TransactionID']);
-        //     $this->session->set_userdata('paymentMathod', $_POST['TransactionID']);
-        // }
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
         $data['frames'] = $this->getFrameDetails();
@@ -237,7 +220,4 @@ class CartController extends Common_Controller {
         $this->load->view('frontend/pages/payment-cancel');
         $this->load->view('frontend/layout/footer');
     }
-
-
-
 }
