@@ -1832,7 +1832,7 @@ $("#checkOutForm").submit(function (e) {
 $(document).ready(function(){
     if(page == 'payment-success'){
         setTimeout(function(){
-            //window.location = base_url;
+            window.location = base_url;
         },3001);
     }
     if(page == 'payment-cancel'){

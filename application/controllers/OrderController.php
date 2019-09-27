@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-
 class OrderController extends Common_Controller {
-
     private $hasCartData = false;
     private $order;
     private $orderAttributes;
@@ -13,23 +10,19 @@ class OrderController extends Common_Controller {
     private $orderPrescriptionDetails;
     private $orderPrescriptionPrism;
     private $cartData = array();
-
     function __construct() {
         parent::__construct();
         if($this->cart->contents()) {
             $this->hasCartData = true;
         }
-
         $this->getCartData();
     }
-    
     public function getCartData() {
         if($this->hasCartData) {
             $this->cartData =  $this->cart->contents();
         }
         return $this->cartData;
     }
-    
     public function setOrder($order) {
         $this->order = $order;
         return $this;
@@ -66,16 +59,11 @@ class OrderController extends Common_Controller {
         $this->transaction = $transaction;
     }
     public function saveOrderToDatabase() {
-        
-        if($this->isPost()) 
-        {
+        if($this->isPost()){
             $this->setTransaction($this->request);
             if($this->cartData) {
 
             }
         }
     }
-   
-    
-	
 }

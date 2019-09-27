@@ -213,7 +213,6 @@ class CartController extends Common_Controller {
             print_r($billingAddress);
         }
     }
-
     public function redirectingToPayment(){
         $data['banners'] = $this->getBannerDetails();
         $data['partner'] = $this->getBrandDetails();
